@@ -1,0 +1,109 @@
+package by.training.сonfectionery.domain;
+
+import java.io.InputStream;
+
+public class Product extends Entity {
+    private String name;
+    private double price;
+    private String description;
+    private int weight;
+    private String image;
+    private int productTypeId;
+    private int numberInStock;
+
+    public Product(){
+
+    }
+
+    public int getNumberInStock(){
+        return numberInStock;
+    }
+
+    public double getPrice(){
+        return price;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public int getWeight(){
+        return weight;
+    }
+
+    public String getImage(){
+        return image;
+    }
+
+    public int getProductTypeId(){
+        return productTypeId;
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setNumberInStock(int numberInStock){
+        this.numberInStock = numberInStock;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setProductTypeId(int productTypeId){
+        this.productTypeId = productTypeId;
+    }
+
+    public static class ProductBuilder{
+        Product product;
+
+        public ProductBuilder(){
+            product = new Product();
+        }
+
+        public Product.ProductBuilder setId(int id) {
+            product.setId(id);
+            return this;
+        }
+
+        public Product.ProductBuilder setName(String name){
+            product.setName(name);
+            return this;
+        }
+
+        public Product.ProductBuilder setPrice(double price){
+            product.setPrice(price);
+            return this;
+        }
+
+        public Product.ProductBuilder setDescription(String description){
+            product.setDescription(description);
+            return this;
+        }
+
+        public Product.ProductBuilder
+
+        public User createUser() {
+            return user;
+        }
+    }
+
+
+}
