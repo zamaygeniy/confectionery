@@ -22,6 +22,16 @@ public final class RequestParameter {
     //verification
     public static final String ID = "id";
 
+    public static final String NAME = "name";
+    public static final String PRICE = "price";
+    public static final String DESCRIPTION = "description";
+    public static final String WEIGHT = "weight";
+    public static final String NUMBER_IN_STOCK = "number_in_stock";
+
+    public static final String DATE = "date";
+    public static final String ORDER_STATUS = "order_status";
+    public static final String USER_ID = "user_id";
+
     private RequestParameter() {
     }
 }

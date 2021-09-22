@@ -84,12 +84,12 @@ public class UserServiceImpl implements UserService {
             transaction.init(userDao);
             userDao.create(user, userMap.get(PASSWORD));
         } catch (DaoException e) {
-            throw new ServiceException("Failed to make transaction in checkEmail method", e);
+            throw new ServiceException("Failed to make transaction in registrate method", e);
         } finally {
             try {
                 transaction.end();
             } catch (DaoException e) {
-                logger.error("Can't end transaction in checkEmail method", e);
+                logger.error("Can't end transaction in registrate method", e);
             }
         }
         MailSender mailSender = new MailSender();
@@ -128,7 +128,6 @@ public class UserServiceImpl implements UserService {
         EntityTransaction transaction = new EntityTransaction();
         UserDao userDao = new UserDaoImpl();
         User user;
-        System.out.println(userId);
         try {
             transaction.init(userDao);
             Optional<User> optionalUser = userDao.findById(Integer.parseInt(userId));

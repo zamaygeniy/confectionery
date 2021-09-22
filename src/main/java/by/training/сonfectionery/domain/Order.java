@@ -4,26 +4,16 @@ import java.time.LocalDate;
 
 public class Order extends Entity {
     private LocalDate date;
+    private String phone;
     private int userId;
-    private OrderStatus orderStatus;
+    private Status status;
 
     public Order() {
 
     }
 
-    public Order(int id, LocalDate date, int userId, OrderStatus orderStatus) {
-        super(id);
-        this.setDate(date);
-        this.setUserId(userId);
-        this.setOrderStatus(orderStatus);
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus){
-        this.orderStatus = orderStatus;
-    }
-
-    public OrderStatus getOrderStatus(){
-        return orderStatus;
+    public Status getStatus(){
+        return status;
     }
 
     public int getUserId() {
@@ -34,6 +24,8 @@ public class Order extends Entity {
         return date;
     }
 
+    public String getPhone(){return phone;}
+
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -42,15 +34,25 @@ public class Order extends Entity {
         this.date = date;
     }
 
-    public enum OrderStatus {
-        IN_PROCESS("in_process", 1),
-        CANCELED("canceled", 2),
-        DONE("done", 3);
+    public void setStatus(Status status){
+        this.status = status;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public enum Status {
+        WAITING_FOR_CONFIRMATION("waiting_for_confirmation", 1),
+        IN_PROCESS("in_process", 2),
+        DONE("done", 3),
+        CANCELED("canceled", 4);
+
 
         private String value;
         private int id;
 
-        OrderStatus(String value, int id) {
+        Status(String value, int id) {
             this.value = value;
             this.id = id;
         }
@@ -86,8 +88,13 @@ public class Order extends Entity {
             return this;
         }
 
-        public Order.OrderBuilder setOrderStatus(OrderStatus status) {
-            order.setOrderStatus(status);
+        public Order.OrderBuilder setStatus(Status status) {
+            order.setStatus(status);
+            return this;
+        }
+
+        public Order.OrderBuilder setOrderPhone(String phone){
+            order.setPhone(phone);
             return this;
         }
 

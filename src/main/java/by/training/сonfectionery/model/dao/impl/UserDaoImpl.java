@@ -87,7 +87,6 @@ public class UserDaoImpl extends UserDao {
                     User user = buildUser(resultSet);
                     return Optional.of(user);
                 } else {
-                    System.out.println(0);
                     return Optional.empty();
                 }
             }
@@ -142,7 +141,6 @@ public class UserDaoImpl extends UserDao {
         User oldUser = findById(user.getId()).
                 orElseThrow(() -> new DaoException("Failed to update user, user's id was not found"));
         try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_USER)) {
-            System.out.println("UPDATE IN PROCESS");
             statement.setString(1, user.getFirstName());
             statement.setString(2, user.getLastName());
             statement.setBlob(3, Base64Coder.decode(user.getImage()));

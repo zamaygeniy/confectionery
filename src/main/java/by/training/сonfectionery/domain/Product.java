@@ -98,11 +98,47 @@ public class Product extends Entity {
             return this;
         }
 
-        public Product.ProductBuilder
-
-        public User createUser() {
-            return user;
+        public Product.ProductBuilder setWeight(int weight){
+            product.setWeight(weight);
+            return this;
         }
+
+        public  Product.ProductBuilder setImage(String image){
+            product.setImage(image);
+            return this;
+        }
+
+        public Product.ProductBuilder setNumberInStock(int numberInStock){
+            product.setNumberInStock(numberInStock);
+            return this;
+        }
+
+        public Product.ProductBuilder setProductTypeId(int productTypeId){
+            product.setNumberInStock(productTypeId);
+            return this;
+        }
+
+        public Product createProduct() {
+            return product;
+        }
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Product{id=");
+        sb.append(getId());
+        sb.append(", name=");
+        sb.append(name);
+        sb.append(", price=");
+        sb.append(price);
+        sb.append(", description=");
+        sb.append(description);
+        sb.append(", weight=");
+        sb.append(weight);
+        sb.append(", number in stock=");
+        sb.append(numberInStock);
+        sb.append("}");
+        return sb.toString();
     }
 
 
