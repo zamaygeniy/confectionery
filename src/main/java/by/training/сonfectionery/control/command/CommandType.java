@@ -13,7 +13,8 @@ public enum CommandType {
     MAIN_PAGE(new GoToMainPage()),
     LOGOUT(new LogOutCommand()),
     VERIFICATION(new VerificationCommand()),
-    EDIT_PROFILE_PAGE(new GoToEditProfilePage());
+    EDIT_PROFILE_PAGE(new GoToEditProfilePage()),
+    PRODUCT_PAGE(new GetProducts());
 
     private Command command;
 

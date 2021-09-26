@@ -22,18 +22,18 @@ public class ProductDaoImpl extends ProductDao {
     private static final String SQL_FIND_ALL_PRODUCTS = """
             SELECT id, name, price, description, weight, image, number_in_stock
             FROM products
-            JOIN product_type ON product.product_type_id = product_type.id; 
+            JOIN product_type ON products.product_type_id = product_type.id; 
             """;
     private static final String SQL_FIND_PRODUCT_BY_ID = """
             SELECT id, name, price, description, weight, image, number_in_stock
             FROM products
-            JOIN product_type ON product.product_type_id = product_type.id;
+            JOIN product_type ON products.product_type_id = product_type.id;
             WHERE products.id = ?;
             """;
     private static final String SQL_FIND_PRODUCT_BY_PRODUCT_TYPE_ID = """
             SELECT id, name, price, description, weight, image, number_in_stock
             FROM products
-            JOIN product_type ON product.product_type_id = product_type.id;
+            JOIN product_type ON products.product_type_id = product_type.id;
             WHERE product_type_id = ?;
             """;
     private static final String SQL_DELETE_PRODUCT_BY_ID = """
@@ -211,4 +211,22 @@ public class ProductDaoImpl extends ProductDao {
                 .setProductTypeId(resultSet.getInt(PRODUCT_TYPE_ID))
                 .createProduct();
     }
+
+    @Override
+    public List<Product> findAll(int offset, int noOfRecords) throws DaoException {
+        String query = "SELECT * FROM products limit " + offset + ", " + noOfRecords;
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            List<Product> products = new LinkedList<>();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Product product = buildProduct(resultSet);
+                    products.add(product);
+                }
+                return products;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find all products", e);
+        }
+    }
+
 }

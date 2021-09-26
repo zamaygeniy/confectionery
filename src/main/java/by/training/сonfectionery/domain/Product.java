@@ -114,7 +114,7 @@ public class Product extends Entity {
         }
 
         public Product.ProductBuilder setProductTypeId(int productTypeId){
-            product.setNumberInStock(productTypeId);
+            product.setProductTypeId(productTypeId);
             return this;
         }
 

@@ -36,12 +36,12 @@ public class OrderDaoImpl extends OrderDao {
             DELETE FROM orders WHERE id = ?;
             """;
     private static final String SQL_CREATE_ORDER = """
-            INSERT INTO orders(id, date, phone, user_id, status)
-            VALUES (?, ?, ?, ?, ?);
+            INSERT INTO orders(date, phone, user_id, status_id)
+            VALUES (?, ?, ?, ?);
             """;
     private static final String SQL_UPDATE_ORDER = """
             UPDATE orders
-            SET date = ?, phone = ?, user_id = ?, status = ?
+            SET date = ?, phone = ?, user_id = ?, status_id = ?
             WHERE orders.id = ?;
             """;
     private static final String SQL_UPDATE_ORDER_STATUS = """
@@ -51,15 +51,15 @@ public class OrderDaoImpl extends OrderDao {
             """;
 
 
+
+
+
     @Override
     public List<Order> findAll() throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_ORDERS)) {
             List<Order> orders = new LinkedList<>();
-            System.out.println("1");
             try(ResultSet resultSet = statement.executeQuery()){
-                System.out.println("1");
                 while (resultSet.next()) {
-                    System.out.println("1");
                     Order order = buildOrder(resultSet);
                     orders.add(order);
                 }
@@ -100,14 +100,16 @@ public class OrderDaoImpl extends OrderDao {
     public boolean create(Order order) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_CREATE_ORDER, Statement.RETURN_GENERATED_KEYS)) {
             statement.setDate(1, Date.valueOf(order.getDate()));
-            statement.setInt(2, order.getUserId());
-            statement.setInt(3, order.getStatus().getId());
+            statement.setString(2, order.getPhone());
+            statement.setInt(3, order.getUserId());
+            statement.setInt(4, order.getStatus().getId());
             boolean result = statement.executeUpdate() == 1;
-            ResultSet resultSet = statement.getGeneratedKeys();
-            if (resultSet.next()) {
-                order.setId(resultSet.getInt(1));
+            try(ResultSet resultSet = statement.getGeneratedKeys()){
+                if (resultSet.next()) {
+                    order.setId(resultSet.getInt(1));
+                }
+                return result;
             }
-            return result;
         } catch (SQLException e) {
             throw new DaoException("Failed to create order", e);
         }

@@ -10,12 +10,12 @@
 <header>
     <div class="wrapper">
         <a href="#" class="logo">
-            <img src="${pageContext.request.contextPath}/img/logo.jpg" alt="">
+            <img src="${pageContext.request.contextPath}/img/logo1.jpg" alt="">
         </a>
 
         <ul class="menu">
             <li class="menu_link">
-                <a href="#"><fmt:message key="menu.menu"/>
+                <a href="${pageContext.request.contextPath}/controller?command=product_page"><fmt:message key="menu.menu"/>
             </li>
             <li class="menu_link">
                 <a href="#"><fmt:message key="menu.company"/></a>
