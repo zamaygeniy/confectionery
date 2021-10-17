@@ -10,10 +10,8 @@
     </title>
 </head>
 <body>
-<c:import url="fragment/header.jsp"/>
-<img src="data:image/jpg;base64,${sessionScope.user.image}" width="200" height="200"><br>
+<c:import url="fragment/header1.jsp"/>
 <h3>${sessionScope.user.firstName} ${sessionScope.user.lastName}</h3><br>
 <fmt:message key="profile.email"/> ${sessionScope.user.email}<br>
-<fmt:message key="pr"
 </body>
 </html>

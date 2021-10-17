@@ -14,6 +14,14 @@ public class ProxyConnection implements Connection {
         this.connection = connection;
     }
 
+    @Override
+    public void close() throws SQLException {
+        if (!getAutoCommit()) {
+            setAutoCommit(true);
+        }
+        ConnectionPool.getInstance().releaseConnection(this);
+    }
+
     void reallyClose() throws SQLException {
         connection.close();
     }
@@ -56,14 +64,6 @@ public class ProxyConnection implements Connection {
     @Override
     public void rollback() throws SQLException {
         connection.rollback();
-    }
-
-    @Override
-    public void close() throws SQLException {
-        if (!getAutoCommit()) {
-            setAutoCommit(true);
-        }
-        ConnectionPool.getInstance().releaseConnection(this);
     }
 
     @Override

@@ -31,6 +31,7 @@ public final class RequestParameter {
     public static final String DATE = "date";
     public static final String ORDER_STATUS = "order_status";
     public static final String USER_ID = "user_id";
+    public static final String CURRENT_URL = "current_url";
 
     private RequestParameter() {
     }

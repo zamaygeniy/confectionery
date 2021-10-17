@@ -9,10 +9,9 @@ public class Order extends Entity {
     private Status status;
 
     public Order() {
-
     }
 
-    public Status getStatus(){
+    public Status getStatus() {
         return status;
     }
 
@@ -24,7 +23,9 @@ public class Order extends Entity {
         return date;
     }
 
-    public String getPhone(){return phone;}
+    public String getPhone() {
+        return phone;
+    }
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -34,7 +35,7 @@ public class Order extends Entity {
         this.date = date;
     }
 
-    public void setStatus(Status status){
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -61,15 +62,15 @@ public class Order extends Entity {
             return value;
         }
 
-        public int getId(){
+        public int getId() {
             return id;
         }
     }
 
-    public static class OrderBuilder{
+    public static class OrderBuilder {
         Order order;
 
-        public OrderBuilder(){
+        public OrderBuilder() {
             order = new Order();
         }
 
@@ -93,7 +94,7 @@ public class Order extends Entity {
             return this;
         }
 
-        public Order.OrderBuilder setOrderPhone(String phone){
+        public Order.OrderBuilder setPhone(String phone) {
             order.setPhone(phone);
             return this;
         }

@@ -23,19 +23,17 @@ public class GetProducts implements Command {
         if (request.getParameter("page") != null)
             page = Integer.parseInt(request.getParameter("page"));
         ProductDao dao = new ProductDaoImpl();
-
         EntityTransaction transaction = new EntityTransaction();
-        int recordsPerPage = 5;
+        int recordsPerPage = 12;
         try {
-
             transaction.init(dao);
             List<Product> list = dao.findAll((page - 1) * recordsPerPage, recordsPerPage);
-            int noOfRecords = dao.getNoOfRecords();
+            int noOfRecords = dao.getNumberOfRecords();
             int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
             request.setAttribute("productList", list);
             request.setAttribute("noOfPages", noOfPages);
             request.setAttribute("currentPage", page);
-            return new Router(PagePath.PRODUCT_PAGE, Router.RouteType.FORWARD);
+            return new Router(PagePath.CATALOG_PAGE, Router.RouteType.FORWARD);
         } catch (DaoException e) {
             throw new CommandException("Failed", e);
         } finally {
@@ -46,7 +44,5 @@ public class GetProducts implements Command {
                 e.printStackTrace();
             }
         }
-
-
     }
 }

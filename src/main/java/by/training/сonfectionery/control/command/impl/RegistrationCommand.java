@@ -38,7 +38,6 @@ public class RegistrationCommand implements Command {
         userMap.put(PASSWORD, request.getParameter(PASSWORD));
 
         UserService service = UserServiceImpl.getInstance();
-
         try {
             if (service.isEmailExist(userMap.get(EMAIL))) {
                 request.setAttribute(REGISTRATION_USER_DATA, userMap);

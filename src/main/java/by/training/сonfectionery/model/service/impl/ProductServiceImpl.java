@@ -60,7 +60,6 @@ public class ProductServiceImpl implements ProductService {
                 .setDescription(productMap.get(DESCRIPTION))
                 .setWeight(Integer.parseInt(productMap.get(WEIGHT)))
                 .setImage(productMap.get(IMAGE))
-                .setNumberInStock(Integer.parseInt(productMap.get(NUMBER_IN_STOCK)))
                 .createProduct();
 
         ProductDao productDao = new ProductDaoImpl();

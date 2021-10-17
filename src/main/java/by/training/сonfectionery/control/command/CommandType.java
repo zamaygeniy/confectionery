@@ -14,8 +14,10 @@ public enum CommandType {
     LOGOUT(new LogOutCommand()),
     VERIFICATION(new VerificationCommand()),
     EDIT_PROFILE_PAGE(new GoToEditProfilePage()),
-    PRODUCT_PAGE(new GetProducts());
-
+    CART_PAGE(new GoToCartPage()),
+    CATALOG_PAGE(new GetProducts()),
+    CHECKOUT_COMMAND(new CheckoutCommand()),
+    ORDERS_PAGE(new GetOrders());
     private Command command;
 
     CommandType(Command command) {

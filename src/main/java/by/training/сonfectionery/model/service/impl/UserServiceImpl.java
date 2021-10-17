@@ -169,4 +169,33 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
+    @Override
+    public void updateUser(User user) throws ServiceException {
+        EntityTransaction entityTransaction = new EntityTransaction();
+        UserDao userDao = new UserDaoImpl();
+        try {
+            entityTransaction.init(userDao);
+            userDao.update(user);
+        } catch (DaoException e) {
+            logger.error("Failed to make transaction in updateUser method", e);
+            throw new ServiceException("Failed to make transaction in updateUser method", e);
+        } finally {
+            try {
+                entityTransaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in updateUser method", e);
+            }
+        }
+    }
+
+    @Override
+    public boolean blockUser(int userId) throws ServiceException {
+        return false;
+    }
+
+    @Override
+    public boolean unblockUser(int userId) throws ServiceException {
+        return false;
+    }
 }

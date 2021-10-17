@@ -22,4 +22,13 @@ public interface UserService {
 
     void updateImage(User user, InputStream inputStream) throws ServiceException;
 
+
+
+
+    void updateUser(User user) throws ServiceException;
+
+    boolean blockUser(int userId) throws ServiceException;
+    boolean unblockUser(int userId) throws ServiceException;
+
+
 }

@@ -6,6 +6,6 @@ import java.util.Map;
 
 public interface OrderService {
 
-    void createOrder(Map<String, String> orderMap) throws ServiceException;
+    void createOrder(Map<String, String> orderMap, Map<Integer, Integer> productsMap) throws ServiceException;
 
 }

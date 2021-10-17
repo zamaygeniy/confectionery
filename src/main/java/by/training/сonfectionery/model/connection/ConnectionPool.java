@@ -20,14 +20,13 @@ public class ConnectionPool {
     private static final ReentrantLock locker = new ReentrantLock();
     private BlockingQueue<ProxyConnection> freeConnections;
     private BlockingQueue<ProxyConnection> givenAwayConnections;
-    private static final String PATH_TO_PROPERTIES = "database/database.properties";
     private static final int DEFAULT_POOL_SIZE = 32;
 
     private ConnectionPool() {
         freeConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
         givenAwayConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
         for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
-            ProxyConnection proxyConnection = null;
+            ProxyConnection proxyConnection;
             try {
                 proxyConnection = (ProxyConnection) ConnectionFactory.createConnection();
                 freeConnections.put(proxyConnection);

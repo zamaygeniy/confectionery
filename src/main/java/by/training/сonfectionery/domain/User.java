@@ -64,7 +64,8 @@ public class User extends Entity {
 
     public enum Role {
         ADMIN("admin", 1),
-        USER("user", 2);
+        USER("user", 2),
+        GUEST("guest", 3);
         private String value;
         private int id;
 

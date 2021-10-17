@@ -27,6 +27,8 @@ public class ColumnName {
     public static final String NUMBER_IN_STOCK = "number_in_stock";
 
     public static final String PRODUCT_TYPE_ID = "product_type_id";
+    public static final String TYPE = "type";
+
 
     public static final String ROLE = "role";
 

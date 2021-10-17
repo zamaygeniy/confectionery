@@ -9,14 +9,9 @@ public class Product extends Entity {
     private int weight;
     private String image;
     private int productTypeId;
-    private int numberInStock;
 
     public Product(){
 
-    }
-
-    public int getNumberInStock(){
-        return numberInStock;
     }
 
     public double getPrice(){
@@ -45,10 +40,6 @@ public class Product extends Entity {
 
     public void setName(String name){
         this.name = name;
-    }
-
-    public void setNumberInStock(int numberInStock){
-        this.numberInStock = numberInStock;
     }
 
     public void setPrice(double price) {
@@ -108,11 +99,6 @@ public class Product extends Entity {
             return this;
         }
 
-        public Product.ProductBuilder setNumberInStock(int numberInStock){
-            product.setNumberInStock(numberInStock);
-            return this;
-        }
-
         public Product.ProductBuilder setProductTypeId(int productTypeId){
             product.setProductTypeId(productTypeId);
             return this;
@@ -135,8 +121,6 @@ public class Product extends Entity {
         sb.append(description);
         sb.append(", weight=");
         sb.append(weight);
-        sb.append(", number in stock=");
-        sb.append(numberInStock);
         sb.append("}");
         return sb.toString();
     }

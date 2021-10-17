@@ -35,10 +35,8 @@ public class MainServlet extends HttpServlet {
         try {
             router = command.execute(request);
         } catch (CommandException e) {
-           //router = new Router(PagePath.ERROR_404_PAGE, Router.RouteType.REDIRECT); // FIXME: 18.09.2021
-            System.err.println("!!!!!!!");
+            //router = new Router(PagePath.ERROR_404_PAGE, Router.RouteType.REDIRECT); // FIXME: 18.09.2021
             e.printStackTrace();
-            System.err.println("!!!!!!!!!");
         }
         switch (router.getRouteType()) {
             case FORWARD:

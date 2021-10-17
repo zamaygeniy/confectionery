@@ -5,12 +5,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 public class ChangeLocaleCommand implements Command {
+    private static final String JSP_BEGIN_PATH = "/jsp";
+
     @Override
     public Router execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String locale = request.getParameter(RequestParameter.LOCALE);
-        String currentPage= (String) session.getAttribute(SessionAttribute.CURRENT_PAGE);
+        String currentUrl = request.getParameter(RequestParameter.CURRENT_URL);
+        String currentPage = currentUrl.substring(currentUrl.indexOf(JSP_BEGIN_PATH));
         session.setAttribute(SessionAttribute.LOCALE, locale);
-        return new Router(currentPage, Router.RouteType.FORWARD);
+        Router router = new Router(currentPage, Router.RouteType.FORWARD);
+        return router;
     }
 }

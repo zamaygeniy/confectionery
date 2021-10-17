@@ -2,7 +2,6 @@ package by.training.сonfectionery.model.dao.impl;
 
 import by.training.сonfectionery.domain.Order;
 import by.training.сonfectionery.domain.Product;
-import by.training.сonfectionery.domain.User;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.model.dao.ProductDao;
 import by.training.сonfectionery.util.Base64Coder;
@@ -20,45 +19,52 @@ import static by.training.сonfectionery.model.dao.ColumnName.*;
 public class ProductDaoImpl extends ProductDao {
 
     private static final String SQL_FIND_ALL_PRODUCTS = """
-            SELECT id, name, price, description, weight, image, number_in_stock
+            SELECT products.id, name, price, description, weight, image
             FROM products
             JOIN product_type ON products.product_type_id = product_type.id; 
             """;
     private static final String SQL_FIND_PRODUCT_BY_ID = """
-            SELECT id, name, price, description, weight, image, number_in_stock
+            SELECT products.id, name, price, description, weight, image, product_type_id
             FROM products
-            JOIN product_type ON products.product_type_id = product_type.id;
+            JOIN product_type ON products.product_type_id = product_type.id
             WHERE products.id = ?;
             """;
     private static final String SQL_FIND_PRODUCT_BY_PRODUCT_TYPE_ID = """
-            SELECT id, name, price, description, weight, image, number_in_stock
+            SELECT products.id, name, price, description, weight, image
             FROM products
-            JOIN product_type ON products.product_type_id = product_type.id;
+            JOIN product_type ON products.product_type_id = product_type.id
             WHERE product_type_id = ?;
             """;
     private static final String SQL_DELETE_PRODUCT_BY_ID = """
             DELETE FROM products WHERE id = ?;
             """;
     private static final String SQL_CREATE_PRODUCT = """
-            INSERT INTO products (name, price, description, weight, image, number_in_stock, product_type_id)
+            INSERT INTO products (name, price, description, weight, image, product_type_id)
             VALUES (?, ?, ?, ?, ?, ?, ?);
             """;
     private static final String SQL_UPDATE_PRODUCT = """
             UPDATE products
-            SET name = ?, price = ?, description = ?, weight = ?, image = ?, number_in_stock = ?, product_type_id = ?
+            SET name = ?, price = ?, description = ?, weight = ?, image = ?, product_type_id = ?
             WHERE products.id = ?;
             """;
-    private static final String SQL_UPDATE_PRODUCT_NUMBER_IN_STOCK = """
-            UPDATE products
-            SET number_in_stock = ?
-            WHERE id = ?;
+
+    private static final String SQL_GET_NUMBER_OF_RECORDS = """
+            SELECT COUNT(*) as count
+            FROM products
             """;
 
-    private static final String SQL_ADD_PRODUCT_TO_CART = """
-            INSERT INTO orders_has_products (orders_id, products_id, amount)
-            VALUES (?, ?, ?);
-            """;
 
+    @Override
+    public int getNumberOfRecords() throws DaoException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_GET_NUMBER_OF_RECORDS)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find all products", e);
+        }
+    }
 
     @Override
     public List<Product> findAll() throws DaoException {
@@ -111,7 +117,7 @@ public class ProductDaoImpl extends ProductDao {
                 " use method create(Product product, String password)");
     }*/
 
-    @Override
+    /*@Override
     public boolean addProductToCart(Product product, int numberOfProduct, Order order) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_ADD_PRODUCT_TO_CART)) {
             statement.setInt(1, order.getId());
@@ -121,7 +127,7 @@ public class ProductDaoImpl extends ProductDao {
         } catch (SQLException e) {
             throw new DaoException("Failed to add product to cart");
         }
-    }
+    }*/
 
     @Override
     public boolean create(Product product) throws DaoException {
@@ -131,8 +137,7 @@ public class ProductDaoImpl extends ProductDao {
             statement.setString(3, product.getDescription());
             statement.setInt(4, product.getWeight());
             statement.setBlob(5, Base64Coder.decode(product.getImage()));
-            statement.setInt(6, product.getNumberInStock());
-            statement.setInt(7, product.getProductTypeId());
+            statement.setInt(6, product.getProductTypeId());
             boolean result = statement.executeUpdate() == 1;
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 if (resultSet.next()) {
@@ -156,9 +161,8 @@ public class ProductDaoImpl extends ProductDao {
             statement.setString(3, product.getDescription());
             statement.setInt(4, product.getWeight());
             statement.setBlob(5, Base64Coder.decode(product.getImage()));
-            statement.setInt(6, product.getNumberInStock());
-            statement.setInt(7, product.getProductTypeId());
-            statement.setInt(8, product.getId());
+            statement.setInt(6, product.getProductTypeId());
+            statement.setInt(7, product.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Failed to update product", e);
@@ -186,17 +190,6 @@ public class ProductDaoImpl extends ProductDao {
         }
     }
 
-    @Override
-    public boolean updateProductNumberInStock(Product product, int newNumberInStock) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PRODUCT_NUMBER_IN_STOCK)) {
-            statement.setInt(1, newNumberInStock);
-            statement.setInt(2, product.getId());
-            return statement.executeUpdate() == 1;
-        } catch (SQLException e) {
-            throw new DaoException("Failed to update product number in stock", e);
-        }
-    }
-
 
     private Product buildProduct(ResultSet resultSet) throws SQLException {
 
@@ -207,7 +200,6 @@ public class ProductDaoImpl extends ProductDao {
                 .setDescription(resultSet.getString(DESCRIPTION))
                 .setWeight(resultSet.getInt(WEIGTH))
                 .setImage(resultSet.getBlob(IMAGE) == null ? "" : Base64Coder.encode(resultSet.getBlob(IMAGE).getBinaryStream()))
-                .setNumberInStock(resultSet.getInt(NUMBER_IN_STOCK))
                 .setProductTypeId(resultSet.getInt(PRODUCT_TYPE_ID))
                 .createProduct();
     }

@@ -8,10 +8,8 @@ import by.training.сonfectionery.model.dao.ColumnName;
 import by.training.сonfectionery.model.dao.OrderDao;
 
 import java.sql.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.sql.Date;
+import java.util.*;
 
 public class OrderDaoImpl extends OrderDao {
 
@@ -49,10 +47,65 @@ public class OrderDaoImpl extends OrderDao {
             SET status_id = ?
             WHERE orders.id = ?;
             """;
+    private static final String SQL_ADD_PRODUCTS = """
+            INSERT INTO orders_have_products(order_id, product_id, amount)
+            VALUES (?, ?, ?);
+            """;
+    private static final String SQL_GET_NUMBER_OF_RECORDS = """
+            SELECT COUNT(*) as count
+            FROM orders
+            """;
 
+    private static final String SQL_FIND_PRODUCTS_IN_ORDER = """
+            SELECT product_id, amount
+            FROM orders_have_products
+            WHERE order_id = ?
+            """;
 
+    @Override
+    public Map<Integer, Integer> findProductsInOrders(int orderId) throws DaoException {
+        try(PreparedStatement statement = connection.prepareStatement(SQL_FIND_PRODUCTS_IN_ORDER)){
+            Map<Integer, Integer> map = new HashMap<>();
+            statement.setInt(1, orderId);
+            try(ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()){
+                    map.put(resultSet.getInt(1), resultSet.getInt(2));
+                }
+                return map;
+            }
+        }
+        catch (SQLException e){
+            throw new DaoException("Failed to find products in order", e);
+        }
+    }
 
+    @Override
+    public int getNumberOfRecords() throws DaoException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_GET_NUMBER_OF_RECORDS)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find all products", e);
+        }
+    }
 
+    @Override
+    public List<Order> findAll(int i, int recordsPerPage) throws DaoException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_ORDERS)) {
+            List<Order> orders = new LinkedList<>();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Order order = buildOrder(resultSet);
+                    orders.add(order);
+                }
+                return orders;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find all orders", e);
+        }
+    }
 
     @Override
     public List<Order> findAll() throws DaoException {
@@ -93,6 +146,20 @@ public class OrderDaoImpl extends OrderDao {
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new DaoException("Failed to delete order by id", e);
+        }
+    }
+
+
+    @Override
+    public boolean addProducts(int orderId, int productId, int amount) throws DaoException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_ADD_PRODUCTS)) {
+            statement.setInt(1, orderId);
+            statement.setInt(2, productId);
+            statement.setInt(3, amount);
+            boolean result = statement.executeUpdate() == 1;
+            return result;
+        } catch (SQLException e) {
+            throw new DaoException("Failed to add products to order", e);
         }
     }
 
@@ -137,7 +204,7 @@ public class OrderDaoImpl extends OrderDao {
                 .setId(resultSet.getInt(ColumnName.ID))
                 .setDate(resultSet.getDate(ColumnName.DATE).toLocalDate())
                 .setUserId(resultSet.getInt(ColumnName.USER_ID))
-                .setOrderPhone(resultSet.getString(ColumnName.PHONE))
+                .setPhone(resultSet.getString(ColumnName.PHONE))
                 .setStatus(Order.Status.valueOf(resultSet.getString(ColumnName.STATUS).toUpperCase(Locale.ROOT)))
                 .createOrder();
     }
@@ -171,4 +238,6 @@ public class OrderDaoImpl extends OrderDao {
             throw new DaoException("Failed to update order status", e);
         }
     }
+
+
 }
