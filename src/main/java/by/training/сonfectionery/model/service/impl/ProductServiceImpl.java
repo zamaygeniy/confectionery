@@ -12,6 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static by.training.сonfectionery.control.command.RequestParameter.*;
@@ -74,6 +76,27 @@ public class ProductServiceImpl implements ProductService {
                 transaction.end();
             } catch (DaoException e) {
                 logger.error("Can't end transaction in createProduct  method", e);
+            }
+        }
+    }
+
+    @Override
+    public List<Product> findProductsByProductType(String[] productTypeId, int offset, int numberOfRecords, int sortBy) throws ServiceException {
+
+        ProductDao productDao = new ProductDaoImpl();
+        EntityTransaction transaction = new EntityTransaction();
+        List<Product> products;
+        try {
+            transaction.init(productDao);
+            products = productDao.findProductByProductTypeId(productTypeId, offset, numberOfRecords, sortBy);
+            return products;
+            } catch (DaoException e) {
+            throw new ServiceException("Failed to make transaction in findProductsByProductType method", e);
+        } finally {
+            try {
+                transaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in findProductsByProductType  method", e);
             }
         }
     }

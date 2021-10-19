@@ -12,10 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 public class UserDaoImpl extends UserDao {
 
@@ -65,7 +62,7 @@ public class UserDaoImpl extends UserDao {
     @Override
     public List<User> findAll() throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_USERS)) {
-            List<User> users = new LinkedList<>();
+            List<User> users = new ArrayList<>();
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     User user = buildUser(resultSet);

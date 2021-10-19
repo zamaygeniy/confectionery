@@ -1,66 +1,43 @@
 package by.training.сonfectionery.control.command.impl;
 
-import by.training.сonfectionery.control.command.Command;
-import by.training.сonfectionery.control.command.PagePath;
-import by.training.сonfectionery.control.command.Router;
+import static by.training.сonfectionery.control.command.RequestAttribute.*;
+
+import by.training.сonfectionery.control.command.*;
 import by.training.сonfectionery.domain.Order;
 import by.training.сonfectionery.domain.Product;
 import by.training.сonfectionery.exception.CommandException;
-import by.training.сonfectionery.exception.DaoException;
-import by.training.сonfectionery.model.dao.OrderDao;
-import by.training.сonfectionery.model.dao.ProductDao;
-import by.training.сonfectionery.model.dao.impl.EntityTransaction;
-import by.training.сonfectionery.model.dao.impl.OrderDaoImpl;
-import by.training.сonfectionery.model.dao.impl.ProductDaoImpl;
+import by.training.сonfectionery.exception.ServiceException;
+import by.training.сonfectionery.model.service.OrderService;
+import by.training.сonfectionery.model.service.impl.OrderServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 public class GetOrders implements Command {
 
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        int page = 1;
-        if (request.getParameter("page") != null)
-            page = Integer.parseInt(request.getParameter("page"));
-        OrderDao orderDao = new OrderDaoImpl();
-        ProductDao productDao = new ProductDaoImpl();
-        EntityTransaction transaction = new EntityTransaction();
-        int recordsPerPage = 12;
-        try {
-            transaction.initTransaction(orderDao, productDao);
-            List<Order> orders = orderDao.findAll((page - 1) * recordsPerPage, recordsPerPage);
-            Map<Order, Map<Product, Integer>> ordersMap = new HashMap<>();
-            for (Order order : orders) {
-                Map<Integer, Integer> productsInOrder;
-                productsInOrder = orderDao.findProductsInOrders(order.getId());
-                Map<Product, Integer> productAmount = new HashMap<>();
-                for (Map.Entry<Integer, Integer> product : productsInOrder.entrySet()) {
-                    Optional<Product> optionalProduct = productDao.findById(product.getKey());
-                    if (optionalProduct.isPresent()) {
-                        productAmount.put(optionalProduct.get(), product.getValue());
-                    } else {
-                        throw new CommandException("There is no such product");
-                    }
-                }
-                ordersMap.put(order, productAmount);
-            }
-            System.out.println(ordersMap);
-            int noOfRecords = orderDao.getNumberOfRecords();
-            int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
 
-            request.setAttribute("ordersMap", ordersMap);
-            request.setAttribute("noOfOrdersPages", noOfPages);
-            request.setAttribute("currentOrdersPage", page);
-            return new Router(PagePath.ORDERS_PAGE, Router.RouteType.FORWARD);
-        } catch (DaoException e) {
-            throw new CommandException("Failed", e);
-        } finally {
-            try {
-                transaction.end();
-            } catch (DaoException e) {
-                e.printStackTrace();
-            }
+        OrderService orderService = OrderServiceImpl.getInstance();
+        int page = 1;
+        if (request.getParameter(PAGE) != null)
+            page = Integer.parseInt(request.getParameter(PAGE));
+        try {
+            Map<Order, Map<Product, Integer>> ordersMap = orderService.findOrders(page, RECORDS_PER_PAGE);
+            int numberOfRecords = orderService.numberOfRecords();
+            int numberOfPages = (int) Math.ceil(numberOfRecords * 1.0 / RECORDS_PER_PAGE);
+            request.setAttribute(ORDERS_MAP, ordersMap);
+            request.setAttribute(NUMBER_OF_PAGES, numberOfPages);
+            request.setAttribute(CURRENT_PAGE, page);
+        } catch (ServiceException e) {
+            logger.error("Failed to execute GetOrders command", e);
+            throw new CommandException("Failed to execute GetOrders command", e);
         }
+        return new Router(PagePath.ORDERS_PAGE, Router.RouteType.FORWARD);
+
     }
 }

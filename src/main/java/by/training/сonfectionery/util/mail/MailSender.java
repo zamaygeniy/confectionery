@@ -21,7 +21,7 @@ public class MailSender {
 
     private static final String PROPERTIES_PATH = "mail/mail.properties";
     private static final String MESSAGE_SUBJECT = "Verification";
-    private static final String MESSAGE_FIRST_PART = "To complete the registration, click the link <a href='http://localhost:8082/Confectionery_war_exploded/controller?command=verification&id=";
+    private static final String MESSAGE_FIRST_PART = "To complete the registration, click the link <a href='http://localhost:8080/Confectionery_war_exploded/controller?command=verification&id=";
     private static final String MESSAGE_SECOND_PART = "'>verification</a>";
     private static final String MESSAGE_TYPE = "text/html";
 

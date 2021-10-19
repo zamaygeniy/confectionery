@@ -11,11 +11,8 @@ import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.service.OrderService;
 import by.training.сonfectionery.model.service.impl.OrderServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
-import javax.sql.rowset.serial.SerialException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +21,6 @@ public class CheckoutCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
-        System.out.println(user.toString());
         Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(request.getParameter("cart"));
         Map<Integer, Integer> productsMap = new HashMap<>();
@@ -36,16 +32,12 @@ public class CheckoutCommand implements Command {
         Map<String, String> orderMap = new HashMap<>();
         orderMap.put(PHONE, "+1231231231");
         orderMap.put(USER_ID, String.valueOf(user.getId()));
-        System.out.println("!");
         OrderService orderService = OrderServiceImpl.getInstance();
         try {
-            System.out.println("@");
-            System.out.println(orderMap);
             orderService.createOrder(orderMap, productsMap);
         } catch (ServiceException e) {
             throw new CommandException("Failed to create order", e);
         }
-        System.out.println("#");
         return new Router(PagePath.MAIN_PAGE, Router.RouteType.FORWARD);
     }
 }

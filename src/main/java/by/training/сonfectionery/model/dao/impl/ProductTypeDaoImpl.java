@@ -9,6 +9,7 @@ import by.training.сonfectionery.util.Base64Coder;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class ProductTypeDaoImpl extends ProductTypeDao {
     @Override
     public List<ProductType> findAll() throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_PRODUCT_TYPES)) {
-            List<ProductType> productTypes = new LinkedList<>();
+            List<ProductType> productTypes = new ArrayList<>();
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     ProductType productType = buildProductType(resultSet);

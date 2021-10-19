@@ -14,11 +14,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/scripts/scroll.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ui_kit.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-
 </head>
-
 <body>
-
 
 <main class="main">
     <div class="catalog_header">
@@ -26,20 +23,8 @@
             <div class="upper">
                 <div class="page_title">Products</div>
             </div>
-            <div class="filter_tags">
-                <div class="filter_tag">All results (14 732 626)</div>
-            </div>
-            <form action="#" class="mobile_search">
-                <div class="search">
-                    <input type="text" placeholder="Search for items">
-                </div>
-                <div class="filter_btn">
-                    <div class="text">Filters</div>
-                    <div class="icon">2</div>
-                </div>
-            </form>
         </div>
-    </div>
+    </div>o
     <div class="catalog_main_part">
         <div class="wrapper">
             <div class="filter_part">
@@ -54,15 +39,19 @@
                         </div>
                     </div>
                     <div class="filter_body">
-                        <c:forEach var="element" items="${applicationScope.product_types}">
-                            <div class="check_large">
-                                <input type="checkbox" id="${element.id}">
-                                <label for="${element.id}">${element.type}</label>
-                            </div>
-                        </c:forEach>
+                        <form action="${pageContext.request.contextPath}/controller">
+                            <input type="hidden" name="command" value="search_products">
+                            <c:forEach var="element" items="${applicationScope.product_types}">
+                                <div class="check_large">
+                                    <input type="checkbox" id="${element.id}" name="product_type_id"
+                                           value="${element.id}">
+                                    <label for="${element.id}">${element.type}</label>
+                                </div>
+                            </c:forEach>
+                            <button type="submit">Поиск</button>
+                        </form>
                     </div>
                 </div>
-                <div class="make_order _blue_btn">Поиск</div>
             </div>
             <div class="good_part">
                 <div class="goods_container">
@@ -83,14 +72,15 @@
                     </c:forEach>
 
                     <p>
-                        <button id="checkout">Оформить заказ</button> &nbsp;
+                        <span class="fail-message">${errorNoProductsFound}</span>
+                        <button id="checkout">Оформить заказ</button>
                         <button id="clear_cart">Очистить корзину</button>
                     </p>
                     <div id="cart_content"></div>
                 </div>
                 <div class="pagination">
                     <div class="pag_body">
-                        <c:if test="${currentPage != 1}">
+                        <c:if test="${currentPage > 1}">
                             <a href="${pageContext.request.contextPath}/controller?command=catalog_page&page=${currentPage - 1}">
                                 <div class="prev">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12"
@@ -102,7 +92,7 @@
                             </a>
                         </c:if>
 
-                        <c:forEach begin="1" end="${noOfPages}" var="i">
+                        <c:forEach begin="1" end="${numberOfPages}" var="i">
                             <c:choose>
                                 <c:when test="${currentPage eq i}">
                                     <div class="page_number _active">${i}</div>
@@ -116,7 +106,7 @@
                                 </c:when>
                             </c:choose>
                         </c:forEach>
-                        <c:if test="${currentPage lt noOfPages}">
+                        <c:if test="${currentPage lt numberOfPages}">
                             <a href="${pageContext.request.contextPath}/controller?command=catalog_page&page=${currentPage + 1}">
                                 <div class="next">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12"
@@ -137,7 +127,6 @@
 
 
 <div class="black_href"></div>
-
 
 <c:import url="fragment/footer.jsp"/>
 <script src="${pageContext.request.contextPath}/scripts/cart.js"></script>

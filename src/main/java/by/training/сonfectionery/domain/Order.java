@@ -47,7 +47,7 @@ public class Order extends Entity {
         WAITING_FOR_CONFIRMATION("waiting_for_confirmation", 1),
         IN_PROCESS("in_process", 2),
         DONE("done", 3),
-        CANCELED("canceled", 4);
+        CANCELLED("canceled", 4);
 
 
         private String value;

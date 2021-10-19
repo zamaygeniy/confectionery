@@ -40,7 +40,7 @@ public class LoginCommand implements Command {
                     return new Router(PagePath.LOGIN_PAGE, Router.RouteType.FORWARD);
                 }
                 session.setAttribute(SessionAttribute.USER, user.get());
-                router = new Router(PagePath.MAIN_PAGE, Router.RouteType.REDIRECT);
+                router = new Router(PagePath.MAIN_PAGE, Router.RouteType.FORWARD);
             } else {
                 request.setAttribute(WRONG_PASSWORD_OR_EMAIL, MessageManager.valueOf(locale.toUpperCase(Locale.ROOT)).getMessage(WRONG_PASSWORD_OR_EMAIL));
                 router = new Router(PagePath.LOGIN_PAGE, Router.RouteType.FORWARD);

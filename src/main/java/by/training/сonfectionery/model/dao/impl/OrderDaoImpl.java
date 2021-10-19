@@ -94,7 +94,7 @@ public class OrderDaoImpl extends OrderDao {
     @Override
     public List<Order> findAll(int i, int recordsPerPage) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_ORDERS)) {
-            List<Order> orders = new LinkedList<>();
+            List<Order> orders = new ArrayList<>();
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Order order = buildOrder(resultSet);
@@ -110,7 +110,7 @@ public class OrderDaoImpl extends OrderDao {
     @Override
     public List<Order> findAll() throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_ORDERS)) {
-            List<Order> orders = new LinkedList<>();
+            List<Order> orders = new ArrayList<>();
             try(ResultSet resultSet = statement.executeQuery()){
                 while (resultSet.next()) {
                     Order order = buildOrder(resultSet);
@@ -229,10 +229,10 @@ public class OrderDaoImpl extends OrderDao {
     }
 
     @Override
-    public boolean updateOrderStatus(Order order, Order.Status orderStatus) throws DaoException {
+    public boolean updateOrderStatus(int id, Order.Status orderStatus) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_ORDER_STATUS)) {
             statement.setInt(1, orderStatus.getId());
-            statement.setInt(2, order.getId());
+            statement.setInt(2, id);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new DaoException("Failed to update order status", e);

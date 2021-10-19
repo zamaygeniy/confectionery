@@ -23,7 +23,6 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws DaoException {
-        System.out.println(LocalDateTime.now());
         /*EntityTransaction transaction = new EntityTransaction();
         ProductDao productDao = new ProductDaoImpl();
         List<Product> products = new ArrayList<>();

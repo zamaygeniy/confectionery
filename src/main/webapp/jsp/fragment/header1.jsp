@@ -44,7 +44,6 @@
                 </div>
             </div>
             <div class="menu_item"><a href="${pageContext.request.contextPath}/controller?command=orders_page"><fmt:message key="header.orders"/></a></div>
-            <div class="menu_item"><fmt:message key="header.about"/></div>
         </div>
     </div>
     <div class="right_part">
@@ -95,16 +94,30 @@
                 </svg>
             </a>
         </div>
-        <div class="log_in">
-            <a href="${pageContext.request.contextPath}/controller?command=registration_page"
-               method="post"><fmt:message key="header.registration"/>
-            </a>
-        </div>
-        <div class="log_in">
-            <a href="${pageContext.request.contextPath}/controller?command=login_page">
-                <fmt:message key="header.login"/>
-            </a>
-        </div>
+        <c:if test="${sessionScope.user.role eq 'GUEST'}">
+            <div class="log_in">
+                <a href="${pageContext.request.contextPath}/controller?command=registration_page">
+                    <fmt:message key="header.registration"/>
+                </a>
+                <div class="log_in">
+                    <a href="${pageContext.request.contextPath}/controller?command=login_page">
+                        <fmt:message key="header.login"/>
+                    </a>
+                </div>
+            </div>
+        </c:if>
+
+        <c:if test="${sessionScope.user.role eq 'USER' || sessionScope.user.role eq 'ADMIN'}">
+            <div class = "log_in">
+                <a href="${pageContext.request.contextPath}/controller?command=profile_page">
+                    <fmt:message key="header.profile"/>
+                </a>
+            </div>
+
+        </c:if>
+
+
+
     </div>
 
 </header>

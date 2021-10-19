@@ -40,8 +40,7 @@ public class RegistrationCommand implements Command {
         UserService service = UserServiceImpl.getInstance();
         try {
             if (service.isEmailExist(userMap.get(EMAIL))) {
-                request.setAttribute(REGISTRATION_USER_DATA, userMap);
-                request.setAttribute(ERROR_EMAIL_EXISTS, userMap);
+                request.setAttribute(ERROR_EMAIL_EXISTS, MessageManager.valueOf(locale.toUpperCase(Locale.ROOT)).getMessage(ERROR_EMAIL_EXISTS));
                 return new Router(PagePath.REGISTRATION_PAGE, Router.RouteType.FORWARD);
             }
 
@@ -55,13 +54,13 @@ public class RegistrationCommand implements Command {
 
         if (service.validateUserData(userMap) && password.equals(passwordRepeat)) {
             try {
-                userMap.put(IMAGE,loadBaseUserImage(request.getServletContext().getRealPath("") + BASE_IMAGE_PATH));
+                userMap.put(IMAGE, loadBaseUserImage(request.getServletContext().getRealPath("") + BASE_IMAGE_PATH));
                 service.registrate(userMap);
             } catch (ServiceException e) {
                 logger.error("Executing registration command error", e);
                 throw new CommandException("Executing registration command error", e);
             }
-            return new Router(PagePath.CONFIRMATION_PAGE, Router.RouteType.REDIRECT);
+            return new Router(PagePath.GO_TO_CONFIRMATION_PAGE, Router.RouteType.REDIRECT);
         } else {
             request.setAttribute(REGISTRATION_USER_DATA, userMap);
             request.setAttribute(WRONG_REGISTRATION_DATA, MessageManager.valueOf(locale.toUpperCase(Locale.ROOT)).getMessage(WRONG_REGISTRATION_DATA));
@@ -74,9 +73,9 @@ public class RegistrationCommand implements Command {
         try (FileInputStream fis = new FileInputStream(path)) {
             result = Base64Coder.encode(fis);
         } catch (FileNotFoundException e) {
-            logger.error("Can't find base user image file",e);
+            logger.error("Can't find base user image file", e);
         } catch (IOException e) {
-            logger.error("Can't load base user image file",e);
+            logger.error("Can't load base user image file", e);
         }
         return result;
     }

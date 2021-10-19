@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +31,9 @@ public class ProductDaoImpl extends ProductDao {
             WHERE products.id = ?;
             """;
     private static final String SQL_FIND_PRODUCT_BY_PRODUCT_TYPE_ID = """
-            SELECT products.id, name, price, description, weight, image
+            SELECT products.id, name, price, description, weight, image, product_type_id
             FROM products
             JOIN product_type ON products.product_type_id = product_type.id
-            WHERE product_type_id = ?;
             """;
     private static final String SQL_DELETE_PRODUCT_BY_ID = """
             DELETE FROM products WHERE id = ?;
@@ -53,6 +53,83 @@ public class ProductDaoImpl extends ProductDao {
             FROM products
             """;
 
+    @Override
+    public int getNumberOfRecordsWithProductTypeId(String[] productTypeId) throws DaoException {
+        String query = SQL_GET_NUMBER_OF_RECORDS + "WHERE product_type_id IN (";
+        for (int i = 0; i < productTypeId.length; i++) {
+            query = query + "?,";
+        }
+        query = query.substring(0, query.length() - 1) + ")";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < productTypeId.length; i++) {
+                statement.setInt(i + 1, Integer.parseInt(productTypeId[i]));
+            }
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find number of products with product_type_id", e);
+        }
+    }
+
+    @Override
+    public List<Product> findProductByProductTypeId(String[] productTypeId, int offset, int numberOfRecords, int sortBy) throws DaoException {
+        String query = SQL_FIND_PRODUCT_BY_PRODUCT_TYPE_ID;
+        query = query + "WHERE product_type_id IN (";
+        for (int i = 0; i < productTypeId.length; i++) {
+            query = query + "?,";
+        }
+        switch (sortBy) {
+            case -1: {
+                query = query.substring(0, query.length() - 1) + ")\nORDER BY price DESC";
+                break;
+            }
+            case 1: {
+                query = query.substring(0, query.length() - 1) + ")\nORDER BY price ASC";
+                break;
+            }
+            default:
+                break;
+        }
+        query = query + "\nLIMIT ?, ?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            List<Product> products = new ArrayList<>();
+            int i;
+            for (i = 0; i < productTypeId.length; i++) {
+                statement.setInt(i + 1, Integer.parseInt(productTypeId[i]));
+            }
+            statement.setInt(i + 1, offset);
+            statement.setInt(i + 2, numberOfRecords);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Product product = buildProduct(resultSet);
+                    products.add(product);
+                }
+                return products;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find all products", e);
+        }
+    }
+
+    @Override
+    public List<Product> findAll(int offset, int noOfRecords) throws DaoException {
+        String query = "SELECT * FROM products limit " + offset + ", " + noOfRecords;
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            List<Product> products = new ArrayList<>();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Product product = buildProduct(resultSet);
+                    products.add(product);
+                }
+                return products;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find all products", e);
+        }
+    }
+
 
     @Override
     public int getNumberOfRecords() throws DaoException {
@@ -62,14 +139,14 @@ public class ProductDaoImpl extends ProductDao {
                 return resultSet.getInt("count");
             }
         } catch (SQLException e) {
-            throw new DaoException("Failed to find all products", e);
+            throw new DaoException("Failed to find number of products", e);
         }
     }
 
     @Override
     public List<Product> findAll() throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_PRODUCTS)) {
-            List<Product> products = new LinkedList<>();
+            List<Product> products = new ArrayList<>();
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Product product = buildProduct(resultSet);
@@ -110,24 +187,6 @@ public class ProductDaoImpl extends ProductDao {
             throw new DaoException("Failed to delete product by id", e);
         }
     }
-
-    /*@Override
-    public boolean create(Product product) throws DaoException {
-        throw new UnsupportedOperationException("This method unavailable in ProductDao," +
-                " use method create(Product product, String password)");
-    }*/
-
-    /*@Override
-    public boolean addProductToCart(Product product, int numberOfProduct, Order order) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(SQL_ADD_PRODUCT_TO_CART)) {
-            statement.setInt(1, order.getId());
-            statement.setInt(2, product.getId());
-            statement.setInt(3, numberOfProduct);
-            return statement.executeUpdate() == 1;
-        } catch (SQLException e) {
-            throw new DaoException("Failed to add product to cart");
-        }
-    }*/
 
     @Override
     public boolean create(Product product) throws DaoException {
@@ -170,27 +229,6 @@ public class ProductDaoImpl extends ProductDao {
         return oldProduct;
     }
 
-
-    @Override
-    public Optional<Product> findProductByProductTypeId(int productTypeId) throws DaoException {
-        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_PRODUCT_BY_PRODUCT_TYPE_ID)) {
-            statement.setInt(1, productTypeId);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Product product = buildProduct(resultSet);
-                    return Optional.of(product);
-                } else {
-                    return Optional.empty();
-                }
-            }
-
-        } catch (SQLException e) {
-            throw new DaoException("Failed to find product by product type id", e);
-        }
-    }
-
-
     private Product buildProduct(ResultSet resultSet) throws SQLException {
 
         return new Product.ProductBuilder()
@@ -204,21 +242,5 @@ public class ProductDaoImpl extends ProductDao {
                 .createProduct();
     }
 
-    @Override
-    public List<Product> findAll(int offset, int noOfRecords) throws DaoException {
-        String query = "SELECT * FROM products limit " + offset + ", " + noOfRecords;
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            List<Product> products = new LinkedList<>();
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Product product = buildProduct(resultSet);
-                    products.add(product);
-                }
-                return products;
-            }
-        } catch (SQLException e) {
-            throw new DaoException("Failed to find all products", e);
-        }
-    }
 
 }

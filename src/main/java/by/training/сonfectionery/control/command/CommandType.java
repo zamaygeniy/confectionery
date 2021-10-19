@@ -5,19 +5,29 @@ import by.training.сonfectionery.control.command.impl.*;
 public enum CommandType {
     DEFAULT(new DefaultCommand()),
     LOGIN(new LoginCommand()),
-    LOGIN_PAGE(new GoToLoginPage()),
-    PROFILE_PAGE(new GoToProfilePage()),
+
     CHANGE_LOCALE(new ChangeLocaleCommand()),
-    REGISTRATION_PAGE(new GoToRegistrationPage()),
+
     REGISTRATION(new RegistrationCommand()),
     MAIN_PAGE(new GoToMainPage()),
     LOGOUT(new LogOutCommand()),
     VERIFICATION(new VerificationCommand()),
-    EDIT_PROFILE_PAGE(new GoToEditProfilePage()),
-    CART_PAGE(new GoToCartPage()),
-    CATALOG_PAGE(new GetProducts()),
+    ACCEPT_ORDER(new AcceptOrderCommand()),
+    REJECT_ORDER(new RejectOrderCommand()),
+    DONE_ORDER(new DoneOrderCommand()),
+    SEARCH_PRODUCTS(new SearchProductsCommand()),
     CHECKOUT_COMMAND(new CheckoutCommand()),
-    ORDERS_PAGE(new GetOrders());
+    CATALOG_PAGE(new GetProducts()),
+
+    ORDERS_PAGE(new GetOrders()),
+
+    LOGIN_PAGE(new GoToLoginPage()),
+    PROFILE_PAGE(new GoToProfilePage()),
+    REGISTRATION_PAGE(new GoToRegistrationPage()),
+    CONFIRMATION_PAGE(new GoToConfirmationPage()),
+    EDIT_PROFILE_PAGE(new GoToEditProfilePage()),
+    CART_PAGE(new GoToCartPage());
+
     private Command command;
 
     CommandType(Command command) {

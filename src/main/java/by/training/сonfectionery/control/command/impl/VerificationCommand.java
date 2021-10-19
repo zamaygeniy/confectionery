@@ -11,13 +11,15 @@ public class VerificationCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         UserService service = UserServiceImpl.getInstance();
-        String userId = request.getParameter(RequestParameter.ID);
+        String id = request.getParameter(RequestParameter.ID);
         try {
-            service.verify(userId);
+            if (service.verify(id)) {
+                return new Router(PagePath.GO_TO_LOGIN_PAGE, Router.RouteType.REDIRECT);
+            }
         } catch (ServiceException e) {
             throw new CommandException("Executing verify command error", e);
         }
-        return new Router(PagePath.MAIN_PAGE, Router.RouteType.REDIRECT);
+        return new Router(PagePath.MAIN_PAGE, Router.RouteType.FORWARD);
 
     }
 }
