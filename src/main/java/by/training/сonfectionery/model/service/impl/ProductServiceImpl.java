@@ -81,22 +81,81 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findProductsByProductType(String[] productTypeId, int offset, int numberOfRecords, int sortBy) throws ServiceException {
+    public List<Product> findProducts(int offset, int numberOfRecords, String[] productTypeId, int sortBy) throws ServiceException {
 
         ProductDao productDao = new ProductDaoImpl();
         EntityTransaction transaction = new EntityTransaction();
         List<Product> products;
         try {
             transaction.init(productDao);
-            products = productDao.findProductByProductTypeId(productTypeId, offset, numberOfRecords, sortBy);
+            products = productDao.findProductByProductTypeId(offset, numberOfRecords,productTypeId, sortBy);
             return products;
-            } catch (DaoException e) {
+        } catch (DaoException e) {
             throw new ServiceException("Failed to make transaction in findProductsByProductType method", e);
         } finally {
             try {
                 transaction.end();
             } catch (DaoException e) {
                 logger.error("Can't end transaction in findProductsByProductType  method", e);
+            }
+        }
+    }
+
+
+    @Override
+    public List<Product> findProducts(int offset, int numberOfRecords) throws ServiceException {
+
+        ProductDao productDao = new ProductDaoImpl();
+        EntityTransaction transaction = new EntityTransaction();
+        List<Product> products;
+        try {
+            transaction.init(productDao);
+            products = productDao.findAll(offset, numberOfRecords);
+            return products;
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to make transaction in findProductsByProductType method", e);
+        } finally {
+            try {
+                transaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in findProductsByProductType  method", e);
+            }
+        }
+    }
+
+
+    @Override
+    public int numberOfRecords() throws ServiceException {
+        ProductDao productDao = new ProductDaoImpl();
+        EntityTransaction transaction = new EntityTransaction();
+        try {
+            transaction.init(productDao);
+            return productDao.getNumberOfRecords();
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to make transaction in numberOfRecords method", e);
+        } finally {
+            try {
+                transaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in numberOfRecords method", e);
+            }
+        }
+    }
+
+    @Override
+    public int numberOfRecords(String[] productTypes) throws ServiceException {
+        ProductDao productDao = new ProductDaoImpl();
+        EntityTransaction transaction = new EntityTransaction();
+        try {
+            transaction.init(productDao);
+            return productDao.getNumberOfRecords(productTypes);
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to make transaction in numberOfRecords with product types method", e);
+        } finally {
+            try {
+                transaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in numberOfRecords product types method", e);
             }
         }
     }

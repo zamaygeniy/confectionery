@@ -2,6 +2,7 @@ package by.training.сonfectionery.model.dao;
 
 public class ColumnName {
     public static final String PHONE = "phone";
+    public static final String STATUS_ID = "status_id";
 
     private ColumnName() {
     }
@@ -14,9 +15,7 @@ public class ColumnName {
     public static final String PASSWORD = "password";
     public static final String IMAGE = "image";
 
-    public static final String TEXT = "text";
     public static final String DATE = "date";
-    public static final String RATING = "rating";
     public static final String USER_ID = "user_id";
 
 
@@ -24,7 +23,6 @@ public class ColumnName {
     public static final String PRICE = "price";
     public static final String DESCRIPTION = "description";
     public static final String WEIGTH = "weight";
-    public static final String NUMBER_IN_STOCK = "number_in_stock";
 
     public static final String PRODUCT_TYPE_ID = "product_type_id";
     public static final String TYPE = "type";

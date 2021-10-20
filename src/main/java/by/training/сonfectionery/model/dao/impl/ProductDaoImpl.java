@@ -54,7 +54,7 @@ public class ProductDaoImpl extends ProductDao {
             """;
 
     @Override
-    public int getNumberOfRecordsWithProductTypeId(String[] productTypeId) throws DaoException {
+    public int getNumberOfRecords(String[] productTypeId) throws DaoException {
         String query = SQL_GET_NUMBER_OF_RECORDS + "WHERE product_type_id IN (";
         for (int i = 0; i < productTypeId.length; i++) {
             query = query + "?,";
@@ -74,7 +74,7 @@ public class ProductDaoImpl extends ProductDao {
     }
 
     @Override
-    public List<Product> findProductByProductTypeId(String[] productTypeId, int offset, int numberOfRecords, int sortBy) throws DaoException {
+    public List<Product> findProductByProductTypeId(int offset, int numberOfRecords, String[] productTypeId, int sortBy) throws DaoException {
         String query = SQL_FIND_PRODUCT_BY_PRODUCT_TYPE_ID;
         query = query + "WHERE product_type_id IN (";
         for (int i = 0; i < productTypeId.length; i++) {

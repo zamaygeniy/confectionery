@@ -47,24 +47,24 @@
                     <form action="${pageContext.request.contextPath}/controller">
                         <input type="hidden" name="command" value="search_orders">
                             <div class="check_large">
-                                <input type="checkbox" id="1" name="order_status_id"
-                                       value="WAITING_FOR_CONFIRMATION">
-                                <label for="1">Waiting for confirmation</label>
+                                <input type="checkbox" id="WAITING_FOR_CONFIRMATION" name="order_status_id"
+                                       value="1">
+                                <label for="WAITING_FOR_CONFIRMATION">Waiting for confirmation</label>
                             </div>
                             <div class="check_large">
-                                <input type="checkbox" id="2" name="order_status_id"
-                                       value="IN_PROCESS">
-                                <label for="2">In process</label>
+                                <input type="checkbox" id="IN_PROCESS" name="order_status_id"
+                                       value="2">
+                                <label for="IN_PROCESS">In process</label>
                             </div>
                             <div class="check_large">
-                                <input type="checkbox" id="3" name="order_status_id"
-                                       value="DONE">
-                                <label for="3">Done</label>
+                                <input type="checkbox" id="DONE" name="order_status_id"
+                                       value="3">
+                                <label for="DONE">Done</label>
                             </div>
                             <div class="check_large">
-                                <input type="checkbox" id="4" name="order_status_id"
-                                       value="CANCELLED">
-                                <label for="4">Cancelled</label>
+                                <input type="checkbox" id="CANCELLED" name="order_status_id"
+                                       value="4">
+                                <label for="CANCELLED">Cancelled</label>
                             </div>
                         <button type="submit">Поиск</button>
                     </form>
@@ -74,6 +74,7 @@
 
         <div class="cart_container">
             <h1 class="page_titie">Заказы</h1>
+            <span class="fail-message">${errorNoOrdersFound}</span>
             <div class="cart_main_part">
                 <div class="left_part">
                     <c:forEach var="order" items="${ordersMap}">

@@ -13,6 +13,9 @@ public interface ProductService {
 
     void createProduct(Map<String, String> productMap) throws ServiceException;
 
-    List<Product> findProductsByProductType(String[] productTypeId, int offset, int numberOfRecords, int sortBy) throws ServiceException;
+    List<Product> findProducts(int offset, int numberOfRecords, String[] productTypeId, int sortBy) throws ServiceException;
+    List<Product> findProducts(int offset, int numberOfRecords) throws ServiceException;
+    int numberOfRecords() throws ServiceException;
+    int numberOfRecords(String[] productTypes) throws ServiceException;
 
 }

@@ -11,9 +11,9 @@ public abstract class ProductDao extends AbstractDao<Integer, Product> {
 
     public abstract int getNumberOfRecords() throws DaoException;
 
-    public abstract List<Product> findProductByProductTypeId(String[] productTypeId, int offset, int numberOfRecords, int sortBy) throws DaoException;
+    public abstract List<Product> findProductByProductTypeId(int offset, int numberOfRecords, String[] productTypeId, int sortBy) throws DaoException;
 
     public abstract List<Product> findAll(int i, int recordsPerPage) throws DaoException;
 
-    public abstract int getNumberOfRecordsWithProductTypeId(String[] productTypeId) throws DaoException;
+    public abstract int getNumberOfRecords(String[] productTypeId) throws DaoException;
 }

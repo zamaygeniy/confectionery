@@ -14,6 +14,8 @@ public final class RequestAttribute {
     public static final String WRONG_REGISTRATION_DATA = "errorWrongDataMessage";
     public static final String ERROR_EMAIL_EXISTS = "errorEmailExistsMessage";
     public static final String ERROR_NO_PRODUCTS_FOUND = "errorNoProductsFound";
+    public static final String ERROR_NO_ORDERS_FOUND = "errorNoOrdersFound";
+
 
     public static final String PAGE = "page";
     public static final String PRODUCT_LIST = "productList";

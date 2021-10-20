@@ -3,6 +3,7 @@ package by.training.сonfectionery.control.filter;
 import static by.training.сonfectionery.control.command.CommandType.*;
 
 import by.training.сonfectionery.control.command.CommandType;
+import by.training.сonfectionery.control.command.SessionAttribute;
 import by.training.сonfectionery.control.command.impl.*;
 import by.training.сonfectionery.domain.User;
 
@@ -28,7 +29,7 @@ class RoleCommandProvider {
             SEARCH_PRODUCTS,
             CHECKOUT_COMMAND,
             CATALOG_PAGE,
-
+            SEARCH_ORDERS,
             ORDERS_PAGE,
 
 

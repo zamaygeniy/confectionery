@@ -16,10 +16,10 @@ public enum CommandType {
     REJECT_ORDER(new RejectOrderCommand()),
     DONE_ORDER(new DoneOrderCommand()),
     SEARCH_PRODUCTS(new SearchProductsCommand()),
+    SEARCH_ORDERS(new SearchOrdersCommand()),
     CHECKOUT_COMMAND(new CheckoutCommand()),
-    CATALOG_PAGE(new GetProducts()),
-
-    ORDERS_PAGE(new GetOrders()),
+    CATALOG_PAGE(new SearchProductsCommand()),
+    ORDERS_PAGE(new SearchOrdersCommand()),
 
     LOGIN_PAGE(new GoToLoginPage()),
     PROFILE_PAGE(new GoToProfilePage()),

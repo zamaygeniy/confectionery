@@ -17,7 +17,7 @@ import java.util.*;
 public class UserDaoImpl extends UserDao {
 
     private static final String SQL_FIND_ALL_USERS = """
-            SELECT id, first_name, last_name, email, image, role, status
+            SELECT users.id, first_name, last_name, email, image, role, status
             FROM users
             JOIN role ON users.role_id = role.id
             JOIN status ON users.status_id = status.id;

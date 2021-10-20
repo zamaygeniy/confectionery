@@ -30,6 +30,14 @@ public class OrderDaoImpl extends OrderDao {
              JOIN order_status ON orders.status_id = order_status.id
              WHERE user_id = ?;
             """;
+
+    private static final String SQL_FIND_ORDER_BY_STATUS = """
+             SELECT orders.id, date, phone, user_id, status
+             FROM orders
+             JOIN order_status ON orders.status_id = order_status.id
+            """;
+
+
     private static final String SQL_DELETE_ORDER_BY_ID = """
             DELETE FROM orders WHERE id = ?;
             """;
@@ -62,20 +70,80 @@ public class OrderDaoImpl extends OrderDao {
             WHERE order_id = ?
             """;
 
+
+    @Override
+    public List<Order> findOrdersByStatusId(int offset, int numberOfRecords, String[] statusId, int sortBy) throws DaoException {
+        String query = SQL_FIND_ORDER_BY_STATUS;
+        query = query + "WHERE status_id IN (";
+        for (int i = 0; i < statusId.length; i++) {
+            query = query + "?,";
+        }
+        switch (sortBy) {
+            case -1: {
+                query = query.substring(0, query.length() - 1) + ")\nORDER BY date DESC";
+                break;
+            }
+            case 1: {
+                query = query.substring(0, query.length() - 1) + ")\nORDER BY date ASC";
+                break;
+            }
+            default:
+                break;
+        }
+        query = query + "\nLIMIT ?, ?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            List<Order> orders = new ArrayList<>();
+            int i;
+            for (i = 0; i < statusId.length; i++) {
+                statement.setInt(i + 1, Integer.parseInt(statusId[i]));
+            }
+            statement.setInt(i + 1, offset);
+            statement.setInt(i + 2, numberOfRecords);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Order order = buildOrder(resultSet);
+                    orders.add(order);
+                }
+                return orders;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find all orders with status", e);
+        }
+    }
+
     @Override
     public Map<Integer, Integer> findProductsInOrders(int orderId) throws DaoException {
-        try(PreparedStatement statement = connection.prepareStatement(SQL_FIND_PRODUCTS_IN_ORDER)){
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_PRODUCTS_IN_ORDER)) {
             Map<Integer, Integer> map = new HashMap<>();
             statement.setInt(1, orderId);
-            try(ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()){
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
                     map.put(resultSet.getInt(1), resultSet.getInt(2));
                 }
                 return map;
             }
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             throw new DaoException("Failed to find products in order", e);
+        }
+    }
+
+    @Override
+    public int getNumberOfRecords(String[] statusId) throws DaoException {
+        String query = SQL_GET_NUMBER_OF_RECORDS + "WHERE status_id IN (";
+        for (int i = 0; i < statusId.length; i++) {
+            query = query + "?,";
+        }
+        query = query.substring(0, query.length() - 1) + ")";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < statusId.length; i++) {
+                statement.setInt(i + 1, Integer.parseInt(statusId[i]));
+            }
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find number of orders with status", e);
         }
     }
 
@@ -111,7 +179,7 @@ public class OrderDaoImpl extends OrderDao {
     public List<Order> findAll() throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_ORDERS)) {
             List<Order> orders = new ArrayList<>();
-            try(ResultSet resultSet = statement.executeQuery()){
+            try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Order order = buildOrder(resultSet);
                     orders.add(order);
@@ -171,7 +239,7 @@ public class OrderDaoImpl extends OrderDao {
             statement.setInt(3, order.getUserId());
             statement.setInt(4, order.getStatus().getId());
             boolean result = statement.executeUpdate() == 1;
-            try(ResultSet resultSet = statement.getGeneratedKeys()){
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     order.setId(resultSet.getInt(1));
                 }
@@ -214,7 +282,7 @@ public class OrderDaoImpl extends OrderDao {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ORDER_BY_USER_ID)) {
             statement.setInt(1, userId);
 
-            try(ResultSet resultSet = statement.executeQuery()){
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     Order order = buildOrder(resultSet);
                     return Optional.of(order);

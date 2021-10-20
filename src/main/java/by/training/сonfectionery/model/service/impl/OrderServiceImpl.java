@@ -68,13 +68,48 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Map<Order, Map<Product, Integer>> findOrders(int page, int numberOfRecords) throws ServiceException {
+    public Map<Order, Map<Product, Integer>> findOrdersWithProducts(int offset, int recordsPerPage) throws ServiceException {
         OrderDao orderDao = new OrderDaoImpl();
         ProductDao productDao = new ProductDaoImpl();
         EntityTransaction entityTransaction = new EntityTransaction();
         try {
             entityTransaction.initTransaction(orderDao, productDao);
-            List<Order> orders = orderDao.findAll((page - 1) * 12, 12);
+            List<Order> orders = orderDao.findAll((offset - 1) * recordsPerPage, recordsPerPage);
+            Map<Order, Map<Product, Integer>> ordersMap = new HashMap<>();
+            for (Order order : orders) {
+                Map<Integer, Integer> productsInOrder;
+                productsInOrder = orderDao.findProductsInOrders(order.getId());
+                Map<Product, Integer> productsAmount = new HashMap<>();
+                for (Map.Entry<Integer, Integer> product : productsInOrder.entrySet()) {
+                    Optional<Product> optionalProduct = productDao.findById(product.getKey());
+                    if (optionalProduct.isPresent()) {
+                        productsAmount.put(optionalProduct.get(), product.getValue());
+                    } else {
+                        throw new ServiceException("There is no such product");
+                    }
+                }
+                ordersMap.put(order, productsAmount);
+            }
+            return ordersMap;
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to make transaction in findOrders method", e);
+        } finally {
+            try {
+                entityTransaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in findOrders  method", e);
+            }
+        }
+    }
+
+    @Override
+    public Map<Order, Map<Product, Integer>> findOrdersWithProducts(int offset, int recordsPerPage, String[] statusId, int sortBy) throws ServiceException {
+        OrderDao orderDao = new OrderDaoImpl();
+        ProductDao productDao = new ProductDaoImpl();
+        EntityTransaction entityTransaction = new EntityTransaction();
+        try {
+            entityTransaction.initTransaction(orderDao, productDao);
+            List<Order> orders = orderDao.findOrdersByStatusId((offset - 1) * recordsPerPage, recordsPerPage, statusId, sortBy);
             Map<Order, Map<Product, Integer>> ordersMap = new HashMap<>();
             for (Order order : orders) {
                 Map<Integer, Integer> productsInOrder;
@@ -163,6 +198,7 @@ public class OrderServiceImpl implements OrderService {
         EntityTransaction entityTransaction = new EntityTransaction();
         try {
             entityTransaction.init(orderDao);
+            System.out.println("################3");
             return orderDao.getNumberOfRecords();
         } catch (DaoException e) {
             throw new ServiceException("Failed to make transaction in numberOfRecords method", e);
@@ -174,5 +210,23 @@ public class OrderServiceImpl implements OrderService {
             }
         }
     }
+
+    public int numberOfRecords(String[] orderStatusId) throws ServiceException{
+        OrderDao orderDao = new OrderDaoImpl();
+        EntityTransaction entityTransaction = new EntityTransaction();
+        try {
+            entityTransaction.init(orderDao);
+            return orderDao.getNumberOfRecords(orderStatusId);
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to make transaction in numberOfRecords with orderStatusId method", e);
+        } finally {
+            try {
+                entityTransaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in numberOfRecords with orderStatusId  method", e);
+            }
+        }
+    }
+
 }
 

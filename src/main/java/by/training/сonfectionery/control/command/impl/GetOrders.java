@@ -1,3 +1,4 @@
+/*
 package by.training.сonfectionery.control.command.impl;
 
 import static by.training.сonfectionery.control.command.RequestAttribute.*;
@@ -41,3 +42,4 @@ public class GetOrders implements Command {
 
     }
 }
+*/

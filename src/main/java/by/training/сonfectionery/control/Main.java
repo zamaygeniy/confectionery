@@ -23,6 +23,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws DaoException {
+
         /*EntityTransaction transaction = new EntityTransaction();
         ProductDao productDao = new ProductDaoImpl();
         List<Product> products = new ArrayList<>();
@@ -52,7 +53,16 @@ public class Main {
 
             System.out.println(ex.getMessage());
         }*/
-
+        UserDao userDao = new UserDaoImpl();
+        EntityTransaction transaction = new EntityTransaction();
+        try {
+            transaction.init(userDao);
+            List<User> list = userDao.findAll();
+            for(int i = 0; i < list.size();i++)
+                System.out.println(list.get(i).toString());
+        } finally {
+            transaction.end();
+        }
 
     }
 }

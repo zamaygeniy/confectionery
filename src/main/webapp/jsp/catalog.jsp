@@ -55,7 +55,6 @@
             </div>
             <div class="good_part">
                 <div class="goods_container">
-
                     <c:forEach var="product" items="${productList}">
                         <div class="product_item">
                             <div class="img"><img src='data:image/jpg;base64,${product.image}'></div>

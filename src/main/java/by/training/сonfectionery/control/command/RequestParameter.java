@@ -35,6 +35,7 @@ public final class RequestParameter {
     public static final String PAGE_NUMBER = "page";
     public static final String ORDER_ID = "order_id";
     public static final String PRODUCT_TYPE_ID = "product_type_id";
+    public static final String ORDER_STATUS_ID = "order_status_id";
     private RequestParameter() {
     }
 }
