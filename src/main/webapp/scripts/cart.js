@@ -3,18 +3,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Получаем данные из LocalStorage
     function getCartData() {
-        return JSON.parse(localStorage.getItem('cart'));
+        return JSON.parse(localStorage.getItem(user_id.textContent.trim()));
     }
 
 // Записываем данные в LocalStorage
     function setCartData(o) {
-        localStorage.setItem('cart', JSON.stringify(o));
+        localStorage.setItem(user_id.textContent.trim(), JSON.stringify(o));
     }
 
 
 // Устанавливаем обработчик события на каждую кнопку "Добавить в корзину"
     productItems.forEach(productItem => {
-        productItem.querySelector('.add_item').addEventListener('click', (e) => {
+        productItem.querySelector('.add_item')?.addEventListener('click', (e) => {
             const cartData = getCartData() || {}; // получаем данные корзины или создаём новый объект, если данных еще нет
             const parentBox = e.target.parentNode; // родительский элемент кнопки "Добавить в корзину"
             const itemId = e.target.getAttribute('data-id'); // ID товара
@@ -30,13 +30,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 cartData[itemId] = {itemTitle, itemPrice, itemDescription, itemWeight, itemType, itemImage, amount: 1};
             }
             setCartData(cartData)
-            return false;
+            return false
         });
     })
 
     function openCart(e) {
         const container = document.querySelector('.cart_main_part')?.querySelector('.left_part')
-        Object.entries(getCartData()).forEach(([id, product]) => getItemTemplate(id, product, container))
+        Object.entries(getCartData() || {})?.forEach(([id, product]) => getItemTemplate(id, product, container))
     }
 
     const getItemTemplate = (id, product, container) => {
@@ -82,8 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* Очистить корзину */
-    document.getElementById('clear_cart').addEventListener('click', (e) => {
-        localStorage.removeItem('cart');
+    document.getElementById('clear_cart')?.addEventListener('click', (e) => {
+        localStorage.removeItem(user_id.textContent.trim());
     });
 
     openCart()
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setCartData(data)
     }
 
-    document.querySelectorAll(".arrow._plus").forEach((arrow_plus) => {
+    document.querySelectorAll(".arrow._plus")?.forEach((arrow_plus) => {
         arrow_plus.addEventListener('click', function () {
             $(this).parent().siblings('.input').children().val(+$(this).parent().siblings('.input').children().val() + 1)
             const id = $(this).attr('data-id')
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
 
-    document.querySelectorAll(".arrow._minus").forEach((arrow_minus) => {
+    document.querySelectorAll(".arrow._minus")?.forEach((arrow_minus) => {
         arrow_minus.addEventListener('click', function () {
             if (+$(this).parent().siblings('.input').children().val() > 0) {
                 $(this).parent().siblings('.input').children().val(+$(this).parent().siblings('.input').children().val() - 1)
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
 
-    document.querySelector('#short_btn').addEventListener('click', () => {
+    document.querySelector('#short_btn')?.addEventListener('click', () => {
         document.querySelector('#make_order_input').value = JSON.stringify(Object.entries(getCartData()).map(([id, {amount}]) => ({
                 id,
                 amount
@@ -123,5 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
         )
         document.querySelector('#make_order').submit()
     })
+
 })
 

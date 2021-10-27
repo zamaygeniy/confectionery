@@ -1,13 +1,10 @@
-/*
 package by.training.сonfectionery.control.command.impl;
 
 import by.training.сonfectionery.control.command.*;
 import by.training.сonfectionery.exception.CommandException;
 import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.service.ProductService;
-import by.training.сonfectionery.model.service.UserService;
 import by.training.сonfectionery.model.service.impl.ProductServiceImpl;
-import by.training.сonfectionery.model.service.impl.UserServiceImpl;
 import by.training.сonfectionery.util.Base64Coder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -33,7 +30,6 @@ public class CreateProductCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
         String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
-
         Map<String, String> productMap = new HashMap<>();
         productMap.put(NAME, request.getParameter(NAME));
         productMap.put(PRICE, request.getParameter(PRICE));
@@ -41,20 +37,19 @@ public class CreateProductCommand implements Command {
         productMap.put(WEIGHT, request.getParameter(WEIGHT));
         productMap.put(PRODUCT_TYPE_ID, request.getParameter(PRODUCT_TYPE_ID));
         ProductService productService = ProductServiceImpl.getInstance();
-
-        if (productMap.validateProductData(productMap)) {
-            try {
+        try {
+            if (productService.validateProductData(productMap)) {
                 productMap.put(IMAGE, loadBaseUserImage(request.getServletContext().getRealPath("") + BASE_IMAGE_PATH));
                 productService.createProduct(productMap);
-            } catch (ServiceException e) {
-                logger.error("Failed to execute CreateProductCommand", e);
-                throw new CommandException("Failed to execute CreateProductCommand", e);
+                return new Router(PagePath.GO_TO_CREATE_PRODUCT_PAGE, Router.RouteType.REDIRECT);
+            } else {
+                request.setAttribute(CREATE_PRODUCT_DATA, productMap);
+                request.setAttribute(WRONG_CREATE_PRODUCT_DATA, MessageManager.valueOf(locale.toUpperCase(Locale.ROOT)).getMessage(WRONG_CREATE_PRODUCT_DATA));
+                return new Router(PagePath.CREATE_PRODUCT_PAGE, Router.RouteType.FORWARD);
             }
-            return new Router(PagePath.GO_TO_PRODUCT_PAGE, Router.RouteType.REDIRECT);
-        } else {
-            request.setAttribute(CREATE_PRODUCT_DATA, productMap);
-            request.setAttribute(WRONG_CREATE_PRODUCT_DATA, MessageManager.valueOf(locale.toUpperCase(Locale.ROOT)).getMessage(WRONG_CREATE_PRODUCT_DATA));
-            return new Router(PagePath.CREATE_PRODUCT_PAGE, Router.RouteType.FORWARD);
+        } catch (ServiceException e) {
+            logger.error("Failed to execute CreateProductCommand", e);
+            throw new CommandException("Failed to execute CreateProductCommand", e);
         }
     }
 
@@ -70,4 +65,3 @@ public class CreateProductCommand implements Command {
         return result;
     }
 }
-*/

@@ -1,5 +1,6 @@
 package by.training.сonfectionery.model.dao.impl;
 
+import by.training.сonfectionery.domain.Product;
 import by.training.сonfectionery.domain.User;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.model.dao.UserDao;
@@ -28,6 +29,12 @@ public class UserDaoImpl extends UserDao {
             JOIN role ON users.role_id = role.id
             JOIN status ON users.status_id = status.id
             WHERE users.id = ?;
+            """;
+    private static final String SQL_FIND_USER = """
+            SELECT users.id, first_name, last_name, email, image, role, status
+            FROM users
+            JOIN role ON users.role_id = role.id
+            JOIN status ON users.status_id = status.id
             """;
     private static final String SQL_FIND_USER_BY_EMAIL = """
             SELECT users.id, first_name, last_name, email, image, role, status
@@ -59,6 +66,59 @@ public class UserDaoImpl extends UserDao {
             WHERE id = ?;
             """;
 
+    private static final String SQL_GET_NUMBER_OF_RECORDS = """
+            SELECT COUNT(*) as count
+            FROM users
+            """;
+
+
+    @Override
+    public List<User> findAll(int offset, int recordsPerPage) throws DaoException {
+        String query = SQL_FIND_USER + "\nLIMIT ?, ?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, offset);
+            statement.setInt(2, recordsPerPage);
+            List<User> users = new ArrayList<>();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    User user = buildUser(resultSet);
+                    users.add(user);
+                }
+                return users;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find all users", e);
+        }
+    }
+
+    @Override
+    public List<User> findUsersByStatusId(int offset, int recordsPerPage, String[] userStatusId) throws DaoException {
+        String query = SQL_FIND_USER + "WHERE status_id IN (";
+        for (int i = 0; i < userStatusId.length; i++) {
+            query = query + "?,";
+        }
+        query = query.substring(0, query.length()-1) + ")\nLIMIT ?, ?;";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            List<User> users = new ArrayList<>();
+            int i;
+            for (i = 0; i < userStatusId.length; i++) {
+                statement.setInt(i + 1, Integer.parseInt(userStatusId[i]));
+            }
+            statement.setInt(i + 1, offset);
+            statement.setInt(i + 2, recordsPerPage);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    User user = buildUser(resultSet);
+                    users.add(user);
+                }
+                return users;
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find users by status_id", e);
+        }
+    }
+
+
     @Override
     public List<User> findAll() throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_USERS)) {
@@ -76,7 +136,7 @@ public class UserDaoImpl extends UserDao {
     }
 
     @Override
-    public Optional<User>  findById(Integer id) throws DaoException {
+    public Optional<User> findById(Integer id) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_USER_BY_ID)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -121,7 +181,7 @@ public class UserDaoImpl extends UserDao {
             statement.setInt(6, user.getRole().getId());
             statement.setInt(7, user.getStatus().getId());
             boolean result = statement.executeUpdate() == 1;
-            try(ResultSet resultSet = statement.getGeneratedKeys()){
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
                 if (resultSet.next()) {
                     user.setId(resultSet.getInt(1));
                 }
@@ -163,11 +223,43 @@ public class UserDaoImpl extends UserDao {
     }
 
     @Override
+    public int numberOfRecords() throws DaoException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_GET_NUMBER_OF_RECORDS)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find number of users", e);
+        }
+    }
+
+    @Override
+    public int numberOfRecords(String[] userStatuses) throws DaoException {
+        String query = SQL_GET_NUMBER_OF_RECORDS + "WHERE status_id IN (";
+        for (int i = 0; i < userStatuses.length; i++) {
+            query = query + "?,";
+        }
+        query = query.substring(0, query.length() - 1) + ")";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            for (int i = 0; i < userStatuses.length; i++) {
+                statement.setInt(i + 1, Integer.parseInt(userStatuses[i]));
+            }
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Failed to find number of products with product_type_id", e);
+        }
+    }
+
+    @Override
     public Optional<User> findUserByEmail(String email) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_USER_BY_EMAIL)) {
             statement.setString(1, email);
 
-            try(ResultSet resultSet = statement.executeQuery()){
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     User user = buildUser(resultSet);
                     return Optional.of(user);
@@ -186,7 +278,7 @@ public class UserDaoImpl extends UserDao {
         String passwordHash;
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_USER_PASSWORD)) {
             statement.setInt(1, user.getId());
-            try(ResultSet resultSet = statement.executeQuery()){
+            try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     passwordHash = resultSet.getString(PASSWORD);
                 } else throw new DaoException("Can't find user with this id");

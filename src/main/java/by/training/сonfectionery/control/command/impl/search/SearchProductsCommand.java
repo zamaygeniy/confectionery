@@ -1,4 +1,4 @@
-package by.training.сonfectionery.control.command.impl;
+package by.training.сonfectionery.control.command.impl.search;
 
 import by.training.сonfectionery.control.command.*;
 import by.training.сonfectionery.domain.Product;
@@ -48,8 +48,7 @@ public class SearchProductsCommand implements Command {
             return new Router(PagePath.CATALOG_PAGE, Router.RouteType.FORWARD);
         } catch (ServiceException e) {
             //logger.error("Failed to execute GetOrders command", e);
-            throw new CommandException("Failed to execute GetOrders command", e);
+            throw new CommandException("Failed to execute SearchOrdersCommand", e);
         }
-
     }
 }

@@ -15,7 +15,7 @@
             <input class="input_middle" type="hidden" name="command" value="login"/>
             <fmt:message key="login.email"/>
             <input class="input_middle" type="text" name="email"><br>
-            <fmt:message key="login.password"/><input class="input_middle" type="text" name="password"><br>
+            <fmt:message key="login.password"/><input class="input_middle" type="password" name="password"><br>
             <button type="submit"><fmt:message key="login.button.signin"/></button>
         </form>
         <span class="fail-message">${errorBlockedMessage}</span>

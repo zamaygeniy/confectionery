@@ -40,7 +40,7 @@ public class ProductDaoImpl extends ProductDao {
             """;
     private static final String SQL_CREATE_PRODUCT = """
             INSERT INTO products (name, price, description, weight, image, product_type_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?);
+            VALUES (?, ?, ?, ?, ?, ?);
             """;
     private static final String SQL_UPDATE_PRODUCT = """
             UPDATE products
@@ -74,7 +74,7 @@ public class ProductDaoImpl extends ProductDao {
     }
 
     @Override
-    public List<Product> findProductByProductTypeId(int offset, int numberOfRecords, String[] productTypeId, int sortBy) throws DaoException {
+    public List<Product> findProductByProductTypeId(int offset, int recordsPerPage, String[] productTypeId, int sortBy) throws DaoException {
         String query = SQL_FIND_PRODUCT_BY_PRODUCT_TYPE_ID;
         query = query + "WHERE product_type_id IN (";
         for (int i = 0; i < productTypeId.length; i++) {
@@ -100,7 +100,7 @@ public class ProductDaoImpl extends ProductDao {
                 statement.setInt(i + 1, Integer.parseInt(productTypeId[i]));
             }
             statement.setInt(i + 1, offset);
-            statement.setInt(i + 2, numberOfRecords);
+            statement.setInt(i + 2, recordsPerPage);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Product product = buildProduct(resultSet);
@@ -114,8 +114,8 @@ public class ProductDaoImpl extends ProductDao {
     }
 
     @Override
-    public List<Product> findAll(int offset, int noOfRecords) throws DaoException {
-        String query = "SELECT * FROM products limit " + offset + ", " + noOfRecords;
+    public List<Product> findAll(int offset, int recordsPerPage) throws DaoException {
+        String query = "SELECT * FROM products limit " + offset + ", " + recordsPerPage;
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             List<Product> products = new ArrayList<>();
             try (ResultSet resultSet = statement.executeQuery()) {

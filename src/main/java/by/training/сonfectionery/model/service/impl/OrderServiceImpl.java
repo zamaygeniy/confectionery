@@ -198,7 +198,6 @@ public class OrderServiceImpl implements OrderService {
         EntityTransaction entityTransaction = new EntityTransaction();
         try {
             entityTransaction.init(orderDao);
-            System.out.println("################3");
             return orderDao.getNumberOfRecords();
         } catch (DaoException e) {
             throw new ServiceException("Failed to make transaction in numberOfRecords method", e);

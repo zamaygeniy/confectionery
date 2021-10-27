@@ -1,4 +1,4 @@
-package by.training.сonfectionery.control.command.impl;
+package by.training.сonfectionery.control.command.impl.search;
 
 import by.training.сonfectionery.control.command.*;
 import by.training.сonfectionery.domain.Order;
@@ -56,7 +56,7 @@ public class SearchOrdersCommand implements Command {
             return new Router(PagePath.ORDERS_PAGE, Router.RouteType.FORWARD);
         } catch (ServiceException e) {
             //logger.error("Failed to execute GetOrders command", e);
-            throw new CommandException("Failed to execute GetOrders command", e);
+            throw new CommandException("Failed to execute SearchOrdersCommand", e);
         }
 
     }

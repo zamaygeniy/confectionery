@@ -1,10 +1,13 @@
 package by.training.сonfectionery.model.service.impl;
 
+import by.training.сonfectionery.domain.Product;
 import by.training.сonfectionery.domain.User;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.exception.ServiceException;
+import by.training.сonfectionery.model.dao.ProductDao;
 import by.training.сonfectionery.model.dao.UserDao;
 import by.training.сonfectionery.model.dao.impl.EntityTransaction;
+import by.training.сonfectionery.model.dao.impl.ProductDaoImpl;
 import by.training.сonfectionery.model.dao.impl.UserDaoImpl;
 import by.training.сonfectionery.model.service.UserService;
 import by.training.сonfectionery.model.validator.impl.UserValidatorImpl;
@@ -16,6 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -171,6 +175,101 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findUsersByStatusId(int offset, int numberOfRecords, String[] userStatusId) throws ServiceException {
+        UserDao userDao = new UserDaoImpl();
+        EntityTransaction transaction = new EntityTransaction();
+        List<User> users;
+        try {
+            transaction.init(userDao);
+            users = userDao.findUsersByStatusId(offset, numberOfRecords, userStatusId);
+            return users;
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to make transaction in findUsersByStatusId method", e);
+        } finally {
+            try {
+                transaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in findUsersByStatusId method", e);
+            }
+        }
+    }
+
+    @Override
+    public List<User> findUsers(int offset, int numberOfRecords) throws ServiceException {
+        UserDao userDao = new UserDaoImpl();
+        EntityTransaction transaction = new EntityTransaction();
+        List<User> users;
+        try {
+            transaction.init(userDao);
+            users = userDao.findAll(offset, numberOfRecords);
+            return users;
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to make transaction in findUsers method", e);
+        } finally {
+            try {
+                transaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in findUsers method", e);
+            }
+        }
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) throws ServiceException {
+        EntityTransaction entityTransaction = new EntityTransaction();
+        UserDao userDao = new UserDaoImpl();
+        try{
+            entityTransaction.init(userDao);
+            return userDao.findUserByEmail(email);
+        } catch (DaoException e){
+            logger.error("Failed to make transaction in findUserByEmail method", e);
+            throw new ServiceException("Failed to make transaction in findUserByEmail method", e);
+        } finally {
+            try {
+                entityTransaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in findUserByEmail method", e);
+            }
+        }
+    }
+
+    @Override
+    public int numberOfRecords() throws ServiceException {
+        UserDao userDao = new UserDaoImpl();
+        EntityTransaction transaction = new EntityTransaction();
+        try {
+            transaction.init(userDao);
+            return userDao.numberOfRecords();
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to make transaction in numberOfRecords method", e);
+        } finally {
+            try {
+                transaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in numberOfRecords method", e);
+            }
+        }
+    }
+
+    @Override
+    public int numberOfRecords(String[] userStatuses) throws ServiceException {
+        UserDao userDao = new UserDaoImpl();
+        EntityTransaction transaction = new EntityTransaction();
+        try {
+            transaction.init(userDao);
+            return userDao.numberOfRecords(userStatuses);
+        } catch (DaoException e) {
+            throw new ServiceException("Failed to make transaction in numberOfRecords with product types method", e);
+        } finally {
+            try {
+                transaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in numberOfRecords product types method", e);
+            }
+        }
+    }
+
+    @Override
     public void updateUser(User user) throws ServiceException {
         EntityTransaction entityTransaction = new EntityTransaction();
         UserDao userDao = new UserDaoImpl();
@@ -185,6 +284,47 @@ public class UserServiceImpl implements UserService {
                 entityTransaction.end();
             } catch (DaoException e) {
                 logger.error("Can't end transaction in updateUser method", e);
+            }
+        }
+    }
+
+    @Override
+    public boolean checkPassword(User user, String password) throws ServiceException {
+        EntityTransaction entityTransaction = new EntityTransaction();
+        UserDao userDao = new UserDaoImpl();
+        boolean result = false;
+        try {
+            entityTransaction.init(userDao);
+            String userPasswordHash = userDao.findUserPassword(user);
+            result = PasswordEncoder.checkPassword(password, userPasswordHash);
+        } catch (DaoException e) {
+            logger.error("Failed to make transaction in checkPassword method", e);
+            throw new ServiceException("Failed to make transaction in checkPassword method", e);
+        } finally {
+            try {
+                entityTransaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in checkPassword method", e);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void updatePassword(User user, String password) throws ServiceException {
+        EntityTransaction entityTransaction = new EntityTransaction();
+        UserDao userDao = new UserDaoImpl();
+        try {
+            entityTransaction.init(userDao);
+            userDao.updateUserPassword(user, password);
+        } catch (DaoException e) {
+            logger.error("Failed to make transaction in updatePassword method", e);
+            throw new ServiceException("Failed to make transaction in updatePassword method", e);
+        } finally {
+            try {
+                entityTransaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in updatePassword method", e);
             }
         }
     }

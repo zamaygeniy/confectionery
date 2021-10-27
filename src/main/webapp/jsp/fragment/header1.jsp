@@ -14,11 +14,7 @@
 <script src="${pageContext.request.contextPath}/scripts/scripts.js"></script>
 
 <header class="header">
-    <div class="burger">
-        <div class="burger_bef"></div>
-        <div class="burger_mid"></div>
-        <div class="burger_af"></div>
-    </div>
+    <div id="user_id"> ${sessionScope.user.id} </div>
     <div class="logo_n_menu">
         <div class="logo"><a href="${pageContext.request.contextPath}/controller?command=main_page"><img
                 src="${pageContext.request.contextPath}/img/logo.svg" alt=""></a></div>
@@ -33,7 +29,7 @@
                                 <c:forEach var="element" items="${applicationScope.product_types}">
                                     <div class="swiper-slide">
                                         <div class="menu_drop_item">
-                                            <a>${element.type}</a>
+                                            <a href="${pageContext.request.contextPath}/controller?command=search_products&product_type_id=${element.id}">${element.type}</a>
                                         </div>
                                     </div>
                                 </c:forEach>
@@ -43,7 +39,19 @@
                     </div>
                 </div>
             </div>
-            <div class="menu_item"><a href="${pageContext.request.contextPath}/controller?command=orders_page"><fmt:message key="header.orders"/></a></div>
+            <c:if test="${sessionScope.user.role == 'ADMIN' || sessionScope.user.role == 'USER'}">
+                <div class="menu_item"><a
+                        href="${pageContext.request.contextPath}/controller?command=orders_page"><fmt:message
+                        key="header.orders"/></a></div>
+            </c:if>
+            <c:if test="${sessionScope.user.role == 'ADMIN'}">
+                <div class="menu_item"><a
+                        href="${pageContext.request.contextPath}/controller?command=create_product_page"><fmt:message
+                        key="header.create_product"/></a></div>
+                <div class="menu_item"><a
+                        href="${pageContext.request.contextPath}/controller?command=users_page"><fmt:message
+                        key="header.search_users"/></a></div>
+            </c:if>
         </div>
     </div>
     <div class="right_part">
@@ -94,28 +102,31 @@
                 </svg>
             </a>
         </div>
-        <c:if test="${sessionScope.user.role eq 'GUEST'}">
+        <c:if test="${sessionScope.user.role == 'GUEST'}">
             <div class="log_in">
                 <a href="${pageContext.request.contextPath}/controller?command=registration_page">
                     <fmt:message key="header.registration"/>
                 </a>
-                <div class="log_in">
-                    <a href="${pageContext.request.contextPath}/controller?command=login_page">
-                        <fmt:message key="header.login"/>
-                    </a>
-                </div>
+            </div>
+            <div class="log_in">
+                <a href="${pageContext.request.contextPath}/controller?command=login_page">
+                    <fmt:message key="header.login"/>
+                </a>
             </div>
         </c:if>
 
         <c:if test="${sessionScope.user.role eq 'USER' || sessionScope.user.role eq 'ADMIN'}">
-            <div class = "log_in">
+            <div class="log_in">
                 <a href="${pageContext.request.contextPath}/controller?command=profile_page">
                     <fmt:message key="header.profile"/>
                 </a>
             </div>
-
+            <div class="log_in">
+                <a href="${pageContext.request.contextPath}/controller?command=logout">
+                    <fmt:message key="header.logout"/>
+                </a>
+            </div>
         </c:if>
-
 
 
     </div>

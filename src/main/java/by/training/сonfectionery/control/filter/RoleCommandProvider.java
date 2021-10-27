@@ -18,7 +18,7 @@ class RoleCommandProvider {
             LOGIN,
 
             CHANGE_LOCALE,
-
+            EDIT_USER,
             REGISTRATION,
             MAIN_PAGE,
             LOGOUT,
@@ -29,24 +29,26 @@ class RoleCommandProvider {
             SEARCH_PRODUCTS,
             CHECKOUT_COMMAND,
             CATALOG_PAGE,
+            USERS_PAGE,
+            SEARCH_USERS,
             SEARCH_ORDERS,
             ORDERS_PAGE,
-
+            CREATE_PRODUCT_PAGE,
+            CREATE_PRODUCT,
 
             LOGIN_PAGE,
             PROFILE_PAGE,
             REGISTRATION_PAGE,
             CONFIRMATION_PAGE,
-            EDIT_PROFILE_PAGE,
             CART_PAGE
     );
 
     private EnumSet<CommandType> userCommands = EnumSet.of(
             DEFAULT,
             LOGIN,
-
+            USERS_PAGE,
             CHANGE_LOCALE,
-
+            SEARCH_USERS,
             REGISTRATION,
             MAIN_PAGE,
             LOGOUT,
@@ -57,7 +59,7 @@ class RoleCommandProvider {
             SEARCH_PRODUCTS,
             CHECKOUT_COMMAND,
             CATALOG_PAGE,
-
+            EDIT_USER,
             ORDERS_PAGE,
 
 
@@ -65,16 +67,16 @@ class RoleCommandProvider {
             PROFILE_PAGE,
             REGISTRATION_PAGE,
             CONFIRMATION_PAGE,
-            EDIT_PROFILE_PAGE,
             CART_PAGE
     );
 
     private EnumSet<CommandType> adminCommands = EnumSet.of(
             DEFAULT,
             LOGIN,
-
+            USERS_PAGE,
             CHANGE_LOCALE,
-
+            SEARCH_USERS,
+            SEARCH_ORDERS,
             REGISTRATION,
             MAIN_PAGE,
             LOGOUT,
@@ -85,16 +87,14 @@ class RoleCommandProvider {
             SEARCH_PRODUCTS,
             CHECKOUT_COMMAND,
             CATALOG_PAGE,
-
             ORDERS_PAGE,
-
-
             LOGIN_PAGE,
             PROFILE_PAGE,
             REGISTRATION_PAGE,
             CONFIRMATION_PAGE,
-            EDIT_PROFILE_PAGE,
-            CART_PAGE
+            CREATE_PRODUCT_PAGE,
+            CART_PAGE,
+            EDIT_USER
     );
 
     private RoleCommandProvider() {

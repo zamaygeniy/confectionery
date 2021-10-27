@@ -1,13 +1,13 @@
-package by.training.сonfectionery.control.command.impl;
+package by.training.сonfectionery.control.command.impl.go;
 
 import by.training.сonfectionery.control.command.Command;
 import by.training.сonfectionery.control.command.PagePath;
 import by.training.сonfectionery.control.command.Router;
 import jakarta.servlet.http.HttpServletRequest;
 
-public class GoToCartPage implements Command {
+public class GoToRegistrationPage implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
-        return new Router(PagePath.CART_PAGE, Router.RouteType.FORWARD);
+        return new Router(PagePath.REGISTRATION_PAGE, Router.RouteType.FORWARD);
     }
 }
