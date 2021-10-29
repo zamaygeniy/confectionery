@@ -1,20 +1,16 @@
 package by.training.сonfectionery.model.service.impl;
 
-import by.training.сonfectionery.domain.Product;
 import by.training.сonfectionery.domain.User;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.exception.ServiceException;
-import by.training.сonfectionery.model.dao.ProductDao;
 import by.training.сonfectionery.model.dao.UserDao;
 import by.training.сonfectionery.model.dao.impl.EntityTransaction;
-import by.training.сonfectionery.model.dao.impl.ProductDaoImpl;
 import by.training.сonfectionery.model.dao.impl.UserDaoImpl;
 import by.training.сonfectionery.model.service.UserService;
 import by.training.сonfectionery.model.validator.impl.UserValidatorImpl;
 import by.training.сonfectionery.util.Base64Coder;
 import by.training.сonfectionery.util.PasswordEncoder;
 import by.training.сonfectionery.util.mail.MailSender;
-import jakarta.xml.bind.SchemaOutputResolver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +18,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 
 import static by.training.сonfectionery.control.command.RequestParameter.*;
 
@@ -71,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void registrate(Map<String, String> userMap) throws ServiceException {
+    public void register(Map<String, String> userMap) throws ServiceException {
 
         User user = new User.UserBuilder()
                 .setFirstName(userMap.get(FIRST_NAME))
@@ -88,12 +83,12 @@ public class UserServiceImpl implements UserService {
             transaction.init(userDao);
             userDao.create(user, userMap.get(PASSWORD));
         } catch (DaoException e) {
-            throw new ServiceException("Failed to make transaction in registrate method", e);
+            throw new ServiceException("Failed to make transaction in register method", e);
         } finally {
             try {
                 transaction.end();
             } catch (DaoException e) {
-                logger.error("Can't end transaction in registrate method", e);
+                logger.error("Can't end transaction in register method", e);
             }
         }
         MailSender mailSender = new MailSender();
@@ -292,7 +287,7 @@ public class UserServiceImpl implements UserService {
     public boolean checkPassword(User user, String password) throws ServiceException {
         EntityTransaction entityTransaction = new EntityTransaction();
         UserDao userDao = new UserDaoImpl();
-        boolean result = false;
+        boolean result;
         try {
             entityTransaction.init(userDao);
             String userPasswordHash = userDao.findUserPassword(user);

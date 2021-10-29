@@ -26,7 +26,6 @@ public class ServletContextListenerImpl implements ServletContextListener {
             event.getServletContext().setAttribute(PRODUCT_TYPES, productTypeList);
         } catch (ServiceException e) {
             logger.error("Can't find product types while context initialized", e);
-            //// TODO: 20.09.2021 какой exception кидать и стоит ли
         }
     }
 

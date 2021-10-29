@@ -59,8 +59,8 @@ public class Order extends Entity {
         CANCELLED("cancelled", 4);
 
 
-        private String value;
-        private int id;
+        private final String value;
+        private final int id;
 
         Status(String value, int id) {
             this.value = value;

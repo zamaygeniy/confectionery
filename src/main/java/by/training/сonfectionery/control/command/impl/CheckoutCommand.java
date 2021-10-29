@@ -11,6 +11,8 @@ import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.service.OrderService;
 import by.training.сonfectionery.model.service.impl.OrderServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +20,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CheckoutCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
@@ -37,7 +42,8 @@ public class CheckoutCommand implements Command {
         try {
             orderService.createOrder(orderMap, productsMap);
         } catch (ServiceException e) {
-            throw new CommandException("Failed to create order", e);
+            logger.error("Failed to execute CheckoutCommand", e);
+            throw new CommandException("Failed to execute CheckoutCommand", e);
         }
         return new Router(PagePath.GO_TO_CART_PAGE, Router.RouteType.REDIRECT);
     }

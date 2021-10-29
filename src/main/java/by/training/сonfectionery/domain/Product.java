@@ -1,7 +1,5 @@
 package by.training.сonfectionery.domain;
 
-import java.io.InputStream;
-
 public class Product extends Entity {
     private String name;
     private double price;
@@ -11,7 +9,6 @@ public class Product extends Entity {
     private int productTypeId;
 
     public Product(){
-
     }
 
     public double getPrice(){

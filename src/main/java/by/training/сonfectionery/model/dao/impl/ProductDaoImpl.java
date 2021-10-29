@@ -1,6 +1,5 @@
 package by.training.сonfectionery.model.dao.impl;
 
-import by.training.сonfectionery.domain.Order;
 import by.training.сonfectionery.domain.Product;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.model.dao.ProductDao;
@@ -11,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,12 +53,10 @@ public class ProductDaoImpl extends ProductDao {
 
     @Override
     public int getNumberOfRecords(List<Integer>productTypeId) throws DaoException {
-        String query = SQL_GET_NUMBER_OF_RECORDS + "WHERE product_type_id IN (";
-        for (int i = 0; i < productTypeId.size(); i++) {
-            query = query + "?,";
-        }
-        query = query.substring(0, query.length() - 1) + ")";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        StringBuilder query = new StringBuilder(SQL_GET_NUMBER_OF_RECORDS + "WHERE product_type_id IN (");
+        query.append("?,".repeat(productTypeId.size()));
+        query = new StringBuilder(query.substring(0, query.length() - 1) + ")");
+        try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
             for (int i = 0; i < productTypeId.size(); i++) {
                 statement.setInt(i + 1, productTypeId.get(i));
             }
@@ -75,25 +71,23 @@ public class ProductDaoImpl extends ProductDao {
 
     @Override
     public List<Product> findProductByProductTypeId(int offset, int recordsPerPage, List<Integer> productTypeId, int sortBy) throws DaoException {
-        String query = SQL_FIND_PRODUCT_BY_PRODUCT_TYPE_ID;
-        query = query + "WHERE product_type_id IN (";
-        for (int i = 0; i < productTypeId.size(); i++) {
-            query = query + "?,";
-        }
+        StringBuilder query = new StringBuilder(SQL_FIND_PRODUCT_BY_PRODUCT_TYPE_ID);
+        query.append("WHERE product_type_id IN (");
+        query.append("?,".repeat(productTypeId.size()));
         switch (sortBy) {
             case -1: {
-                query = query.substring(0, query.length() - 1) + ")\nORDER BY price DESC";
+                query = new StringBuilder(query.substring(0, query.length() - 1) + ")\nORDER BY price DESC");
                 break;
             }
             case 1: {
-                query = query.substring(0, query.length() - 1) + ")\nORDER BY price ASC";
+                query = new StringBuilder(query.substring(0, query.length() - 1) + ")\nORDER BY price ASC");
                 break;
             }
             default:
                 break;
         }
-        query = query + "\nLIMIT ?, ?;";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        query.append("\nLIMIT ?, ?;");
+        try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
             List<Product> products = new ArrayList<>();
             int i;
             for (i = 0; i < productTypeId.size(); i++) {
@@ -109,7 +103,7 @@ public class ProductDaoImpl extends ProductDao {
                 return products;
             }
         } catch (SQLException e) {
-            throw new DaoException("Failed to find all products", e);
+            throw new DaoException("Failed to find products", e);
         }
     }
 
@@ -126,7 +120,7 @@ public class ProductDaoImpl extends ProductDao {
                 return products;
             }
         } catch (SQLException e) {
-            throw new DaoException("Failed to find all products", e);
+            throw new DaoException("Failed to find products", e);
         }
     }
 
@@ -179,10 +173,10 @@ public class ProductDaoImpl extends ProductDao {
 
 
     @Override
-    public boolean deleteById(Integer id) throws DaoException {
+    public void deleteById(Integer id) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_PRODUCT_BY_ID)) {
             statement.setInt(1, id);
-            return statement.executeUpdate() == 1;
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Failed to delete product by id", e);
         }

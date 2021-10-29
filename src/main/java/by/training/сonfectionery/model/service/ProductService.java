@@ -16,5 +16,4 @@ public interface ProductService {
     List<Product> findProducts(int offset, int numberOfRecords) throws ServiceException;
     int numberOfRecords() throws ServiceException;
     int numberOfRecords(List<Integer> productTypes) throws ServiceException;
-
 }

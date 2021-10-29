@@ -8,6 +8,8 @@ import by.training.сonfectionery.model.service.UserService;
 import by.training.сonfectionery.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +20,20 @@ import static by.training.сonfectionery.control.command.RequestAttribute.*;
 import static by.training.сonfectionery.control.command.RequestParameter.*;
 
 public class SearchUsersCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         UserService userService = UserServiceImpl.getInstance();
         HttpSession session = request.getSession();
         String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
-
         String[] userStatuses = request.getParameterValues(STATUS_ID);
         List<Integer> userStatusesList = new ArrayList<>();
+        String id = request.getParameter(ID);
+        if (id == null || id.equals("")){
+            id = null;
+        }
         if (userStatuses != null) {
             for (String userStatus : userStatuses) {
                 try {
@@ -49,10 +57,8 @@ public class SearchUsersCommand implements Command {
 
         try {
             List<User> userList = new ArrayList<>();
-
-            if (request.getParameter(ID) != null) {
-                int id = Integer.parseInt(request.getParameter(ID));
-                Optional<User> user = userService.findUserById(id);
+            if (id != null && userStatuses == null) {
+                Optional<User> user = userService.findUserById(Integer.parseInt(id));
                 if (user.isPresent()) {
                     userList.add(user.get());
                     request.setAttribute(USER_LIST, userList);
@@ -63,7 +69,7 @@ public class SearchUsersCommand implements Command {
             }
 
             int numberOfRecords;
-            if (userStatuses == null) {
+            if (userStatuses == null  && id == null) {
                 userList = userService.findUsers(page - 1, RECORDS_PER_PAGE);
                 numberOfRecords = userService.numberOfRecords();
             } else {
@@ -83,7 +89,7 @@ public class SearchUsersCommand implements Command {
             request.setAttribute(ERROR_NO_USERS_FOUND, MessageManager.valueOf(locale.toUpperCase(Locale.ROOT)).getMessage(ERROR_NO_USERS_FOUND));
             return new Router(PagePath.USERS_PAGE, Router.RouteType.FORWARD);
         } catch (ServiceException e) {
-            //logger.error("Failed to execute GetOrders command", e);
+            logger.error("Failed to execute SearchUsersCommand", e);
             throw new CommandException("Failed to execute SearchUsersCommand", e);
         }
 

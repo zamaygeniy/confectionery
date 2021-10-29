@@ -29,8 +29,8 @@ public class ChangeUserImageCommand implements UploadCommand {
             }
             return new Router(PagePath.GO_TO_PROFILE_PAGE, Router.RouteType.REDIRECT);
         } catch (ServiceException e) {
-            logger.error("Executing changeUserImage command error", e);
-            throw new CommandException("Executing changeUserImage command error", e);
+            logger.error("Failed to execute ChangeUserImageCommand", e);
+            throw new CommandException("Failed to execute ChangeUserImageCommand", e);
         }
     }
 

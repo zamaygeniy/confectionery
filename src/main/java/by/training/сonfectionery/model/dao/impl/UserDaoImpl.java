@@ -106,12 +106,10 @@ public class UserDaoImpl extends UserDao {
 
     @Override
     public List<User> findUsersByStatusId(int offset, int recordsPerPage, List<Integer> userStatusId) throws DaoException {
-        String query = SQL_FIND_USER + "WHERE status_id IN (";
-        for (int i = 0; i < userStatusId.size(); i++) {
-            query = query + "?,";
-        }
-        query = query.substring(0, query.length() - 1) + ")\nLIMIT ?, ?;";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        StringBuilder query = new StringBuilder(SQL_FIND_USER + "WHERE status_id IN (");
+        query.append("?,".repeat(userStatusId.size()));
+        query = new StringBuilder(query.substring(0, query.length() - 1) + ")\nLIMIT ?, ?;");
+        try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
             List<User> users = new ArrayList<>();
             int i;
             for (i = 0; i < userStatusId.size(); i++) {
@@ -168,10 +166,10 @@ public class UserDaoImpl extends UserDao {
 
 
     @Override
-    public boolean deleteById(Integer id) throws DaoException {
+    public void deleteById(Integer id) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_USER_BY_ID)) {
             statement.setInt(1, id);
-            return statement.executeUpdate() == 1;
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Failed to delete user by id", e);
         }
@@ -275,12 +273,10 @@ public class UserDaoImpl extends UserDao {
 
     @Override
     public int numberOfRecords(List<Integer> userStatuses) throws DaoException {
-        String query = SQL_GET_NUMBER_OF_RECORDS + "WHERE status_id IN (";
-        for (int i = 0; i < userStatuses.size(); i++) {
-            query = query + "?,";
-        }
-        query = query.substring(0, query.length() - 1) + ")";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        StringBuilder query = new StringBuilder(SQL_GET_NUMBER_OF_RECORDS + "WHERE status_id IN (");
+        query.append("?,".repeat(userStatuses.size()));
+        query = new StringBuilder(query.substring(0, query.length() - 1) + ")");
+        try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
             for (int i = 0; i < userStatuses.size(); i++) {
                 statement.setInt(i + 1, userStatuses.get(i));
             }

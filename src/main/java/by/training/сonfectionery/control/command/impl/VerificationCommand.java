@@ -17,7 +17,7 @@ public class VerificationCommand implements Command {
                 return new Router(PagePath.GO_TO_LOGIN_PAGE, Router.RouteType.REDIRECT);
             }
         } catch (ServiceException e) {
-            throw new CommandException("Executing verify command error", e);
+            throw new CommandException("Failed to execute VerificationCommand", e);
         }
         return new Router(PagePath.MAIN_PAGE, Router.RouteType.FORWARD);
 

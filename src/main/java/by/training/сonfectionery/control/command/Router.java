@@ -7,7 +7,7 @@ public class Router {
     }
 
     private String pagePath;
-    private RouteType routeType = RouteType.FORWARD;
+    private RouteType routeType;
 
     public Router(String pagePath, RouteType routeType) {
         this.pagePath = pagePath;

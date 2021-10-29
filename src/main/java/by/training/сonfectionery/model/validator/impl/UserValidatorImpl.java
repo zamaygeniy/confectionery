@@ -8,10 +8,9 @@ import static by.training.сonfectionery.control.command.RequestParameter.*;
 
 public class UserValidatorImpl implements UserValidator {
 
-    private static UserValidatorImpl instance = new UserValidatorImpl();
+    private static final UserValidatorImpl instance = new UserValidatorImpl();
 
-    private static final String REGEX_FIRST_NAME = "(?=^.{1,32}$)^([A-zА-яЁё`'.-])+$";
-    private static final String REGEX_LAST_NAME = "(?=^.{1,32}$)^([A-zА-яЁё`'.-])+$";
+    private static final String REGEX_NAME = "(?=^.{1,32}$)^([A-zА-яЁё`'.-])+$";
     private static final String REGEX_EMAIL = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
     private static final String REGEX_PASSWORD = "^.{6,20}$";
 
@@ -48,12 +47,12 @@ public class UserValidatorImpl implements UserValidator {
 
     @Override
     public boolean validateFirstName(String firstName) {
-        return firstName.matches(REGEX_FIRST_NAME);
+        return firstName.matches(REGEX_NAME);
     }
 
     @Override
     public boolean validateLastName(String lastName) {
-        return lastName.matches(REGEX_LAST_NAME);
+        return lastName.matches(REGEX_NAME);
     }
 
     @Override

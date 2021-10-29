@@ -10,6 +10,8 @@ import by.training.сonfectionery.model.service.OrderService;
 import by.training.сonfectionery.model.service.impl.OrderServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,9 @@ import static by.training.сonfectionery.control.command.RequestAttribute.CURREN
 import static by.training.сonfectionery.control.command.RequestParameter.ORDER_STATUS_ID;
 
 public class SearchUserOrdersCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
 
@@ -73,7 +78,7 @@ public class SearchUserOrdersCommand implements Command {
             request.setAttribute(CURRENT_PAGE, page);
             return new Router(PagePath.ORDERS_PAGE, Router.RouteType.FORWARD);
         } catch (ServiceException e) {
-            //logger.error("Failed to execute GetOrders command", e);
+            logger.error("Failed to execute SearchUserOrdersCommand", e);
             throw new CommandException("Failed to execute SearchUserOrdersCommand", e);
         }
 

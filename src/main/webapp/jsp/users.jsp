@@ -14,10 +14,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/scripts/scroll.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ui_kit.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-
 </head>
-
-
 <body>
 
 
@@ -96,9 +93,9 @@
                                     <button class="done"><fmt:message key="button.make_admin"/></button>
                                 </a>
                             </div>
-
                         </div>
                     </c:forEach>
+                    <span class="fail-message">${errorNoUsersFound}</span>
                 </div>
                 <div class="pagination">
                     <div class="pag_body">

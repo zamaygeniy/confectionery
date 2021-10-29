@@ -16,7 +16,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
 
     private static final Logger logger = LogManager.getLogger();
 
-    private static ProductTypeServiceImpl instance = new ProductTypeServiceImpl();
+    private static final ProductTypeServiceImpl instance = new ProductTypeServiceImpl();
 
     private ProductTypeServiceImpl() {
     }

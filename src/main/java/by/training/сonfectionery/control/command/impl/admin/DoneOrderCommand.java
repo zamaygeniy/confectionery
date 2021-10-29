@@ -22,8 +22,8 @@ public class DoneOrderCommand implements Command {
         try {
             orderService.doneOrder(Integer.parseInt(orderId));
         } catch (ServiceException e) {
-            logger.error("Executing doneOrder command error", e);
-            throw new CommandException("Executing doneOrder command error", e);
+            logger.error("Failed to execute DoneOrderCommand", e);
+            throw new CommandException("Failed to execute DoneOrderCommand", e);
         }
         return new Router(PagePath.GO_TO_ORDERS_PAGE, Router.RouteType.REDIRECT);
     }

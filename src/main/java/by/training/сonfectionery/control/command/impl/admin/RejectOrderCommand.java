@@ -23,8 +23,8 @@ public class RejectOrderCommand implements Command {
         try {
             orderService.rejectOrder(Integer.parseInt(orderId));
         } catch (ServiceException e) {
-            logger.error("Executing rejectOrder command error", e);
-            throw new CommandException("Executing rejectOrder command error", e);
+            logger.error("Failed to execute RejectOrderCommand", e);
+            throw new CommandException("Failed to execute RejectOrderCommand", e);
         }
     return new Router(PagePath.GO_TO_ORDERS_PAGE, Router.RouteType.REDIRECT);
     }

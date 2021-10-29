@@ -8,13 +8,11 @@ import by.training.сonfectionery.model.dao.impl.EntityTransaction;
 import by.training.сonfectionery.model.dao.impl.ProductDaoImpl;
 import by.training.сonfectionery.model.service.ProductService;
 import by.training.сonfectionery.model.validator.impl.ProductValidatorImpl;
-import by.training.сonfectionery.model.validator.impl.UserValidatorImpl;
 import by.training.сonfectionery.util.Base64Coder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

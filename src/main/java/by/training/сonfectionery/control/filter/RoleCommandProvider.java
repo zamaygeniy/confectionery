@@ -5,9 +5,6 @@ import static by.training.сonfectionery.control.command.UploadCommandType.*;
 
 import by.training.сonfectionery.control.command.CommandType;
 import by.training.сonfectionery.control.command.UploadCommandType;
-import by.training.сonfectionery.control.command.impl.admin.BlockUserCommand;
-import by.training.сonfectionery.control.command.impl.admin.UnblockUserCommand;
-import by.training.сonfectionery.control.command.impl.search.SearchUserOrdersCommand;
 import by.training.сonfectionery.domain.User;
 
 import java.util.EnumSet;
@@ -16,19 +13,19 @@ class RoleCommandProvider {
 
     private static RoleCommandProvider instance;
 
-    private EnumSet<UploadCommandType> guestUploadCommands = EnumSet.of(
+    private final EnumSet<UploadCommandType> guestUploadCommands = EnumSet.of(
             UploadCommandType.DEFAULT,
             REGISTRATION,
             CHANGE_USER_IMAGE
     );
 
-    private EnumSet<UploadCommandType> userUploadCommands = EnumSet.of(
+    private final EnumSet<UploadCommandType> userUploadCommands = EnumSet.of(
             UploadCommandType.DEFAULT,
             REGISTRATION,
             CHANGE_USER_IMAGE
     );
 
-    private EnumSet<UploadCommandType> adminUploadCommands = EnumSet.of(
+    private final EnumSet<UploadCommandType> adminUploadCommands = EnumSet.of(
             UploadCommandType.DEFAULT,
             REGISTRATION,
             CREATE_PRODUCT,
@@ -37,7 +34,7 @@ class RoleCommandProvider {
     );
 
 
-    private EnumSet<CommandType> guestCommands = EnumSet.of(
+    private final EnumSet<CommandType> guestCommands = EnumSet.of(
             CommandType.DEFAULT,
             LOGIN,
             CHANGE_LOCALE,
@@ -52,7 +49,7 @@ class RoleCommandProvider {
             CART_PAGE
     );
 
-    private EnumSet<CommandType> userCommands = EnumSet.of(
+    private final EnumSet<CommandType> userCommands = EnumSet.of(
             CommandType.DEFAULT,
             LOGIN,
             CHANGE_LOCALE,
@@ -72,7 +69,7 @@ class RoleCommandProvider {
             CART_PAGE
     );
 
-    private EnumSet<CommandType> adminCommands = EnumSet.of(
+    private final EnumSet<CommandType> adminCommands = EnumSet.of(
             CommandType.DEFAULT,
             LOGIN,
             CHANGE_PASSWORD,

@@ -10,14 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 import static by.training.сonfectionery.control.command.RequestParameter.*;
-import static by.training.сonfectionery.control.command.RequestParameter.PASSWORD;
 
 public class ProductValidatorImpl implements ProductValidator {
-    private static ProductValidatorImpl instance = new ProductValidatorImpl();
+    private static final ProductValidatorImpl instance = new ProductValidatorImpl();
 
     private static final String REGEX_NAME = "(?=^.{1,32}$)^([A-zА-яЁё`'.-])+$";
     private static final String REGEX_WEIGHT = "^\\d{1,5}$";
-    private static final String REGEX_PRICE = "^\\d*\\.{0,1}\\d+|\\d+\\.{0,1}\\d*$";
+    private static final String REGEX_PRICE = "^\\d*\\.?\\d+|\\d+\\.?\\d*$";
     private static final String EMPTY_LINE = "";
 
     private ProductValidatorImpl() {

@@ -25,7 +25,7 @@ public class MailSender {
     private static final String MESSAGE_SECOND_PART = "'>verification</a>";
     private static final String MESSAGE_TYPE = "text/html";
 
-    private Properties properties = new Properties();
+    private final Properties properties = new Properties();
     private MimeMessage message;
 
     public MailSender() {

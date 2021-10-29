@@ -6,8 +6,6 @@ import by.training.сonfectionery.exception.CommandException;
 import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.service.UserService;
 import by.training.сonfectionery.model.service.impl.UserServiceImpl;
-import by.training.сonfectionery.model.validator.UserValidator;
-import by.training.сonfectionery.model.validator.impl.UserValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Locale;
 
 import static by.training.сonfectionery.control.command.RequestAttribute.*;
-import static by.training.сonfectionery.control.command.RequestAttribute.ERROR_WRONG_DATA;
 import static by.training.сonfectionery.control.command.RequestParameter.*;
 import static by.training.сonfectionery.control.command.RequestParameter.NEW_PASSWORD;
 
@@ -43,8 +40,8 @@ public class ChangePasswordCommand implements Command{
             }
             return new Router(PagePath.GO_TO_PROFILE_PAGE, Router.RouteType.REDIRECT);
         } catch (ServiceException e) {
-            logger.error("Failed to change password", e);
-            throw new CommandException("Failed to change password", e);
+            logger.error("Failed to execute ChangePasswordCommand", e);
+            throw new CommandException("Failed to change ChangePasswordCommand", e);
         }
     }
 }

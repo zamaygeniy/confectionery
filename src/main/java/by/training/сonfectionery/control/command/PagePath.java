@@ -23,6 +23,7 @@ public final class PagePath {
     public static final String GO_TO_CONFIRMATION_PAGE ="/controller?command=confirmation_page";
     public static final String GO_TO_PROFILE_PAGE = "/controller?command=profile_page";
     public static final String GO_TO_CART_PAGE = "/controller?command=cart_page";
+    public static final String GO_TO_CATALOG_PAGE = "/controller?command=catalog_page";
 
     private PagePath(){}
 }

@@ -1,20 +1,18 @@
 package by.training.сonfectionery.model.dao.impl;
 
-import by.training.сonfectionery.domain.Product;
 import by.training.сonfectionery.domain.ProductType;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.model.dao.ProductTypeDao;
-import by.training.сonfectionery.util.Base64Coder;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import static by.training.сonfectionery.model.dao.ColumnName.*;
+import static by.training.сonfectionery.model.dao.ColumnName.ID;
+import static by.training.сonfectionery.model.dao.ColumnName.TYPE;
 
 public class ProductTypeDaoImpl extends ProductTypeDao {
 
@@ -46,8 +44,7 @@ public class ProductTypeDaoImpl extends ProductTypeDao {
     }
 
     @Override
-    public boolean deleteById(Integer id) throws DaoException {
-        return false;
+    public void deleteById(Integer id) throws DaoException {
     }
 
     @Override

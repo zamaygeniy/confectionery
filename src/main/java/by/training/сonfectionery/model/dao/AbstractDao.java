@@ -14,7 +14,7 @@ public abstract class AbstractDao<K, T extends Entity> {
 
     public abstract Optional<T> findById(K id) throws DaoException;
 
-    public abstract boolean deleteById(K id) throws DaoException;
+    public abstract void deleteById(K id) throws DaoException;
 
     public abstract boolean create(T t) throws DaoException;
 

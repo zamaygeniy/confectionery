@@ -4,7 +4,6 @@ public class ProductType extends Entity {
     String type;
 
     public ProductType(){
-
     }
 
     public void setType(String type){
@@ -14,7 +13,6 @@ public class ProductType extends Entity {
     public String getType(){
         return type;
     }
-
 
     public static class ProductTypeBuilder{
         ProductType productType;

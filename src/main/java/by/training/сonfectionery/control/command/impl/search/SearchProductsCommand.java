@@ -8,6 +8,8 @@ import by.training.сonfectionery.model.service.ProductService;
 import by.training.сonfectionery.model.service.impl.ProductServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,9 @@ import static by.training.сonfectionery.control.command.RequestAttribute.*;
 import static by.training.сonfectionery.control.command.RequestParameter.*;
 
 public class SearchProductsCommand implements Command {
+
+    private static final Logger logger = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         ProductService productService = ProductServiceImpl.getInstance();
@@ -67,8 +72,8 @@ public class SearchProductsCommand implements Command {
             request.setAttribute(CURRENT_PAGE, page);
             return new Router(PagePath.CATALOG_PAGE, Router.RouteType.FORWARD);
         } catch (ServiceException e) {
-            //logger.error("Failed to execute GetOrders command", e);
-            throw new CommandException("Failed to execute SearchOrdersCommand", e);
+            logger.error("Failed to execute SearchProductsCommand", e);
+            throw new CommandException("Failed to execute SearchProductsCommand", e);
         }
     }
 }

@@ -1,7 +1,5 @@
 package by.training.сonfectionery.domain;
 
-import java.io.InputStream;
-
 public class User extends Entity {
     private String firstName;
     private String lastName;
@@ -9,7 +7,6 @@ public class User extends Entity {
     private String image = null;
     private Role role;
     private Status status;
-
 
     public void setStatus(Status status){
         this.status = status;
@@ -66,8 +63,8 @@ public class User extends Entity {
         ADMIN("admin", 1),
         USER("user", 2),
         GUEST("guest", 3);
-        private String value;
-        private int id;
+        private final String value;
+        private final int id;
 
         Role(String value, int id) {
             this.value = value;
@@ -87,8 +84,8 @@ public class User extends Entity {
         NON_ACTIVATED("non_activated", 1),
         ACTIVATED("activated", 2),
         BLOCKED("blocked", 3);
-        private String value;
-        private int id;
+        private final String value;
+        private final int id;
 
         Status(String value, int id) {
             this.id = id;

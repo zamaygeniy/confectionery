@@ -63,28 +63,24 @@ public class OrderDaoImpl extends OrderDao {
 
     @Override
     public List<Order> findOrders(int offset, int recordsPerPage, int userId, List<Integer> statusId) throws DaoException {
-        String query = SQL_FIND_ALL_ORDERS;
+        StringBuilder query = new StringBuilder(SQL_FIND_ALL_ORDERS);
         int key = -1;
         if (statusId != null && userId > 0) {
-            query = query + "WHERE status_id IN (";
-            for (int i = 0; i < statusId.size(); i++) {
-                query = query + "?,";
-            }
-            query = query.substring(0, query.length() - 1) + ") AND user_id = ?";
+            query.append("WHERE status_id IN (");
+            query.append("?,".repeat(statusId.size()));
+            query = new StringBuilder(query.substring(0, query.length() - 1) + ") AND user_id = ?");
             key = 0;
         } else if (userId > 0) {
-            query = query + "WHERE user_id = ?";
+            query.append("WHERE user_id = ?");
             key = 1;
         } else if (statusId != null) {
-            query = query + "WHERE status_id IN (";
-            for (int i = 0; i < statusId.size(); i++) {
-                query = query + "?,";
-            }
-            query = query.substring(0, query.length() - 1) + ")";
+            query.append("WHERE status_id IN (");
+            query.append("?,".repeat(statusId.size()));
+            query = new StringBuilder(query.substring(0, query.length() - 1) + ")");
             key = 2;
         }
-        query = query + "\nLIMIT ?, ?;";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        query.append("\nLIMIT ?, ?;");
+        try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
             List<Order> orders = new ArrayList<>();
             switch (key) {
                 case 0:
@@ -144,27 +140,23 @@ public class OrderDaoImpl extends OrderDao {
 
     @Override
     public int getNumberOfRecords(int userId, List<Integer> statusId) throws DaoException {
-        String query = SQL_GET_NUMBER_OF_RECORDS;
+        StringBuilder query = new StringBuilder(SQL_GET_NUMBER_OF_RECORDS);
         int key = -1;
         if (statusId != null && userId > 0) {
-            query = query + "WHERE status_id IN (";
-            for (int i = 0; i < statusId.size(); i++) {
-                query = query + "?,";
-            }
-            query = query.substring(0, query.length() - 1) + ") AND user_id = ?";
+            query.append("WHERE status_id IN (");
+            query.append("?,".repeat(statusId.size()));
+            query = new StringBuilder(query.substring(0, query.length() - 1) + ") AND user_id = ?");
             key = 0;
         } else if (userId > 0) {
-            query = query + "WHERE user_id = ?";
+            query.append("WHERE user_id = ?");
             key = 1;
         } else if (statusId != null) {
-            query = query + "WHERE status_id IN (";
-            for (int i = 0; i < statusId.size(); i++) {
-                query = query + "?,";
-            }
-            query = query.substring(0, query.length() - 1) + ")";
+            query.append("WHERE status_id IN (");
+            query.append("?,".repeat(statusId.size()));
+            query = new StringBuilder(query.substring(0, query.length() - 1) + ")");
             key = 2;
         }
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query.toString())) {
             switch (key) {
                 case 0:
                     int i;
@@ -256,10 +248,10 @@ public class OrderDaoImpl extends OrderDao {
     }
 
     @Override
-    public boolean deleteById(Integer id) throws DaoException {
+    public void deleteById(Integer id) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_ORDER_BY_ID)) {
             statement.setInt(1, id);
-            return statement.executeUpdate() == 1;
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Failed to delete order by id", e);
         }
@@ -272,7 +264,7 @@ public class OrderDaoImpl extends OrderDao {
             statement.setInt(1, orderId);
             statement.setInt(2, productId);
             statement.setInt(3, amount);
-            boolean result = statement.executeUpdate() == 1;
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Failed to add products to order", e);
         }

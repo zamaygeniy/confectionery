@@ -13,7 +13,7 @@ public interface UserService {
 
     Optional<User> authenticate(String email, String password) throws ServiceException;
 
-    void registrate(Map<String, String> userMap) throws ServiceException;
+    void register(Map<String, String> userMap) throws ServiceException;
 
     boolean validateUserData(Map<String, String> userMap);
 

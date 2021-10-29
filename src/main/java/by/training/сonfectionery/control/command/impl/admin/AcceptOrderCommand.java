@@ -22,8 +22,8 @@ public class AcceptOrderCommand implements Command {
         try {
             orderService.acceptOrder(Integer.parseInt(orderId));
         } catch (ServiceException e) {
-            logger.error("Executing acceptOrder command error", e);
-            throw new CommandException("Executing acceptOrder command error", e);
+            logger.error("Failed to execute AcceptOrderCommand", e);
+            throw new CommandException("Failed to execute AcceptOrderCommand", e);
         }
         return new Router(PagePath.GO_TO_ORDERS_PAGE, Router.RouteType.REDIRECT);
     }

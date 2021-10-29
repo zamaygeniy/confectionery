@@ -11,7 +11,6 @@ import by.training.сonfectionery.model.dao.impl.EntityTransaction;
 import by.training.сonfectionery.model.dao.impl.OrderDaoImpl;
 import by.training.сonfectionery.model.dao.impl.ProductDaoImpl;
 import by.training.сonfectionery.model.service.OrderService;
-import com.oracle.wls.shaded.org.apache.xpath.operations.Or;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

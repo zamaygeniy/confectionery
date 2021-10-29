@@ -50,8 +50,8 @@ public class EditUserCommand implements Command {
 
             return new Router(PagePath.GO_TO_PROFILE_PAGE, Router.RouteType.REDIRECT);
         } catch (ServiceException e) {
-            logger.error("Failed to update user data", e);
-            throw new CommandException("Failed to update user data", e);
+            logger.error("Failed to execute EditUserCommand", e);
+            throw new CommandException("Failed to execute EditUserCommand", e);
         }
     }
 }

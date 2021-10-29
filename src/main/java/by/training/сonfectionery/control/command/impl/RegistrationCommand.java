@@ -11,9 +11,6 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Locale;
@@ -25,7 +22,6 @@ import static by.training.сonfectionery.control.command.RequestAttribute.*;
 public class RegistrationCommand implements UploadCommand {
 
     private static final Logger logger = LogManager.getLogger();
-    private static final String BASE_IMAGE_PATH = "/img/user.png";
 
     @Override
     public Router execute(HttpServletRequest request, InputStream image) throws CommandException {
@@ -50,8 +46,8 @@ public class RegistrationCommand implements UploadCommand {
             }
 
         } catch (ServiceException e) {
-            logger.error("Executing registration command error", e);
-            throw new CommandException("Executing registration command error", e);
+            logger.error("Failed to execute RegistrationCommand", e);
+            throw new CommandException("Failed to execute RegistrationCommand", e);
         }
 
         String password = request.getParameter(PASSWORD);
@@ -59,10 +55,10 @@ public class RegistrationCommand implements UploadCommand {
 
         if (service.validateUserData(userMap) && password.equals(passwordRepeat)) {
             try {
-                service.registrate(userMap);
+                service.register(userMap);
             } catch (ServiceException e) {
-                logger.error("Executing registration command error", e);
-                throw new CommandException("Executing registration command error", e);
+                logger.error("Failed to execute RegistrationCommand", e);
+                throw new CommandException("Failed to execute RegistrationCommand", e);
             }
             return new Router(PagePath.GO_TO_CONFIRMATION_PAGE, Router.RouteType.REDIRECT);
         } else {
