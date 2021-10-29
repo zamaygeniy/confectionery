@@ -5,7 +5,7 @@
 <fmt:setBundle basename="prop.pagecontent"/>
 
 <html>
-<c:import url="fragment/header1.jsp"/>
+<c:import url="fragment/header.jsp"/>
 <head>
     <meta charset="UTF-8">
     <title>one plus</title>

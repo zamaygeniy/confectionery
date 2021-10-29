@@ -9,7 +9,7 @@
 
 </head>
 <body>
-<c:import url="fragment/header1.jsp"/>
+<c:import url="fragment/header.jsp"/>
 <main>
     <h3><fmt:message key="confirmation.message"/></h3>
 </main>

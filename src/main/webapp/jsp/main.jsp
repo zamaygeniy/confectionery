@@ -19,7 +19,7 @@
 </head>
 <body>
 
-<c:import url="fragment/header1.jsp"/>
+<c:import url="fragment/header.jsp"/>
 
 <main class="main _index">
     <div class="first_full_screen">
