@@ -1,9 +1,6 @@
 package by.training.сonfectionery.control.filter;
 
-import by.training.сonfectionery.control.command.CommandType;
-import by.training.сonfectionery.control.command.PagePath;
-import by.training.сonfectionery.control.command.RequestParameter;
-import by.training.сonfectionery.control.command.SessionAttribute;
+import by.training.сonfectionery.control.command.*;
 import by.training.сonfectionery.domain.User;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -23,7 +20,6 @@ public class RoleFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("RoleFilter");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
@@ -35,17 +31,23 @@ public class RoleFilter implements Filter {
         }
         String commandName = request.getParameter(RequestParameter.COMMAND);
         CommandType commandType;
+        UploadCommandType uploadCommandType = UploadCommandType.DEFAULT;
         if (commandName != null) {
             try {
                 commandType = CommandType.valueOf(commandName.toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                logger.error("Invalid command name", e);
-                commandType = CommandType.DEFAULT;
+                //logger.error("Invalid command name", e);
+                commandType = null;
             }
-            if (commandType != CommandType.CHANGE_LOCALE) {
+            try {
+                uploadCommandType = UploadCommandType.valueOf(commandName.toUpperCase(Locale.ROOT));
+            } catch (IllegalArgumentException e) {
+                uploadCommandType = null;
+            }
+
+            if (commandType != CommandType.CHANGE_LOCALE && commandType != null || uploadCommandType != null) {
                 if (request.getQueryString() != null) {
                     session.setAttribute(SessionAttribute.CURRENT_URL, "/controller?" + request.getQueryString());
-                    System.out.println(session.getAttribute(SessionAttribute.CURRENT_URL));
                 }
             }
 
@@ -54,11 +56,20 @@ public class RoleFilter implements Filter {
         }
         RoleCommandProvider roleCommandProvider = RoleCommandProvider.getInstance();
         User user = (User) session.getAttribute(SessionAttribute.USER);
-        if (!roleCommandProvider.checkCommand(user.getRole(), commandType)) {
-            response.sendRedirect(request.getContextPath() + PagePath.GO_TO_MAIN_PAGE);
-        } else {
-            filterChain.doFilter(servletRequest, servletResponse);
+        if (commandType != null) {
+            if (!roleCommandProvider.checkCommand(user.getRole(), commandType)) {
+                response.sendRedirect(request.getContextPath() + PagePath.GO_TO_MAIN_PAGE);
+            } else {
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
+        } else if (uploadCommandType != null) {
+            if (!roleCommandProvider.checkUploadCommand(user.getRole(), uploadCommandType)) {
+                response.sendRedirect(request.getContextPath() + PagePath.GO_TO_MAIN_PAGE);
+            } else {
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
         }
+
     }
 
 }

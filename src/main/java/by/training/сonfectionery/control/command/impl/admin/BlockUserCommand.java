@@ -1,4 +1,4 @@
-package by.training.сonfectionery.control.command.impl;
+package by.training.сonfectionery.control.command.impl.admin;
 
 import by.training.сonfectionery.control.command.Command;
 import by.training.сonfectionery.control.command.PagePath;
@@ -6,25 +6,25 @@ import by.training.сonfectionery.control.command.RequestParameter;
 import by.training.сonfectionery.control.command.Router;
 import by.training.сonfectionery.exception.CommandException;
 import by.training.сonfectionery.exception.ServiceException;
-import by.training.сonfectionery.model.service.OrderService;
-import by.training.сonfectionery.model.service.impl.OrderServiceImpl;
+import by.training.сonfectionery.model.service.UserService;
+import by.training.сonfectionery.model.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class DoneOrderCommand implements Command {
+public class BlockUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        String orderId = request.getParameter(RequestParameter.ORDER_ID);
-        OrderService orderService = OrderServiceImpl.getInstance();
+        String id = request.getParameter(RequestParameter.ID);
+        UserService userService = UserServiceImpl.getInstance();
         try {
-            orderService.doneOrder(Integer.parseInt(orderId));
+            userService.blockUser(Integer.parseInt(id));
         } catch (ServiceException e) {
-            logger.error("Executing doneOrder command error", e);
-            throw new CommandException("Executing doneOrder command error", e);
+            logger.error("Failed to execute BanUserCommand", e);
+            throw new CommandException("Failed to execute BanUserCommand", e);
         }
-        return new Router(PagePath.GO_TO_ORDERS_PAGE, Router.RouteType.REDIRECT);
+        return new Router(PagePath.GO_TO_USERS_PAGE, Router.RouteType.REDIRECT);
     }
 }

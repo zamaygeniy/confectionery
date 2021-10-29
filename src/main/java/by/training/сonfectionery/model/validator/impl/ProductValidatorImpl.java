@@ -18,7 +18,6 @@ public class ProductValidatorImpl implements ProductValidator {
     private static final String REGEX_NAME = "(?=^.{1,32}$)^([A-zА-яЁё`'.-])+$";
     private static final String REGEX_WEIGHT = "^\\d{1,5}$";
     private static final String REGEX_PRICE = "^\\d*\\.{0,1}\\d+|\\d+\\.{0,1}\\d*$";
-
     private static final String EMPTY_LINE = "";
 
     private ProductValidatorImpl() {
@@ -51,8 +50,16 @@ public class ProductValidatorImpl implements ProductValidator {
             productMap.put(PRODUCT_TYPE_ID, EMPTY_LINE);
             result = false;
         }
-
+        if (!validateImage(productMap.get(IMAGE))) {
+            productMap.put(IMAGE, EMPTY_LINE);
+            result = false;
+        }
         return result;
+    }
+
+    @Override
+    public boolean validateImage(String image){
+        return image != null;
     }
 
     @Override

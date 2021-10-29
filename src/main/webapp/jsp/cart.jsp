@@ -14,38 +14,42 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/scripts/scroll.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ui_kit.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-
 </head>
 
-
 <body>
-
 
 <main class="main _cart">
     <div class="wrapper">
         <div class="cart_container">
-            <h1 class="page_titie">Корзина</h1>
+            <h1 class="page_titie"><fmt:message key="cart.cart"/> </h1>
             <div class="cart_main_part">
                 <div class="left_part">
                 </div>
                 <div class="right_part">
                     <div class="cart_short">
-                        <div class="current_sum" id="short_sum">
-                            <div class="name">Сумма заказа:</div>
-                            <div class="value">10 170 Р.</div>
-                        </div>
                         <div class="short_footer">
                             <div class="all" id="all">
-                                <div class="name">Итого:</div>
-                                <div class="value">10 170 Р.</div>
+                                <div class="name"><fmt:message key="cart.intotal"/> </div>
+                                <div class="value total_cart_value"></div>
                             </div>
-                            <form  action="${pageContext.request.contextPath}/controller?command=checkout_command" id="make_order" method="post">
-                                <input type = "hidden" name="cart" id = "make_order_input" type="text"/>
-                                <div class="make_order _blue_btn" id="short_btn">
-                                    Оформить заказ
-                                </div>
+                            <form action="${pageContext.request.contextPath}/controller?command=checkout_command"
+                                  id="make_order" method="post">
+                                <input type="hidden" name="cart" id="make_order_input" type="text"/>
+                                <input type="hidden" name="cost" id="total_cost_input" type="text"/>
+                                <c:if test="${sessionScope.user.role == 'GUEST'}"><fmt:message key="cart.signin.message"/></c:if>
+                                <c:if test="${sessionScope.user.role == 'USER' || sessionScope.user.role == 'ADMIN'}">
+                                    <div><fmt:message key="cart.phone"/></div>
+                                    <br>
+                                    <input type="text" required
+                                           pattern="/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/"
+                                           maxlength="15"
+                                           name="phone">
+                                    <div class="make_order _blue_btn" id="short_btn">
+                                        <fmt:message key="cart.checkout"/>
+                                    </div>
+                                </c:if>
                             </form>
-                            <button id="clear_cart">Очистить корзину</button>
+                            <button id="clear_cart"><fmt:message key="cart.clear"/></button>
                         </div>
                     </div>
                 </div>

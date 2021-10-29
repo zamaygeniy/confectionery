@@ -2,9 +2,8 @@
 <html>
 <head>
     <title>404</title>
-    404 ОШИБКА
+    404 error
 </head>
 <body>
-
 </body>
 </html>

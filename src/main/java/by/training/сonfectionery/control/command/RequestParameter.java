@@ -29,12 +29,10 @@ public final class RequestParameter {
     public static final String NUMBER_IN_STOCK = "number_in_stock";
 
     public static final String STATUS_ID = "status_id";
-    public static final String DATE = "date";
-    public static final String ORDER_STATUS = "order_status";
+    public static final String CART = "cart";
+    public static final String COST = "cost";
     public static final String USER_ID = "user_id";
     public static final String FILE = "file";
-    public static final String CURRENT_URL = "current_url";
-    public static final String PAGE_NUMBER = "page";
     public static final String ORDER_ID = "order_id";
     public static final String PRODUCT_TYPE_ID = "product_type_id";
     public static final String ORDER_STATUS_ID = "order_status_id";

@@ -1,24 +1,23 @@
 package by.training.сonfectionery.control.command;
 
 import by.training.сonfectionery.control.command.impl.*;
+import by.training.сonfectionery.control.command.impl.admin.*;
 import by.training.сonfectionery.control.command.impl.go.*;
-import by.training.сonfectionery.control.command.impl.search.SearchOrdersCommand;
-import by.training.сonfectionery.control.command.impl.search.SearchProductsCommand;
-import by.training.сonfectionery.control.command.impl.search.SearchUsersCommand;
+import by.training.сonfectionery.control.command.impl.search.*;
 
 public enum CommandType {
     DEFAULT(new DefaultCommand()),
 
     LOGIN(new LoginCommand()),
     LOGOUT(new LogOutCommand()),
-    REGISTRATION(new RegistrationCommand()),
+
     VERIFICATION(new VerificationCommand()),
 
     CHANGE_LOCALE(new ChangeLocaleCommand()),
 
     EDIT_USER(new EditUserCommand()),
+    CHANGE_PASSWORD(new ChangePasswordCommand()),
 
-    CREATE_PRODUCT(new CreateProductCommand()),
     SEARCH_PRODUCTS(new SearchProductsCommand()),
     SEARCH_USERS(new SearchUsersCommand()),
     ACCEPT_ORDER(new AcceptOrderCommand()),
@@ -29,7 +28,12 @@ public enum CommandType {
     CHECKOUT_COMMAND(new CheckoutCommand()),
     CATALOG_PAGE(new SearchProductsCommand()),
     ORDERS_PAGE(new SearchOrdersCommand()),
+    USER_ORDERS(new SearchUserOrdersCommand()),
     USERS_PAGE(new SearchUsersCommand()),
+
+    BLOCK_USER(new BlockUserCommand()),
+    UNBLOCK_USER(new UnblockUserCommand()),
+    MAKE_ADMIN(new MakeUserAdminCommand()),
 
     MAIN_PAGE(new GoToMainPage()),
     CREATE_PRODUCT_PAGE(new GoToCreateProductPage()),

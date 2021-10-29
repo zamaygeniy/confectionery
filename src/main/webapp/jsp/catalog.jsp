@@ -21,16 +21,16 @@
     <div class="catalog_header">
         <div class="wrapper">
             <div class="upper">
-                <div class="page_title">Products</div>
+                <div class="page_title"><fmt:message key="catalog.products"/></div>
             </div>
         </div>
-    </div>o
+    </div>
     <div class="catalog_main_part">
         <div class="wrapper">
             <div class="filter_part">
                 <div class="filter_item">
                     <div class="filter_header">
-                        <div class="name">Menu</div>
+                        <div class="name"><fmt:message key="catalog.menu"/></div>
                         <div class="arrow">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8">
                                 <path fill="#CDCDCD" fill-rule="nonzero"
@@ -48,7 +48,7 @@
                                     <label for="${element.id}">${element.type}</label>
                                 </div>
                             </c:forEach>
-                            <button type="submit">Поиск</button>
+                            <button type="submit"><fmt:message key="catalog.search"/></button>
                         </form>
                     </div>
                 </div>
@@ -63,18 +63,14 @@
                                 <div class="description">${product.description}</div>
                                 <div class="weight">${product.weight} г.</div>
                                 <div class="cost">${product.price} р.</div>
-                                <div class="add_item _blue_btn" data-id=${product.id} data-image=${product.image}>В
-                                    корзину
+                                <div class="add_item _blue_btn" data-id=${product.id} data-image=${product.image}><fmt:message key="catalog.to_cart"/>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
 
-                    <p>
-                        <span class="fail-message">${errorNoProductsFound}</span>
-                        <button id="checkout">Оформить заказ</button>
-                        <button id="clear_cart">Очистить корзину</button>
-                    </p>
+                    <span class="fail-message">${errorNoProductsFound}</span>
+
                     <div id="cart_content"></div>
                 </div>
                 <div class="pagination">

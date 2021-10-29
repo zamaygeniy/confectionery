@@ -10,20 +10,19 @@ public final class PagePath {
     public static final String CATALOG_PAGE = "/jsp/catalog.jsp";
     public static final String CREATE_PRODUCT_PAGE = "/jsp/create_product.jsp";
     public static final String CART_PAGE = "/jsp/cart.jsp";
-    public static final String CHECKOUT = "/controller?command=checkout_command";
     public static final String ORDERS_PAGE = "/jsp/orders.jsp";
     public static final String USERS_PAGE = "/jsp/users.jsp";
 
 
     public static final String GO_TO_CREATE_PRODUCT_PAGE = "/controller?command=create_product_page";
     public static final String GO_TO_ORDERS_PAGE = "/controller?command=orders_page";
+    public static final String GO_TO_USERS_PAGE = "/controller?command=users_page";
 
     public static final String GO_TO_LOGIN_PAGE = "/controller?command=login_page";
     public static final String GO_TO_MAIN_PAGE = "/controller?command=main_page";
     public static final String GO_TO_CONFIRMATION_PAGE ="/controller?command=confirmation_page";
     public static final String GO_TO_PROFILE_PAGE = "/controller?command=profile_page";
-    public static final String GO_TO_EDIT_PRODUCT_PAGE = "/controller?command=edit_product_page";
-
+    public static final String GO_TO_CART_PAGE = "/controller?command=cart_page";
 
     private PagePath(){}
 }

@@ -23,15 +23,15 @@ public interface UserService {
 
     void updateImage(User user, InputStream inputStream) throws ServiceException;
 
-    List<User> findUsersByStatusId(int offset, int numberOfRecords, String[] userStatusId) throws ServiceException;
+    List<User> findUsersByStatusId(int offset, int numberOfRecords, List<Integer> userStatusId) throws ServiceException;
 
     List<User> findUsers(int offset, int recordsPerPage) throws ServiceException;
 
-    Optional<User> findUserByEmail(String email) throws ServiceException;
+    Optional<User> findUserById(int id) throws ServiceException;
 
     int numberOfRecords() throws ServiceException;
 
-    int numberOfRecords(String[] userStatuses) throws ServiceException;
+    int numberOfRecords(List<Integer> userStatuses) throws ServiceException;
 
     void updateUser(User user) throws ServiceException;
 
@@ -39,9 +39,11 @@ public interface UserService {
 
     void updatePassword(User user, String password) throws ServiceException;
 
-    boolean blockUser(int userId) throws ServiceException;
+    void blockUser(int id) throws ServiceException;
 
-    boolean unblockUser(int userId) throws ServiceException;
+    void unblockUser(int id) throws ServiceException;
+
+    void makeUserAdmin(int id) throws ServiceException;
 
 
 }

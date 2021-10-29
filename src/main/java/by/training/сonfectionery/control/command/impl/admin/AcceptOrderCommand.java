@@ -1,4 +1,4 @@
-package by.training.сonfectionery.control.command.impl;
+package by.training.сonfectionery.control.command.impl.admin;
 
 import by.training.сonfectionery.control.command.Command;
 import by.training.сonfectionery.control.command.PagePath;

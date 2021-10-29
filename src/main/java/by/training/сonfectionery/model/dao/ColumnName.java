@@ -3,6 +3,7 @@ package by.training.сonfectionery.model.dao;
 public class ColumnName {
     public static final String PHONE = "phone";
     public static final String STATUS_ID = "status_id";
+    public static final String COST = "cost";
 
     private ColumnName() {
     }

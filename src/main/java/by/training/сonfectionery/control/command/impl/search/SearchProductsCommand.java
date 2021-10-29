@@ -9,6 +9,7 @@ import by.training.сonfectionery.model.service.impl.ProductServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,19 +24,38 @@ public class SearchProductsCommand implements Command {
         HttpSession session = request.getSession();
         String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
         String[] productTypes = request.getParameterValues(PRODUCT_TYPE_ID);
+        List<Integer> productTypesList = new ArrayList<>();
+        if (productTypes != null){
+            for (String productType : productTypes) {
+                try {
+                    productTypesList.add(Integer.parseInt(productType));
+                } catch (NumberFormatException e) {
+                    request.setAttribute(ERROR_NO_PRODUCTS_FOUND, MessageManager.valueOf(locale.toUpperCase(Locale.ROOT)).getMessage(ERROR_NO_PRODUCTS_FOUND));
+                    return new Router(PagePath.CATALOG_PAGE, Router.RouteType.FORWARD);
+                }
+            }
+        }
+
         int page = 1;
         int sortBy = 1;
-        if (request.getParameter(PAGE) != null)
-            page = Integer.parseInt(request.getParameter(PAGE));
+        if (request.getParameter(PAGE) != null) {
+            try {
+                page = Integer.parseInt(request.getParameter(PAGE));
+            } catch (NumberFormatException e) {
+                request.setAttribute(ERROR_NO_PRODUCTS_FOUND, MessageManager.valueOf(locale.toUpperCase(Locale.ROOT)).getMessage(ERROR_NO_PRODUCTS_FOUND));
+                return new Router(PagePath.CATALOG_PAGE, Router.RouteType.FORWARD);
+            }
+        }
+
         try {
             List<Product> productList;
             int numberOfRecords;
             if (productTypes == null) {
-                productList = productService.findProducts(page, RECORDS_PER_PAGE);
+                productList = productService.findProducts(page - 1, RECORDS_PER_PAGE);
                 numberOfRecords = productService.numberOfRecords();
             } else {
-                productList = productService.findProducts(page, RECORDS_PER_PAGE, productTypes, sortBy);
-                numberOfRecords = productService.numberOfRecords(productTypes);
+                productList = productService.findProducts(page - 1, RECORDS_PER_PAGE, productTypesList, sortBy);
+                numberOfRecords = productService.numberOfRecords(productTypesList);
             }
             if (numberOfRecords == 0) {
                 request.setAttribute(ERROR_NO_PRODUCTS_FOUND, MessageManager.valueOf(locale.toUpperCase(Locale.ROOT)).getMessage(ERROR_NO_PRODUCTS_FOUND));

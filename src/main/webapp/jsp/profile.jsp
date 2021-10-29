@@ -19,15 +19,21 @@
             <div class="input_item_large">
                 <div class="input_title">Имя</div>
                 <div class="input">
-                    <input type="text" name="first_name" placeholder="${sessionScope.user.firstName}">
+                    <input type="text" name="first_name" required pattern="(?=^.{1,32}$)^([A-zА-яЁё`'.-])+$" placeholder="${sessionScope.user.firstName}">
                 </div>
             </div>
             <div class="input_item_large">
                 <div class="input_title">Фамилия</div>
                 <div class="input">
-                    <input type="text" name="last_name" placeholder="${sessionScope.user.lastName}">
+                    <input type="text" name="last_name" required pattern="(?=^.{1,32}$)^([A-zА-яЁё`'.-])+$" placeholder="${sessionScope.user.lastName}">
                 </div>
             </div>
+            <span class="success-message">${successfulEditMessage}</span>
+            <span class="fail-message">${errorWrongDataMessage}</span>
+            <button type="submit" class="button_middle _white">Изменить</button>
+        </form>
+        <form action="${pageContext.request.contextPath}/controller" method="post">
+            <input type="hidden" name="command" value="change_password">
             <div class="input_item_large">
                 <div class="input_title">Пароль</div>
                 <div class="input">
@@ -37,20 +43,19 @@
             <div class="input_item_large">
                 <div class="input_title">Новый пароль</div>
                 <div class="input">
-                    <input type="password" name="new_password" required pattern="^\w{6,20}$" maxlength="20" placeholder="">
+                    <input type="password" name="new_password" required pattern="^\w{6,20}$" maxlength="20"
+                           placeholder="">
                 </div>
             </div>
-            <span class="success-message">${successEditMessage}</span>
-            <span class="fail-message">${errorWrongDataMessage}</span>
-            <span class="success-message">${successEditPassword}</span>
+            <span class="success-message">${successfulPasswordEditMessage}</span>
             <span class="fail-message">${errorWrongPasswordMessage}</span>
-            <button type="submit" class="button_middle _white">Изменить</button>
+            <button type="submit" class="button_middle _white">Изменить пароль</button>
         </form>
 
         <div class="img"><img src='data:image/jpg;base64,${sessionScope.user.image}'></div>
-        <form action="${pageContext.request.contextPath}/uploadServlet" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="command" value="upload_user_image">
-            <input id="file" type="file" name="file" multiple accept="image/*,image/jpeg">
+        <form action="${pageContext.request.contextPath}/controller" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="command" value="change_user_image">
+            <input id="file" type="file" name="file" autocomplete="off">
             <button type="submit" class="button_middle _white">Изменить фото</button>
         </form>
 

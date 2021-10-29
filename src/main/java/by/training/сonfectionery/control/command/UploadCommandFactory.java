@@ -1,6 +1,5 @@
-package by.training.сonfectionery.control.upload;
+package by.training.сonfectionery.control.command;
 
-import by.training.сonfectionery.control.command.RequestParameter;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Locale;

@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -21,21 +22,25 @@ import java.util.Map;
 import static by.training.сonfectionery.control.command.RequestParameter.*;
 import static by.training.сonfectionery.control.command.RequestAttribute.*;
 
-public class RegistrationCommand implements Command {
+public class RegistrationCommand implements UploadCommand {
 
     private static final Logger logger = LogManager.getLogger();
     private static final String BASE_IMAGE_PATH = "/img/user.png";
 
     @Override
-    public Router execute(HttpServletRequest request) throws CommandException {
+    public Router execute(HttpServletRequest request, InputStream image) throws CommandException {
         HttpSession session = request.getSession();
         String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
-
         Map<String, String> userMap = new HashMap<>();
         userMap.put(FIRST_NAME, request.getParameter(FIRST_NAME));
         userMap.put(LAST_NAME, request.getParameter(LAST_NAME));
         userMap.put(EMAIL, request.getParameter(EMAIL));
         userMap.put(PASSWORD, request.getParameter(PASSWORD));
+        String encodedImage = null;
+        if (image != null){
+            encodedImage = Base64Coder.encode(image);
+        }
+        userMap.put(IMAGE, encodedImage);
 
         UserService service = UserServiceImpl.getInstance();
         try {
@@ -54,7 +59,6 @@ public class RegistrationCommand implements Command {
 
         if (service.validateUserData(userMap) && password.equals(passwordRepeat)) {
             try {
-                userMap.put(IMAGE, loadBaseUserImage(request.getServletContext().getRealPath("") + BASE_IMAGE_PATH));
                 service.registrate(userMap);
             } catch (ServiceException e) {
                 logger.error("Executing registration command error", e);
@@ -68,15 +72,4 @@ public class RegistrationCommand implements Command {
         }
     }
 
-    private String loadBaseUserImage(String path) {
-        String result = "";
-        try (FileInputStream fis = new FileInputStream(path)) {
-            result = Base64Coder.encode(fis);
-        } catch (FileNotFoundException e) {
-            logger.error("Can't find base user image file", e);
-        } catch (IOException e) {
-            logger.error("Can't load base user image file", e);
-        }
-        return result;
-    }
 }

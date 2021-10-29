@@ -1,4 +1,4 @@
-package by.training.сonfectionery.control.command.impl;
+package by.training.сonfectionery.control.command.impl.admin;
 
 import by.training.сonfectionery.control.command.*;
 import by.training.сonfectionery.exception.CommandException;
@@ -11,9 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -21,13 +19,12 @@ import java.util.Map;
 import static by.training.сonfectionery.control.command.RequestParameter.*;
 import static by.training.сonfectionery.control.command.RequestAttribute.*;
 
-public class CreateProductCommand implements Command {
+public class CreateProductCommand implements UploadCommand {
 
     private static final Logger logger = LogManager.getLogger();
-    private static final String BASE_IMAGE_PATH = "/img/user.png";
 
     @Override
-    public Router execute(HttpServletRequest request) throws CommandException {
+    public Router execute(HttpServletRequest request, InputStream image) throws CommandException {
         HttpSession session = request.getSession();
         String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
         Map<String, String> productMap = new HashMap<>();
@@ -36,10 +33,14 @@ public class CreateProductCommand implements Command {
         productMap.put(DESCRIPTION, request.getParameter(DESCRIPTION));
         productMap.put(WEIGHT, request.getParameter(WEIGHT));
         productMap.put(PRODUCT_TYPE_ID, request.getParameter(PRODUCT_TYPE_ID));
+        String encodedImage = null;
+        if (image != null){
+            encodedImage = Base64Coder.encode(image);
+        }
+        productMap.put(IMAGE, encodedImage);
         ProductService productService = ProductServiceImpl.getInstance();
         try {
             if (productService.validateProductData(productMap)) {
-                productMap.put(IMAGE, loadBaseUserImage(request.getServletContext().getRealPath("") + BASE_IMAGE_PATH));
                 productService.createProduct(productMap);
                 return new Router(PagePath.GO_TO_CREATE_PRODUCT_PAGE, Router.RouteType.REDIRECT);
             } else {
@@ -53,15 +54,4 @@ public class CreateProductCommand implements Command {
         }
     }
 
-    private String loadBaseUserImage(String path) {
-        String result = "";
-        try (FileInputStream fis = new FileInputStream(path)) {
-            result = Base64Coder.encode(fis);
-        } catch (FileNotFoundException e) {
-            logger.error("Can't find base user image file", e);
-        } catch (IOException e) {
-            logger.error("Can't load base user image file", e);
-        }
-        return result;
-    }
 }

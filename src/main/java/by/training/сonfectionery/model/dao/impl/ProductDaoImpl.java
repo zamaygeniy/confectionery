@@ -54,15 +54,15 @@ public class ProductDaoImpl extends ProductDao {
             """;
 
     @Override
-    public int getNumberOfRecords(String[] productTypeId) throws DaoException {
+    public int getNumberOfRecords(List<Integer>productTypeId) throws DaoException {
         String query = SQL_GET_NUMBER_OF_RECORDS + "WHERE product_type_id IN (";
-        for (int i = 0; i < productTypeId.length; i++) {
+        for (int i = 0; i < productTypeId.size(); i++) {
             query = query + "?,";
         }
         query = query.substring(0, query.length() - 1) + ")";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < productTypeId.length; i++) {
-                statement.setInt(i + 1, Integer.parseInt(productTypeId[i]));
+            for (int i = 0; i < productTypeId.size(); i++) {
+                statement.setInt(i + 1, productTypeId.get(i));
             }
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
@@ -74,10 +74,10 @@ public class ProductDaoImpl extends ProductDao {
     }
 
     @Override
-    public List<Product> findProductByProductTypeId(int offset, int recordsPerPage, String[] productTypeId, int sortBy) throws DaoException {
+    public List<Product> findProductByProductTypeId(int offset, int recordsPerPage, List<Integer> productTypeId, int sortBy) throws DaoException {
         String query = SQL_FIND_PRODUCT_BY_PRODUCT_TYPE_ID;
         query = query + "WHERE product_type_id IN (";
-        for (int i = 0; i < productTypeId.length; i++) {
+        for (int i = 0; i < productTypeId.size(); i++) {
             query = query + "?,";
         }
         switch (sortBy) {
@@ -96,8 +96,8 @@ public class ProductDaoImpl extends ProductDao {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             List<Product> products = new ArrayList<>();
             int i;
-            for (i = 0; i < productTypeId.length; i++) {
-                statement.setInt(i + 1, Integer.parseInt(productTypeId[i]));
+            for (i = 0; i < productTypeId.size(); i++) {
+                statement.setInt(i + 1, productTypeId.get(i));
             }
             statement.setInt(i + 1, offset);
             statement.setInt(i + 2, recordsPerPage);
@@ -237,7 +237,7 @@ public class ProductDaoImpl extends ProductDao {
                 .setPrice(resultSet.getDouble(PRICE))
                 .setDescription(resultSet.getString(DESCRIPTION))
                 .setWeight(resultSet.getInt(WEIGTH))
-                .setImage(resultSet.getBlob(IMAGE) == null ? "" : Base64Coder.encode(resultSet.getBlob(IMAGE).getBinaryStream()))
+                .setImage(Base64Coder.encode(resultSet.getBlob(IMAGE).getBinaryStream()))
                 .setProductTypeId(resultSet.getInt(PRODUCT_TYPE_ID))
                 .createProduct();
     }

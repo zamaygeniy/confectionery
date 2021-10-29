@@ -26,7 +26,7 @@
         <div class="catalog_header">
             <div class="wrapper">
                 <div class="upper">
-                    <div class="page_title">Users</div>
+                    <div class="page_title"><fmt:message key="users.users"/></div>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
             <div class="filter_part">
                 <div class="filter_item">
                     <div class="filter_header">
-                        <div class="name">User status</div>
+                        <div class="name"><fmt:message key="users.search"/></div>
                         <div class="arrow">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8">
                                 <path fill="#CDCDCD" fill-rule="nonzero"
@@ -49,19 +49,22 @@
                             <div class="check_large">
                                 <input type="checkbox" id="non_activated" name="status_id"
                                        value="1">
-                                <label for="non_activated">Не активирован</label>
+                                <label for="non_activated"><fmt:message key="users.non_activated"/></label>
                             </div>
                             <div class="check_large">
                                 <input type="checkbox" id="activated" name="status_id"
                                        value="2">
-                                <label for="activated">Активирован</label>
+                                <label for="activated"><fmt:message key="users.activated"/></label>
                             </div>
                             <div class="check_large">
                                 <input type="checkbox" id="blocked" name="status_id"
                                        value="3">
-                                <label for="blocked">Заблокирован</label>
+                                <label for="blocked"><fmt:message key="users.blocked"/></label>
                             </div>
-                            <button type="submit">Поиск</button>
+                            <div><fmt:message key="users.search_by_id"/></div>
+                            <br>
+                            <input class="input_middle" type="number" name="id">
+                            <button type="submit"><fmt:message key="catalog.search"/></button>
                         </form>
                     </div>
                 </div>
@@ -73,25 +76,27 @@
                         <div class="product_item">
                             <div class="img"><img src='data:image/jpg;base64,${user.image}'></div>
                             <div class="desc_part">
-                                <a href="#" class="name">${user.email}</a>
+                                <a href="#" class="name">${user.email}</a><br>
+                                <a href="${pageContext.request.contextPath}/controller?command=search_users&id=${user.id}"
+                                   class="name">id: ${user.id}</a>
                                 <div class="description">${user.firstName}</div>
-                                <div class="weight">${user.lastName} г.</div>
-                                <div class="cost">${user.role} р.</div>
-                                <div class="cost">${user.status} р.</div>
+                                <div class="weight">${user.lastName}</div>
+                                <div class="cost">${user.role}</div>
+                                <div class="cost">${user.status}</div>
                             </div>
-                            <c:if test="${sessionScope.user.role eq 'ADMIN'}">
-                                <div class="controls">
-                                    <a href="${pageContext.request.contextPath}/controller?command=accept_order&order_id=${order.key.id}">
-                                        <button class="accept">Забанить</button>
-                                    </a>
-                                    <a href="${pageContext.request.contextPath}/controller?command=reject_order&order_id=${order.key.id}">
-                                        <button class="reject">Разбанить</button>
-                                    </a>
-                                    <a href="${pageContext.request.contextPath}/controller?command=done_order&order_id=${order.key.id}">
-                                        <button class="done">Сделать админом</button>
-                                    </a>
-                                </div>
-                            </c:if>
+
+                            <div class="controls">
+                                <a href="${pageContext.request.contextPath}/controller?command=block_user&id=${user.id}">
+                                    <button class="accept"><fmt:message key="button.block"/></button>
+                                </a>
+                                <a href="${pageContext.request.contextPath}/controller?command=unblock_user&id=${user.id}">
+                                    <button class="reject"><fmt:message key="button.unblock"/></button>
+                                </a>
+                                <a href="${pageContext.request.contextPath}/controller?command=make_admin&id=${user.id}">
+                                    <button class="done"><fmt:message key="button.make_admin"/></button>
+                                </a>
+                            </div>
+
                         </div>
                     </c:forEach>
                 </div>

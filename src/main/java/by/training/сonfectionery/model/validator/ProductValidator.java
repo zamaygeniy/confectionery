@@ -18,4 +18,6 @@ public interface ProductValidator {
 
     boolean validateProductTypeId(String productTypeId) throws ServiceException;
 
+    boolean validateImage(String image);
+
 }

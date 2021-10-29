@@ -1,4 +1,4 @@
-package by.training.сonfectionery.control.command.impl;
+package by.training.сonfectionery.control.command.impl.admin;
 
 import by.training.сonfectionery.control.command.Command;
 import by.training.сonfectionery.control.command.PagePath;
@@ -12,8 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class RejectOrderCommand implements Command {
-
+public class DoneOrderCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -21,13 +20,11 @@ public class RejectOrderCommand implements Command {
         String orderId = request.getParameter(RequestParameter.ORDER_ID);
         OrderService orderService = OrderServiceImpl.getInstance();
         try {
-            orderService.rejectOrder(Integer.parseInt(orderId));
+            orderService.doneOrder(Integer.parseInt(orderId));
         } catch (ServiceException e) {
-            logger.error("Executing rejectOrder command error", e);
-            throw new CommandException("Executing rejectOrder command error", e);
+            logger.error("Executing doneOrder command error", e);
+            throw new CommandException("Executing doneOrder command error", e);
         }
-    return new Router(PagePath.GO_TO_ORDERS_PAGE, Router.RouteType.REDIRECT);
+        return new Router(PagePath.GO_TO_ORDERS_PAGE, Router.RouteType.REDIRECT);
     }
-
-
 }

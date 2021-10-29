@@ -22,7 +22,7 @@ public class CheckoutCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         User user = (User) request.getSession().getAttribute(SessionAttribute.USER);
         Pattern pattern = Pattern.compile("\\d+");
-        Matcher matcher = pattern.matcher(request.getParameter("cart"));
+        Matcher matcher = pattern.matcher(request.getParameter(CART));
         Map<Integer, Integer> productsMap = new HashMap<>();
         while (matcher.find()){
             int id = Integer.parseInt(matcher.group());
@@ -30,14 +30,15 @@ public class CheckoutCommand implements Command {
             productsMap.put(id, Integer.parseInt(matcher.group()));
         }
         Map<String, String> orderMap = new HashMap<>();
-        orderMap.put(PHONE, "+1231231231");
+        orderMap.put(PHONE, request.getParameter(PHONE));
         orderMap.put(USER_ID, String.valueOf(user.getId()));
+        orderMap.put(COST, request.getParameter(COST));
         OrderService orderService = OrderServiceImpl.getInstance();
         try {
             orderService.createOrder(orderMap, productsMap);
         } catch (ServiceException e) {
             throw new CommandException("Failed to create order", e);
         }
-        return new Router(PagePath.MAIN_PAGE, Router.RouteType.FORWARD);
+        return new Router(PagePath.GO_TO_CART_PAGE, Router.RouteType.REDIRECT);
     }
 }

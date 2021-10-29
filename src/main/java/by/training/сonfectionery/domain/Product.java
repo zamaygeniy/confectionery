@@ -121,6 +121,8 @@ public class Product extends Entity {
         sb.append(description);
         sb.append(", weight=");
         sb.append(weight);
+        sb.append(", product type id=");
+        sb.append(productTypeId);
         sb.append("}");
         return sb.toString();
     }

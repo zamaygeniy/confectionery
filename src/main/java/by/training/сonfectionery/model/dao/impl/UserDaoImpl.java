@@ -1,6 +1,5 @@
 package by.training.сonfectionery.model.dao.impl;
 
-import by.training.сonfectionery.domain.Product;
 import by.training.сonfectionery.domain.User;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.model.dao.UserDao;
@@ -9,6 +8,7 @@ import by.training.сonfectionery.util.PasswordEncoder;
 
 import static by.training.сonfectionery.model.dao.ColumnName.*;
 
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,6 +60,19 @@ public class UserDaoImpl extends UserDao {
             SET password = ?
             WHERE id = ?;
             """;
+
+    private static final String SQL_UPDATE_USER_STATUS = """
+            UPDATE users
+            SET status_id = ?
+            WHERE id = ?;
+            """;
+
+    private static final String SQL_UPDATE_USER_ROLE = """
+            UPDATE users
+            SET role_id = ?
+            WHERE id = ?;
+            """;
+
     private static final String SQL_FIND_USER_PASSWORD = """
             SELECT password
             FROM users
@@ -92,17 +105,17 @@ public class UserDaoImpl extends UserDao {
     }
 
     @Override
-    public List<User> findUsersByStatusId(int offset, int recordsPerPage, String[] userStatusId) throws DaoException {
+    public List<User> findUsersByStatusId(int offset, int recordsPerPage, List<Integer> userStatusId) throws DaoException {
         String query = SQL_FIND_USER + "WHERE status_id IN (";
-        for (int i = 0; i < userStatusId.length; i++) {
+        for (int i = 0; i < userStatusId.size(); i++) {
             query = query + "?,";
         }
-        query = query.substring(0, query.length()-1) + ")\nLIMIT ?, ?;";
+        query = query.substring(0, query.length() - 1) + ")\nLIMIT ?, ?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             List<User> users = new ArrayList<>();
             int i;
-            for (i = 0; i < userStatusId.length; i++) {
-                statement.setInt(i + 1, Integer.parseInt(userStatusId[i]));
+            for (i = 0; i < userStatusId.size(); i++) {
+                statement.setInt(i + 1, userStatusId.get(i));
             }
             statement.setInt(i + 1, offset);
             statement.setInt(i + 2, recordsPerPage);
@@ -177,7 +190,11 @@ public class UserDaoImpl extends UserDao {
             statement.setString(2, user.getLastName());
             statement.setString(3, user.getEmail());
             statement.setString(4, PasswordEncoder.encodePassword(password));
-            statement.setBlob(5, Base64Coder.decode(user.getImage()));
+            if (user.getImage() != null) {
+                statement.setBlob(5, Base64Coder.decode(user.getImage()));
+            } else {
+                statement.setBlob(5, (InputStream) null);
+            }
             statement.setInt(6, user.getRole().getId());
             statement.setInt(7, user.getStatus().getId());
             boolean result = statement.executeUpdate() == 1;
@@ -212,13 +229,35 @@ public class UserDaoImpl extends UserDao {
     }
 
     @Override
-    public boolean updateUserPassword(User user, String password) throws DaoException {
+    public void updateUserPassword(User user, String password) throws DaoException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_USER_PASSWORD)) {
-            statement.setString(1, password);
+            statement.setString(1, PasswordEncoder.encodePassword(password));
             statement.setInt(2, user.getId());
-            return statement.executeUpdate() == 1;
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Failed to update user password", e);
+        }
+    }
+
+    @Override
+    public void updateUserStatus(int id, User.Status status) throws DaoException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_USER_STATUS)) {
+            statement.setInt(1, status.getId());
+            statement.setInt(2, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Failed to update user status", e);
+        }
+    }
+
+    @Override
+    public void updateUserRole(int id, User.Role role) throws DaoException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_USER_ROLE)) {
+            statement.setInt(1, role.getId());
+            statement.setInt(2, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Failed to update user role", e);
         }
     }
 
@@ -235,15 +274,15 @@ public class UserDaoImpl extends UserDao {
     }
 
     @Override
-    public int numberOfRecords(String[] userStatuses) throws DaoException {
+    public int numberOfRecords(List<Integer> userStatuses) throws DaoException {
         String query = SQL_GET_NUMBER_OF_RECORDS + "WHERE status_id IN (";
-        for (int i = 0; i < userStatuses.length; i++) {
+        for (int i = 0; i < userStatuses.size(); i++) {
             query = query + "?,";
         }
         query = query.substring(0, query.length() - 1) + ")";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            for (int i = 0; i < userStatuses.length; i++) {
-                statement.setInt(i + 1, Integer.parseInt(userStatuses[i]));
+            for (int i = 0; i < userStatuses.size(); i++) {
+                statement.setInt(i + 1, userStatuses.get(i));
             }
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();

@@ -175,7 +175,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUsersByStatusId(int offset, int numberOfRecords, String[] userStatusId) throws ServiceException {
+    public List<User> findUsersByStatusId(int offset, int numberOfRecords, List<Integer> userStatusId) throws ServiceException {
         UserDao userDao = new UserDaoImpl();
         EntityTransaction transaction = new EntityTransaction();
         List<User> users;
@@ -215,20 +215,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findUserByEmail(String email) throws ServiceException {
+    public Optional<User> findUserById(int id) throws ServiceException {
         EntityTransaction entityTransaction = new EntityTransaction();
         UserDao userDao = new UserDaoImpl();
         try{
             entityTransaction.init(userDao);
-            return userDao.findUserByEmail(email);
+            return userDao.findById(id);
         } catch (DaoException e){
-            logger.error("Failed to make transaction in findUserByEmail method", e);
-            throw new ServiceException("Failed to make transaction in findUserByEmail method", e);
+            logger.error("Failed to make transaction in findUserById method", e);
+            throw new ServiceException("Failed to make transaction in findUserById method", e);
         } finally {
             try {
                 entityTransaction.end();
             } catch (DaoException e) {
-                logger.error("Can't end transaction in findUserByEmail method", e);
+                logger.error("Can't end transaction in findUserById method", e);
             }
         }
     }
@@ -252,7 +252,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int numberOfRecords(String[] userStatuses) throws ServiceException {
+    public int numberOfRecords(List<Integer> userStatuses) throws ServiceException {
         UserDao userDao = new UserDaoImpl();
         EntityTransaction transaction = new EntityTransaction();
         try {
@@ -330,12 +330,59 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean blockUser(int userId) throws ServiceException {
-        return false;
+    public void blockUser(int userId) throws ServiceException {
+        EntityTransaction entityTransaction = new EntityTransaction();
+        UserDao userDao = new UserDaoImpl();
+        try{
+            entityTransaction.init(userDao);
+            userDao.updateUserStatus(userId, User.Status.BLOCKED);
+        } catch (DaoException e){
+            logger.error("Failed to make transaction in blockUser method", e);
+            throw new ServiceException("Failed to make transaction in blockUser method", e);
+        } finally {
+            try {
+                entityTransaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in blockUser method", e);
+            }
+        }
     }
 
     @Override
-    public boolean unblockUser(int userId) throws ServiceException {
-        return false;
+    public void unblockUser(int userId) throws ServiceException {
+        EntityTransaction entityTransaction = new EntityTransaction();
+        UserDao userDao = new UserDaoImpl();
+        try{
+            entityTransaction.init(userDao);
+            userDao.updateUserStatus(userId, User.Status.ACTIVATED);
+        } catch (DaoException e){
+            logger.error("Failed to make transaction in unblockUser method", e);
+            throw new ServiceException("Failed to make transaction in unblockUser method", e);
+        } finally {
+            try {
+                entityTransaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in unblockUser method", e);
+            }
+        }
+    }
+
+    @Override
+    public void makeUserAdmin(int id) throws ServiceException{
+        EntityTransaction entityTransaction = new EntityTransaction();
+        UserDao userDao = new UserDaoImpl();
+        try{
+            entityTransaction.init(userDao);
+            userDao.updateUserRole(id, User.Role.ADMIN);
+        } catch (DaoException e){
+            logger.error("Failed to make transaction in makeUserAdmin method", e);
+            throw new ServiceException("Failed to make transaction in makeUserAdmin method", e);
+        } finally {
+            try {
+                entityTransaction.end();
+            } catch (DaoException e) {
+                logger.error("Can't end transaction in makeUserAdmin method", e);
+            }
+        }
     }
 }

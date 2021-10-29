@@ -7,8 +7,13 @@ public class Order extends Entity {
     private String phone;
     private int userId;
     private Status status;
+    private double cost;
 
     public Order() {
+    }
+
+    public double getCost() {
+        return cost;
     }
 
     public Status getStatus() {
@@ -25,6 +30,10 @@ public class Order extends Entity {
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
     public void setUserId(int userId) {
@@ -47,7 +56,7 @@ public class Order extends Entity {
         WAITING_FOR_CONFIRMATION("waiting_for_confirmation", 1),
         IN_PROCESS("in_process", 2),
         DONE("done", 3),
-        CANCELLED("canceled", 4);
+        CANCELLED("cancelled", 4);
 
 
         private String value;
@@ -96,6 +105,11 @@ public class Order extends Entity {
 
         public Order.OrderBuilder setPhone(String phone) {
             order.setPhone(phone);
+            return this;
+        }
+
+        public Order.OrderBuilder setCost(double cost){
+            order.setCost(cost);
             return this;
         }
 
