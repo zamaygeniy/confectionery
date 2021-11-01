@@ -9,6 +9,7 @@ import by.training.сonfectionery.model.dao.impl.UserDaoImpl;
 import by.training.сonfectionery.model.service.UserService;
 import by.training.сonfectionery.model.validator.impl.UserValidatorImpl;
 import by.training.сonfectionery.util.Base64Coder;
+import by.training.сonfectionery.util.IdEncoder;
 import by.training.сonfectionery.util.PasswordEncoder;
 import by.training.сonfectionery.util.mail.MailSender;
 import org.apache.logging.log4j.LogManager;
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         MailSender mailSender = new MailSender();
-        mailSender.send(user.getId(), user.getEmail());
+        mailSender.send(IdEncoder.encodeId(user.getId()), user.getEmail());
     }
 
     @Override
@@ -129,7 +130,7 @@ public class UserServiceImpl implements UserService {
         User user;
         try {
             transaction.init(userDao);
-            Optional<User> optionalUser = userDao.findById(Integer.parseInt(userId));
+            Optional<User> optionalUser = userDao.findById(IdEncoder.decodeId(Integer.parseInt(userId)));
             if (optionalUser.isPresent()) {
                 user = optionalUser.get();
                 if (user.getStatus() == User.Status.NON_ACTIVATED) {

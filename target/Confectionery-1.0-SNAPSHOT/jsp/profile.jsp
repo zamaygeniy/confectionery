@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<c:import url="fragment/header1.jsp"/>
+<c:import url="fragment/header.jsp"/>
 <main>
     <div class="user_profile">
         <form action="${pageContext.request.contextPath}/controller" method="post">

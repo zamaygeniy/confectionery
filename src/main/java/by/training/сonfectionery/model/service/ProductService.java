@@ -12,8 +12,8 @@ public interface ProductService {
     void updateImage(Product product, InputStream inputStream) throws ServiceException;
     void createProduct(Map<String, String> productMap) throws ServiceException;
     boolean validateProductData(Map<String, String> productData) throws ServiceException;
-    List<Product> findProducts(int offset, int numberOfRecords, List<Integer> productTypeId, int sortBy) throws ServiceException;
-    List<Product> findProducts(int offset, int numberOfRecords) throws ServiceException;
+    List<Product> findProducts(int offset, int recordsPerPage, List<Integer> productTypeId, int sortBy) throws ServiceException;
+    List<Product> findProducts(int offset, int recordsPerPage) throws ServiceException;
     int numberOfRecords() throws ServiceException;
     int numberOfRecords(List<Integer> productTypes) throws ServiceException;
 }

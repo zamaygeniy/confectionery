@@ -70,10 +70,10 @@ public class SearchUsersCommand implements Command {
 
             int numberOfRecords;
             if (userStatuses == null  && id == null) {
-                userList = userService.findUsers(page - 1, RECORDS_PER_PAGE);
+                userList = userService.findUsers((page - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE);
                 numberOfRecords = userService.numberOfRecords();
             } else {
-                userList = userService.findUsersByStatusId(page - 1, RECORDS_PER_PAGE, userStatusesList);
+                userList = userService.findUsersByStatusId((page - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE, userStatusesList);
                 numberOfRecords = userService.numberOfRecords(userStatusesList);
             }
             if (numberOfRecords == 0) {

@@ -11,7 +11,7 @@
 <body>
 <c:import url="fragment/header.jsp"/>
 <main>
-    <h3><fmt:message key="confirmation.message"/></h3>
+    <h3 class="confirm_text"><fmt:message key="confirmation.message"/></h3>
 </main>
 <c:import url="fragment/footer.jsp"/>
 </body>

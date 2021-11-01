@@ -19,13 +19,13 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <!--        <Logger name="Log_Console" level="debug" additivity="true">-->
-        <!--            <AppenderRef ref="Console"/>-->
-        <!--        </Logger>-->
+        <Logger name="Log_Console" level="debug" additivity="true">
+            <AppenderRef ref="Console"/>
+        </Logger>
 
-        <!--        <Logger name="Rolling_File" level="debug" additivity="false">-->
-        <!--            <AppenderRef ref="FileRolling"/>-->
-        <!--        </Logger>-->
+        <Logger name="Rolling_File" level="debug" additivity="false">
+            <AppenderRef ref="FileRolling"/>
+        </Logger>
         <Logger name="Log_Console" level="debug" additivity="true">
             <AppenderRef ref="Console"/>
         </Logger>

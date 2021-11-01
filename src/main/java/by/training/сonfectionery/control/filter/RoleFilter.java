@@ -36,7 +36,6 @@ public class RoleFilter implements Filter {
             try {
                 commandType = CommandType.valueOf(commandName.toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException e) {
-                logger.error("Invalid command name", e);
                 commandType = null;
             }
             try {

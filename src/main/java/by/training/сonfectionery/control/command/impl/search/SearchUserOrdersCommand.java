@@ -62,10 +62,10 @@ public class SearchUserOrdersCommand implements Command {
             Map<Order, Map<Product, Integer>> ordersMap;
             int numberOfRecords;
             if (orderStatuses == null) {
-                ordersMap = orderService.findOrdersWithProducts(page - 1, RECORDS_PER_PAGE, user.getId());
+                ordersMap = orderService.findOrdersWithProducts((page - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE, user.getId());
                 numberOfRecords = orderService.numberOfRecords(user.getId());
             } else {
-                ordersMap = orderService.findOrdersWithProducts(page - 1, RECORDS_PER_PAGE, user.getId(), orderStatusesList);
+                ordersMap = orderService.findOrdersWithProducts((page - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE, user.getId(), orderStatusesList);
                 numberOfRecords = orderService.numberOfRecords(user.getId(), orderStatusesList);
             }
             if (numberOfRecords == 0) {

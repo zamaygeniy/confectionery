@@ -9,7 +9,7 @@ public abstract class ProductDao extends AbstractDao<Integer, Product> {
 
     public abstract int getNumberOfRecords() throws DaoException;
 
-    public abstract List<Product> findProductByProductTypeId(int offset, int numberOfRecords, List<Integer> productTypeId, int sortBy) throws DaoException;
+    public abstract List<Product> findProductByProductTypeId(int offset, int recordsPerPage, List<Integer> productTypeId, int sortBy) throws DaoException;
 
     public abstract List<Product> findAll(int i, int recordsPerPage) throws DaoException;
 

@@ -112,14 +112,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     document.querySelector('#short_btn')?.addEventListener('click', () => {
-        make_order_input.value = JSON.stringify(Object.entries(getCartData()).map(([id, {amount}]) => ({
-                id,
-                amount
-            }))
-        )
-        total_cost_input.value = openCart()
-        document.querySelector('#make_order').submit()
-        localStorage.removeItem(user_id.textContent.trim());
+        if (/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/.test(document.querySelector('#cart_number').value)) {
+            make_order_input.value = JSON.stringify(Object.entries(getCartData()).map(([id, {amount}]) => ({
+                    id,
+                    amount
+                }))
+            )
+            total_cost_input.value = openCart()
+            document.querySelector('#make_order').submit()
+            localStorage.removeItem(user_id.textContent.trim());
+        }
     })
 
     const setTotalPrice = (total_price) => {

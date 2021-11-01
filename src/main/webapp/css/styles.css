@@ -3443,14 +3443,7 @@ main {
     }
 }
 
-{
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: flex-start;
-}
+
 
  .wrapper .filter_part {
     -webkit-box-flex: 0;
@@ -3818,6 +3811,7 @@ main {
 
 .good_part {
     text-align: center;
+    flex: 0 1 955px;
 }
 
 .good_part .goods_container {
@@ -8335,4 +8329,9 @@ main {
     width: 0;
     height: 0;
     font-size: 0;
+}
+
+.confirm_text {
+    text-align: center;
+    margin: 20px 0;
 }

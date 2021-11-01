@@ -14,7 +14,7 @@ import static by.training.сonfectionery.control.command.RequestParameter.*;
 public class ProductValidatorImpl implements ProductValidator {
     private static final ProductValidatorImpl instance = new ProductValidatorImpl();
 
-    private static final String REGEX_NAME = "(?=^.{1,32}$)^([A-zА-яЁё`'.-])+$";
+    private static final String REGEX_NAME = "(?=^.{1,32}$)^([A-zА-яЁё`\\\"' .-])+$";
     private static final String REGEX_WEIGHT = "^\\d{1,5}$";
     private static final String REGEX_PRICE = "^\\d*\\.?\\d+|\\d+\\.?\\d*$";
     private static final String EMPTY_LINE = "";

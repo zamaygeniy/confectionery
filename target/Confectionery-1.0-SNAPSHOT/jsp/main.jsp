@@ -19,14 +19,13 @@
 </head>
 <body>
 
-<c:import url="fragment/header1.jsp"/>
+<c:import url="fragment/header.jsp"/>
 
 <main class="main _index">
     <div class="first_full_screen">
         <div class="wrapper">
             <div class="contetn_box">
-                <div class="screen_title">Сахарная планета</div>
-
+                <div class="screen_title"><fmt:message key="main.title"/> </div>
             </div>
         </div>
 

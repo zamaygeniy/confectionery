@@ -51,15 +51,15 @@ public class SearchProductsCommand implements Command {
                 return new Router(PagePath.CATALOG_PAGE, Router.RouteType.FORWARD);
             }
         }
-
+        System.out.println(page);
         try {
             List<Product> productList;
             int numberOfRecords;
             if (productTypes == null) {
-                productList = productService.findProducts(page - 1, RECORDS_PER_PAGE);
+                productList = productService.findProducts((page - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE);
                 numberOfRecords = productService.numberOfRecords();
             } else {
-                productList = productService.findProducts(page - 1, RECORDS_PER_PAGE, productTypesList, sortBy);
+                productList = productService.findProducts((page - 1) * RECORDS_PER_PAGE, RECORDS_PER_PAGE, productTypesList, sortBy);
                 numberOfRecords = productService.numberOfRecords(productTypesList);
             }
             if (numberOfRecords == 0) {

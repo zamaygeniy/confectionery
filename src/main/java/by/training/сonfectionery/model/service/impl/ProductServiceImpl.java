@@ -87,14 +87,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findProducts(int offset, int numberOfRecords, List<Integer> productTypeId, int sortBy) throws ServiceException {
+    public List<Product> findProducts(int offset, int recordsPerPage, List<Integer> productTypeId, int sortBy) throws ServiceException {
 
         ProductDao productDao = new ProductDaoImpl();
         EntityTransaction transaction = new EntityTransaction();
         List<Product> products;
         try {
             transaction.init(productDao);
-            products = productDao.findProductByProductTypeId(offset, numberOfRecords, productTypeId, sortBy);
+            products = productDao.findProductByProductTypeId(offset, recordsPerPage, productTypeId, sortBy);
             return products;
         } catch (DaoException e) {
             throw new ServiceException("Failed to make transaction in findProductsByProductType method", e);
@@ -109,13 +109,13 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> findProducts(int offset, int numberOfRecords) throws ServiceException {
+    public List<Product> findProducts(int offset, int recordsPerPage) throws ServiceException {
         ProductDao productDao = new ProductDaoImpl();
         EntityTransaction transaction = new EntityTransaction();
         List<Product> products;
         try {
             transaction.init(productDao);
-            products = productDao.findAll(offset, numberOfRecords);
+            products = productDao.findAll(offset, recordsPerPage);
             return products;
         } catch (DaoException e) {
             throw new ServiceException("Failed to make transaction in findProductsByProductType method", e);

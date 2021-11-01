@@ -1,4 +1,6 @@
-*.iml
-.DS_Store/
+  
 .idea/
-out/
+logs/
+target
+Confectionery.iml
+src/main/resources/mail/

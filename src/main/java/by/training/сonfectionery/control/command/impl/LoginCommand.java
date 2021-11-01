@@ -22,6 +22,7 @@ public class LoginCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
+        logger.error("Failed to execute LoginCommand");
         HttpSession session = request.getSession();
         String locale = (String) session.getAttribute(SessionAttribute.LOCALE);
         Router router = null;

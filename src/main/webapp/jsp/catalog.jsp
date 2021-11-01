@@ -8,7 +8,7 @@
 <c:import url="fragment/header.jsp"/>
 <head>
     <meta charset="UTF-8">
-    <title>one plus</title>
+    <title>Makima</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/fonts/musesans/stylesheet.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/scripts/scroll.css">

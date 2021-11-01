@@ -10,7 +10,7 @@
     </title>
 </head>
 <body>
-<c:import url="fragment/header1.jsp"/>
+<c:import url="fragment/header.jsp"/>
 <main class="main">
     <div class="form_container">
         <form action="${pageContext.request.contextPath}/controller" method="post" enctype="multipart/form-data">
