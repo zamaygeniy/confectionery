@@ -1,5 +1,3 @@
-# confectionery
-=======
 # Confectionery
 
 The application is for ordering products from cafe Makima.
