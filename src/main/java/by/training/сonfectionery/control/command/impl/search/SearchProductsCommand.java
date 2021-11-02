@@ -51,7 +51,6 @@ public class SearchProductsCommand implements Command {
                 return new Router(PagePath.CATALOG_PAGE, Router.RouteType.FORWARD);
             }
         }
-        System.out.println(page);
         try {
             List<Product> productList;
             int numberOfRecords;

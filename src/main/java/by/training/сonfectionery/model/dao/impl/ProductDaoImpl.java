@@ -110,8 +110,6 @@ public class ProductDaoImpl extends ProductDao {
 
     @Override
     public List<Product> findAll(int offset, int recordsPerPage) throws DaoException {
-        System.out.println(offset);
-        System.out.println(recordsPerPage);
         String query = "SELECT * FROM products limit " + offset + ", " + recordsPerPage;
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             List<Product> products = new ArrayList<>();
@@ -119,9 +117,6 @@ public class ProductDaoImpl extends ProductDao {
                 while (resultSet.next()) {
                     Product product = buildProduct(resultSet);
                     products.add(product);
-                }
-                for (Product product: products){
-                    System.out.println(product);
                 }
                 return products;
             }
