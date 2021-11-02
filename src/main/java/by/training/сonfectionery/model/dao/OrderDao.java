@@ -1,6 +1,6 @@
 package by.training.сonfectionery.model.dao;
 
-import by.training.сonfectionery.domain.Order;
+import by.training.сonfectionery.model.domain.Order;
 import by.training.сonfectionery.exception.DaoException;
 
 import java.util.List;

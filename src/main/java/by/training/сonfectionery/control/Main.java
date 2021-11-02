@@ -1,6 +1,6 @@
 package by.training.сonfectionery.control;
 
-import by.training.сonfectionery.util.IdEncoder;
+import by.training.сonfectionery.model.util.IdEncoder;
 public class Main {
     public static void main(String[] args) {
         int id = 14;

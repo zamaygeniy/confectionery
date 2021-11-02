@@ -1,6 +1,6 @@
 package by.training.сonfectionery.control.listener;
 
-import by.training.сonfectionery.domain.ProductType;
+import by.training.сonfectionery.model.domain.ProductType;
 import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.connection.ConnectionPool;
 import by.training.сonfectionery.model.service.ProductTypeService;

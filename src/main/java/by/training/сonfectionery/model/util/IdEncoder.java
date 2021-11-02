@@ -1,4 +1,4 @@
-package by.training.сonfectionery.util;
+package by.training.сonfectionery.model.util;
 
 public class IdEncoder {
     public static int encodeId(int id) {

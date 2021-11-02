@@ -1,4 +1,4 @@
-package by.training.сonfectionery.util;
+package by.training.сonfectionery.model.util;
 
 import org.mindrot.jbcrypt.BCrypt;
 

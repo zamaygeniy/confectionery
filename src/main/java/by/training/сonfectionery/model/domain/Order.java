@@ -1,4 +1,4 @@
-package by.training.сonfectionery.domain;
+package by.training.сonfectionery.model.domain;
 
 import java.time.LocalDate;
 
@@ -108,7 +108,7 @@ public class Order extends Entity {
             return this;
         }
 
-        public Order.OrderBuilder setCost(double cost){
+        public Order.OrderBuilder setCost(double cost) {
             order.setCost(cost);
             return this;
         }
@@ -116,6 +116,48 @@ public class Order extends Entity {
         public Order createOrder() {
             return order;
         }
+    }
+
+
+    @Override
+    public String toString(){
+    StringBuilder stringBuilder = new StringBuilder("Order{");
+    stringBuilder.append(", id=").append(getId());
+    stringBuilder.append(", date=").append(getDate());
+    stringBuilder.append(", phone=").append(getPhone());
+    stringBuilder.append(", userId=").append(getUserId());
+    stringBuilder.append(", status=").append(getStatus().value);
+    stringBuilder.append(", cost=").append(getCost()).append("}");
+    return stringBuilder.toString();
+    }
+
+    @Override
+    public int hashCode(){
+        int result = getId();
+        result = 31 * result + (date == null ? 0 : date.hashCode());
+        result = 31 * result + (phone == null ? 0: phone.hashCode());
+        result = 31 * result + (status == null ? 0 : status.hashCode());
+        result = 31 * result + userId;
+        result = 31 * result + Double.hashCode(cost);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || o.getClass() != getClass()) {
+            return false;
+        }
+
+        Order order = (Order) o;
+        return order.getId() == getId() &&
+                order.cost == cost &&
+                order.userId == userId &&
+                order.date == null ? date == null : date.equals(order.date) &&
+                order.phone == null ? phone == null : phone.equals(order.phone) &&
+                order.status == null ? status == null : status.equals(order.status);
     }
 
 

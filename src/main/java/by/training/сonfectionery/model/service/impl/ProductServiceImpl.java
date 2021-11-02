@@ -1,6 +1,6 @@
 package by.training.сonfectionery.model.service.impl;
 
-import by.training.сonfectionery.domain.Product;
+import by.training.сonfectionery.model.domain.Product;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.dao.ProductDao;
@@ -8,7 +8,7 @@ import by.training.сonfectionery.model.dao.impl.EntityTransaction;
 import by.training.сonfectionery.model.dao.impl.ProductDaoImpl;
 import by.training.сonfectionery.model.service.ProductService;
 import by.training.сonfectionery.model.validator.impl.ProductValidatorImpl;
-import by.training.сonfectionery.util.Base64Coder;
+import by.training.сonfectionery.model.util.Base64Coder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

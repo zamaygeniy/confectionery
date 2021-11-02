@@ -5,7 +5,7 @@ import by.training.сonfectionery.exception.CommandException;
 import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.service.ProductService;
 import by.training.сonfectionery.model.service.impl.ProductServiceImpl;
-import by.training.сonfectionery.util.Base64Coder;
+import by.training.сonfectionery.model.util.Base64Coder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;

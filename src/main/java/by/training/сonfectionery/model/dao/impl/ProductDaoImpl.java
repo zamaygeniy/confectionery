@@ -1,9 +1,9 @@
 package by.training.сonfectionery.model.dao.impl;
 
-import by.training.сonfectionery.domain.Product;
+import by.training.сonfectionery.model.domain.Product;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.model.dao.ProductDao;
-import by.training.сonfectionery.util.Base64Coder;
+import by.training.сonfectionery.model.util.Base64Coder;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

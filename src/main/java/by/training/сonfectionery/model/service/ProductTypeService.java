@@ -1,6 +1,6 @@
 package by.training.сonfectionery.model.service;
 
-import by.training.сonfectionery.domain.ProductType;
+import by.training.сonfectionery.model.domain.ProductType;
 import by.training.сonfectionery.exception.ServiceException;
 
 import java.util.List;

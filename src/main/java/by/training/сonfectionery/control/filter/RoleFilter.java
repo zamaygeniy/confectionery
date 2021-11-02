@@ -1,7 +1,7 @@
 package by.training.сonfectionery.control.filter;
 
 import by.training.сonfectionery.control.command.*;
-import by.training.сonfectionery.domain.User;
+import by.training.сonfectionery.model.domain.User;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;

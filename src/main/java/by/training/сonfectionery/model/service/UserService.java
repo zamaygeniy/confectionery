@@ -1,6 +1,6 @@
 package by.training.сonfectionery.model.service;
 
-import by.training.сonfectionery.domain.User;
+import by.training.сonfectionery.model.domain.User;
 import by.training.сonfectionery.exception.ServiceException;
 
 

@@ -1,4 +1,4 @@
-package by.training.сonfectionery.util;
+package by.training.сonfectionery.model.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

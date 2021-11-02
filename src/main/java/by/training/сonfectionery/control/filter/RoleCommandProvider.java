@@ -5,7 +5,7 @@ import static by.training.сonfectionery.control.command.UploadCommandType.*;
 
 import by.training.сonfectionery.control.command.CommandType;
 import by.training.сonfectionery.control.command.UploadCommandType;
-import by.training.сonfectionery.domain.User;
+import by.training.сonfectionery.model.domain.User;
 
 import java.util.EnumSet;
 

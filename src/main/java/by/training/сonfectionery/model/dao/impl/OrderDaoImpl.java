@@ -1,6 +1,6 @@
 package by.training.сonfectionery.model.dao.impl;
 
-import by.training.сonfectionery.domain.Order;
+import by.training.сonfectionery.model.domain.Order;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.model.dao.ColumnName;
 import by.training.сonfectionery.model.dao.OrderDao;

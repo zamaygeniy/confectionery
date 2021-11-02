@@ -1,4 +1,4 @@
-package by.training.сonfectionery.util.mail;
+package by.training.сonfectionery.model.util.mail;
 
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;

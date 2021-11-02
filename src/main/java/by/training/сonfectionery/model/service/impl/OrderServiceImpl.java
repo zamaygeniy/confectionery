@@ -1,8 +1,8 @@
 
 package by.training.сonfectionery.model.service.impl;
 
-import by.training.сonfectionery.domain.Order;
-import by.training.сonfectionery.domain.Product;
+import by.training.сonfectionery.model.domain.Order;
+import by.training.сonfectionery.model.domain.Product;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.dao.OrderDao;

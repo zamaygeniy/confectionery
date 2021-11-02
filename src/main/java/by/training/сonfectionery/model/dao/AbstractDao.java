@@ -1,6 +1,6 @@
 package by.training.сonfectionery.model.dao;
 
-import by.training.сonfectionery.domain.Entity;
+import by.training.сonfectionery.model.domain.Entity;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.model.connection.ProxyConnection;
 

@@ -1,4 +1,4 @@
-package by.training.сonfectionery.domain;
+package by.training.сonfectionery.model.domain;
 
 public class Product extends Entity {
     private String name;
@@ -8,34 +8,34 @@ public class Product extends Entity {
     private String image;
     private int productTypeId;
 
-    public Product(){
+    public Product() {
     }
 
-    public double getPrice(){
+    public double getPrice() {
         return price;
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return description;
     }
 
-    public int getWeight(){
+    public int getWeight() {
         return weight;
     }
 
-    public String getImage(){
+    public String getImage() {
         return image;
     }
 
-    public int getProductTypeId(){
+    public int getProductTypeId() {
         return productTypeId;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -55,14 +55,14 @@ public class Product extends Entity {
         this.image = image;
     }
 
-    public void setProductTypeId(int productTypeId){
+    public void setProductTypeId(int productTypeId) {
         this.productTypeId = productTypeId;
     }
 
-    public static class ProductBuilder{
+    public static class ProductBuilder {
         Product product;
 
-        public ProductBuilder(){
+        public ProductBuilder() {
             product = new Product();
         }
 
@@ -71,32 +71,32 @@ public class Product extends Entity {
             return this;
         }
 
-        public Product.ProductBuilder setName(String name){
+        public Product.ProductBuilder setName(String name) {
             product.setName(name);
             return this;
         }
 
-        public Product.ProductBuilder setPrice(double price){
+        public Product.ProductBuilder setPrice(double price) {
             product.setPrice(price);
             return this;
         }
 
-        public Product.ProductBuilder setDescription(String description){
+        public Product.ProductBuilder setDescription(String description) {
             product.setDescription(description);
             return this;
         }
 
-        public Product.ProductBuilder setWeight(int weight){
+        public Product.ProductBuilder setWeight(int weight) {
             product.setWeight(weight);
             return this;
         }
 
-        public  Product.ProductBuilder setImage(String image){
+        public Product.ProductBuilder setImage(String image) {
             product.setImage(image);
             return this;
         }
 
-        public Product.ProductBuilder setProductTypeId(int productTypeId){
+        public Product.ProductBuilder setProductTypeId(int productTypeId) {
             product.setProductTypeId(productTypeId);
             return this;
         }
@@ -124,5 +124,36 @@ public class Product extends Entity {
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || o.getClass() != getClass()) {
+            return false;
+        }
+
+        Product product = (Product) o;
+        return product.getId() == getId() &&
+                product.weight == weight &&
+                product.productTypeId == productTypeId &&
+                Double.compare(price, product.price) == 0 &&
+                product.description == null ? description == null : description.equals(product.description) &&
+                product.name == null ? name == null : name.equals(product.name) &&
+                product.image == null ? image == null : image.equals(product.image);
+    }
+
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + (name == null ? 0 : name.hashCode());
+        result = 31 * result + Double.hashCode(price);
+        result = 31 * result + (description == null ? 0 : description.hashCode());
+        result = 31 * result + weight;
+        result = 31 * result + (image == null ? 0 : image.hashCode());
+        result = 31 * result + productTypeId;
+        return result;
+    }
 
 }

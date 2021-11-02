@@ -1,10 +1,10 @@
 package by.training.сonfectionery.model.dao.impl;
 
-import by.training.сonfectionery.domain.User;
+import by.training.сonfectionery.model.domain.User;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.model.dao.UserDao;
-import by.training.сonfectionery.util.Base64Coder;
-import by.training.сonfectionery.util.PasswordEncoder;
+import by.training.сonfectionery.model.util.Base64Coder;
+import by.training.сonfectionery.model.util.PasswordEncoder;
 
 import static by.training.сonfectionery.model.dao.ColumnName.*;
 

@@ -4,7 +4,7 @@ import by.training.сonfectionery.control.command.PagePath;
 import by.training.сonfectionery.control.command.Router;
 import by.training.сonfectionery.control.command.SessionAttribute;
 import by.training.сonfectionery.control.command.UploadCommand;
-import by.training.сonfectionery.domain.User;
+import by.training.сonfectionery.model.domain.User;
 import by.training.сonfectionery.exception.CommandException;
 import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.service.UserService;

@@ -1,4 +1,4 @@
-package by.training.сonfectionery.domain;
+package by.training.сonfectionery.model.domain;
 
 public class User extends Entity {
     private String firstName;
@@ -8,11 +8,11 @@ public class User extends Entity {
     private Role role;
     private Status status;
 
-    public void setStatus(Status status){
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public void setRole(Role role){
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -32,15 +32,15 @@ public class User extends Entity {
         this.email = email;
     }
 
-    public Status getStatus(){
+    public Status getStatus() {
         return status;
     }
 
-    public Role getRole(){
+    public Role getRole() {
         return role;
     }
 
-    public String getImage(){
+    public String getImage() {
         return image;
     }
 
@@ -102,10 +102,10 @@ public class User extends Entity {
     }
 
 
-    public static class UserBuilder{
+    public static class UserBuilder {
         User user;
 
-        public UserBuilder(){
+        public UserBuilder() {
             user = new User();
         }
 
@@ -151,20 +151,48 @@ public class User extends Entity {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("User{id=");
-        sb.append(getId());
-        sb.append(", firstName=");
-        sb.append(firstName);
-        sb.append(", lastName=");
-        sb.append(lastName);
-        sb.append(", email=");
-        sb.append(email);
-        sb.append(", role=");
-        sb.append(role.value);
-        sb.append(", status=");
-        sb.append(status.value);
-        sb.append("}");
-        return sb.toString();
+        StringBuilder stringBuilder = new StringBuilder("User{");
+        stringBuilder.append("id=").append(getId());
+        stringBuilder.append(", firstName=").append(firstName);
+        stringBuilder.append(", lastName=").append(lastName);
+        stringBuilder.append(", email=").append(email);
+        stringBuilder.append(", role=").append(role.value);
+        stringBuilder.append(", status=").append(status.value);
+        stringBuilder.append("}");
+        return stringBuilder.toString();
     }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + (firstName == null ? 0 : firstName.hashCode());
+        result = 31 * result + (lastName == null ? 0 : lastName.hashCode());
+        result = 31 * result + (email == null ? 0 : email.hashCode());
+        result = 31 * result + (image == null ? 0 : image.hashCode());
+        result = 31 * result + (role == null ? 0 : role.hashCode());
+        result = 31 * result + (status == null ? 0 : status.hashCode());
+        return result;
+    }
+
+    @Override
+
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || o.getClass() != getClass()) {
+            return false;
+        }
+
+        User user = (User) o;
+        return user.getId() == getId() &&
+                user.firstName == null ? firstName == null : firstName.equals(user.firstName) &&
+                user.lastName == null ? lastName == null : lastName.equals(user.lastName) &&
+                user.email == null ? email == null : email.equals(user.email) &&
+                user.role == null ? role == null : role.equals(user.role) &&
+                user.status == null ? status == null : status.equals(user.status) &&
+                user.image == null ? image == null : image.equals(user.image);
+    }
+
 
 }

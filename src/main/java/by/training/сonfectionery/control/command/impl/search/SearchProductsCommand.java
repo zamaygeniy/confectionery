@@ -1,7 +1,7 @@
 package by.training.сonfectionery.control.command.impl.search;
 
 import by.training.сonfectionery.control.command.*;
-import by.training.сonfectionery.domain.Product;
+import by.training.сonfectionery.model.domain.Product;
 import by.training.сonfectionery.exception.CommandException;
 import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.service.ProductService;

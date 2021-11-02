@@ -1,6 +1,6 @@
 package by.training.сonfectionery.model.validator.impl;
 
-import by.training.сonfectionery.domain.ProductType;
+import by.training.сonfectionery.model.domain.ProductType;
 import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.service.ProductTypeService;
 import by.training.сonfectionery.model.service.impl.ProductTypeServiceImpl;

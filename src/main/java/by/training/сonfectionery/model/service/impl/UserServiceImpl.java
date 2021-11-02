@@ -1,6 +1,6 @@
 package by.training.сonfectionery.model.service.impl;
 
-import by.training.сonfectionery.domain.User;
+import by.training.сonfectionery.model.domain.User;
 import by.training.сonfectionery.exception.DaoException;
 import by.training.сonfectionery.exception.ServiceException;
 import by.training.сonfectionery.model.dao.UserDao;
@@ -8,10 +8,10 @@ import by.training.сonfectionery.model.dao.impl.EntityTransaction;
 import by.training.сonfectionery.model.dao.impl.UserDaoImpl;
 import by.training.сonfectionery.model.service.UserService;
 import by.training.сonfectionery.model.validator.impl.UserValidatorImpl;
-import by.training.сonfectionery.util.Base64Coder;
-import by.training.сonfectionery.util.IdEncoder;
-import by.training.сonfectionery.util.PasswordEncoder;
-import by.training.сonfectionery.util.mail.MailSender;
+import by.training.сonfectionery.model.util.Base64Coder;
+import by.training.сonfectionery.model.util.IdEncoder;
+import by.training.сonfectionery.model.util.PasswordEncoder;
+import by.training.сonfectionery.model.util.mail.MailSender;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
