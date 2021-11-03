@@ -23,3 +23,4 @@ The application has two locales: EN and RU.
 2. addition new products to the catalog<br>
 3. changing order status<br>
 4. searching orders of all users<br>
+![Screenshot_2](https://user-images.githubusercontent.com/55176463/140015116-18a153b3-3697-40e8-a9b4-1e52e8413236.png)
